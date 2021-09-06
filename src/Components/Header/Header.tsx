@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 const Header: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   return (
     <div className="header-menu">
-      <ul className="header--menu_container">
+      <img src="src/assets/png/logo.png" alt="logo"></img>
+      <ul>
         <li>
           <Link to="/" className="header-link">
             Main
@@ -24,6 +25,7 @@ const Header: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
           </Link>
         </li>
       </ul>
+      <div className="header-menu_bottom"></div>
     </div>
   );
 };
