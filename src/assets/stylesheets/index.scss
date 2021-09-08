@@ -11,3 +11,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+button, .btn {
+  cursor: pointer;
+}
+.hidden{
+  display: none !important;
+}
