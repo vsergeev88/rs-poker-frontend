@@ -1,0 +1,77 @@
+@import 'src/assets/stylesheets/variables';
+
+.issue {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 18px 21px 19px 22px;
+  display: flex;
+  max-width: 500px;
+}
+
+.issue--user-info {
+  margin-left: 27px;
+}
+.issue--current {
+  background: rgba(96, 218, 191, 0.33);
+}
+.issue--status {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+
+  color: #000000;
+  text-transform: uppercase;
+}
+.issue--title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 56px;
+  display: flex;
+  align-items: center;
+
+  color: #000000;
+}
+.issue--prority {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+}
+.issue--action {
+  align-self: center;
+  margin-left: auto;
+}
+.issue--btn-remove {
+  background: url(/src/assets/svg/delete.svg) 50% transparent;
+  height: 47px;
+  width: 47px;
+  border: 0px;
+}
+.issue--btn-edit {
+  background: url(/src/assets/svg/edit.svg) 50% transparent;
+  height: 47px;
+  width: 47px;
+  border: 0px;
+}
+.issue--btn-plus {
+  background: url(/src/assets/svg/plus.svg) 50% transparent;
+  height: 47px;
+  width: 47px;
+  border: 0px;
+}
+.issue--btn-cross {
+  background: url(/src/assets/svg/cross.svg) 50% transparent;
+  height: 47px;
+  width: 47px;
+  border: 0px;
+}
