@@ -11,11 +11,12 @@ import {
   InputLabel,
   Slide,
   Switch,
-  TextField,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
-import type { FunctionComponent } from 'react';
-import React from 'react';
+import React, { FunctionComponent, useState } from 'react';
+
+import { uploadAvatar } from '../../Api/cloudinary';
+import { getCapitalLetters } from '../../utils/formatters';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -25,11 +26,13 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const ConnectDialog: FunctionComponent = () => {
-  const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [jobPosition, setJobPosition] = React.useState('');
-  const [isObserver, setObserver] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [jobPosition, setJobPosition] = useState('');
+  const [isObserver, setObserver] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [imgUrl, setUrl] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,6 +44,13 @@ const ConnectDialog: FunctionComponent = () => {
     setJobPosition('');
     setObserver(false);
     setOpen(false);
+    setSelectedFile(undefined);
+    setUrl('');
+  };
+
+  const setAvatar = async () => {
+    let url = await uploadAvatar(selectedFile);
+    setUrl(url);
   };
 
   return (
@@ -102,13 +112,23 @@ const ConnectDialog: FunctionComponent = () => {
               />
             </FormControl>
             <div className="choose-file-wrapper">
-              <TextField label="Image:" variant="outlined" value="Choose file" disabled />
-              <Button variant="contained" color="primary">
-                Button
+              <label htmlFor="image_uploads" className="choose-file_label">
+                {selectedFile ? selectedFile.name : `Choose file`}
+              </label>
+              <input
+                id="image_uploads"
+                className="choose-file_input"
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files?.length) setSelectedFile(e.target.files[0]);
+                }}
+              />
+              <Button variant="contained" color="primary" onClick={setAvatar}>
+                Upload
               </Button>
             </div>
-            <Avatar alt="Remy Sharp" src="">
-              RS
+            <Avatar alt={`${name} ${lastName}`} src={imgUrl}>
+              {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
             </Avatar>
           </div>
         </DialogContent>

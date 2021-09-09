@@ -31,6 +31,7 @@
         width: 50%;
         display: flex;
         flex-direction: column;
+
         
         .image-text {
             padding-top: 10px;
@@ -40,5 +41,32 @@
             display: flex;
             padding: 15px 0;
         }
+
+        .choose-file_input {
+            display: none;
+        }
+
+        .choose-file_label {
+            width: -webkit-fill-available;
+            padding: 5px;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #EEEEEE;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 0px 0px 0px 10px;
+            text-align: center;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        .choose-file_label:hover {
+            cursor: pointer;
+        }
+
+        
     }
 }
