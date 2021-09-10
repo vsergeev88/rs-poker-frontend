@@ -7,8 +7,14 @@ import {
   CardActions,
   CardContent,
   Container,
+  /*   FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText, */
+  Grid,
   IconButton,
   makeStyles,
+  Switch,
   TextField,
   Typography,
   /*   Dialog,
@@ -20,7 +26,12 @@ import {
   Switch,
   TextField, */
 } from '@material-ui/core';
+/* import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormHelperText from '@material-ui/core/FormHelperText'; */
 import AddIcon from '@material-ui/icons/Add';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import BlockIcon from '@material-ui/icons/Block';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -28,6 +39,16 @@ import EditIcon from '@material-ui/icons/Edit';
 // import MoreVertIcon from '@material-ui/icons/MoreVert';
 import type { FunctionComponent, HTMLAttributes } from 'react';
 import React from 'react';
+
+/* const [state, setState] = React.useState({
+  gilad: true,
+  jason: false,
+  antoine: true,
+}); */
+
+/* const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setState({ ...state, [event.target.name]: event.target.checked });
+}; */
 
 const copyUrlLobby = () => {
   console.log('copyUrlLobby');
@@ -186,6 +207,131 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
               <AddIcon color="primary" fontSize="large" />
             </IconButton>
           </CardActions>
+        </Card>
+        <Typography variant="h5" component="h2">
+          Game settings:
+        </Typography>
+        {/* <FormControl component="fieldset">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch checked={state.gilad} onChange={handleChange} name="gilad" />
+              }
+              label="Gilad Gray"
+            />
+            <FormControlLabel
+              control={
+                <Switch checked={state.jason} onChange={handleChange} name="jason" />
+              }
+              label="Jason Killian"
+            />
+            <FormControlLabel
+              control={
+                <Switch checked={state.antoine} onChange={handleChange} name="antoine" />
+              }
+              label="Antoine Llorca"
+            />
+          </FormGroup>
+          <FormHelperText>Be careful</FormHelperText>
+        </FormControl> */}
+        <Grid container spacing={3}>
+          <Grid item xs={8}>
+            <Typography variant="h6" component="h2">
+              Scram master as player:
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Switch
+              color="primary"
+              name="checkedB"
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="h6" component="h2">
+              Changing card in round end:
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Switch
+              color="primary"
+              name="checkedB"
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="h6" component="h2">
+              Is timer needed:
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Switch
+              color="primary"
+              name="checkedB"
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" component="h2">
+              Score type:
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField id="setting-scrore-type" label="story point" variant="outlined" />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" component="h2">
+              Score type (Short):
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField id="setting-scrore-type" label="SP" variant="outlined" />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6" component="h2">
+              Round time:
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="time"
+              label="Round time"
+              type="time"
+              defaultValue="00:01:30"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 10, // 5 min
+              }}
+            />
+          </Grid>
+        </Grid>
+        <Typography variant="h5" component="h2">
+          Add card values:
+        </Typography>
+        <Card className={classes.root}>
+          <CardContent>
+            <Typography className={classes.pos} color="textSecondary">
+              12
+            </Typography>
+            <Typography variant="h5" component="h2">
+              SP
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label="Delete">
+              <DeleteIcon color="primary" />
+            </IconButton>
+            <IconButton aria-label="Delete">
+              <EditIcon />
+            </IconButton>
+          </CardActions>
+        </Card>
+        <Card className={classes.root}>
+          <CardContent>
+            <AddCircleOutlineIcon color="primary" fontSize="large" />
+          </CardContent>
         </Card>
       </div>
     </Container>
