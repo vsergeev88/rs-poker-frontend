@@ -33,6 +33,7 @@ const ConnectDialog: FunctionComponent = () => {
   const [isObserver, setObserver] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [imgUrl, setUrl] = useState('');
+  const [isNameDirty, setNameDirty] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,6 +47,7 @@ const ConnectDialog: FunctionComponent = () => {
     setOpen(false);
     setSelectedFile(undefined);
     setUrl('');
+    setNameDirty(false);
   };
 
   const setAvatar = async () => {
@@ -80,56 +82,73 @@ const ConnectDialog: FunctionComponent = () => {
               />
             </div>
           </div>
-          <div className="input-wrapper">
-            <FormControl required>
-              <InputLabel htmlFor="component-simple">Your first name:</InputLabel>
-              <Input
-                id="component-simple"
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                }}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="component-simple">Your last name:</InputLabel>
-              <Input
-                id="component-simple"
-                value={lastName}
-                onChange={(event) => {
-                  setLastName(event.target.value);
-                }}
-              />
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="component-simple">Your job position:</InputLabel>
-              <Input
-                id="component-simple"
-                value={jobPosition}
-                onChange={(event) => {
-                  setJobPosition(event.target.value);
-                }}
-              />
-            </FormControl>
-            <div className="choose-file-wrapper">
-              <label htmlFor="image_uploads" className="choose-file_label">
-                {selectedFile ? selectedFile.name : `Choose file`}
-              </label>
-              <input
-                id="image_uploads"
-                className="choose-file_input"
-                type="file"
-                onChange={(e) => {
-                  if (e.target.files?.length) setSelectedFile(e.target.files[0]);
-                }}
-              />
-              <Button variant="contained" color="primary" onClick={setAvatar}>
-                Upload
-              </Button>
+          <div className="content-wrapper">
+            <div className="input-wrapper">
+              <FormControl required>
+                <InputLabel htmlFor="component-simple">Your first name:</InputLabel>
+                <Input
+                  id="component-simple"
+                  value={name}
+                  onBlur={() => setNameDirty(true)}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    setNameDirty(true);
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <InputLabel htmlFor="component-simple">
+                  Your last name (optional):
+                </InputLabel>
+                <Input
+                  id="component-simple"
+                  value={lastName}
+                  onChange={(event) => {
+                    setLastName(event.target.value);
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <InputLabel htmlFor="component-simple">
+                  Your job position (optional):
+                </InputLabel>
+                <Input
+                  id="component-simple"
+                  value={jobPosition}
+                  onChange={(event) => {
+                    setJobPosition(event.target.value);
+                  }}
+                />
+              </FormControl>
+              <div className="choose-file-wrapper">
+                <label htmlFor="image_uploads" className="choose-file_label">
+                  {selectedFile ? selectedFile.name : `Choose file`}
+                </label>
+                <input
+                  id="image_uploads"
+                  className="choose-file_input"
+                  type="file"
+                  onChange={(e) => {
+                    if (e.target.files?.length) setSelectedFile(e.target.files[0]);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={setAvatar}
+                  disabled={!selectedFile}>
+                  Upload
+                </Button>
+              </div>
+              <Avatar alt={`${name} ${lastName}`} src={imgUrl}>
+                {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
+              </Avatar>
             </div>
-            <Avatar alt={`${name} ${lastName}`} src={imgUrl}>
-              {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
-            </Avatar>
+            <div className="errors-wrapper">
+              {isNameDirty && !name && (
+                <span className="error-text">Enter your name</span>
+              )}
+            </div>
           </div>
         </DialogContent>
         <DialogActions>
