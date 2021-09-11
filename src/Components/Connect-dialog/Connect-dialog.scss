@@ -65,7 +65,11 @@
 
         .choose-file_label:hover {
             cursor: pointer;
-        }        
+        }
+        
+        .avatar {
+            background-color: $checked-card-color;
+        }
     }
 
     .errors-wrapper{
