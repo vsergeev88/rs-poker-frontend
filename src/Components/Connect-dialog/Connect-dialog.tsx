@@ -9,21 +9,13 @@ import {
   FormControl,
   Input,
   InputLabel,
-  Slide,
   Switch,
 } from '@material-ui/core';
-import { TransitionProps } from '@material-ui/core/transitions';
 import React, { FunctionComponent, useState } from 'react';
 
 import { uploadAvatar } from '../../Api/cloudinary';
 import { getCapitalLetters } from '../../utils/formatters';
-
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Transition } from '../transition';
 
 const ConnectDialog: FunctionComponent = () => {
   const [open, setOpen] = useState(false);
