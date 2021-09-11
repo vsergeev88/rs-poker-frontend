@@ -1,0 +1,83 @@
+@import 'src/assets/stylesheets/variables';
+
+.dialog-wrapper {
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    
+    .large-text {
+        @include large-text;
+    }
+
+    .title-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .switch-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .switch-text {
+            width: 40%;
+        }
+    }
+
+    .content-wrapper{
+        display: flex;
+    }
+
+    .input-wrapper {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+
+        
+        .image-text {
+            padding-top: 10px;
+        }
+        
+        .choose-file-wrapper {
+            display: flex;
+            padding: 15px 0;
+        }
+
+        .choose-file_input {
+            display: none;
+        }
+
+        .choose-file_label {
+            width: -webkit-fill-available;
+            padding: 5px;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #EEEEEE;
+            box-sizing: border-box;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 0px 0px 0px 10px;
+            text-align: center;
+            line-height: 28px;
+        }
+
+        .choose-file_label:hover {
+            cursor: pointer;
+        }
+        
+        .avatar {
+            background-color: $checked-card-color;
+        }
+    }
+
+    .errors-wrapper{
+        margin: 20px 10px;
+
+        .error-text{
+            color: red;
+            font-weight: 500;
+        }
+    }    
+}

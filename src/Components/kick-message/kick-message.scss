@@ -1,0 +1,27 @@
+@import 'src/assets/stylesheets/variables';
+
+.kick-message-content {
+  display: flex;
+  flex-direction: column;
+  
+  .large-text {
+    @include large-text;
+    align-self: center;
+    margin-bottom: 20px;
+  }
+
+  .message-text {
+    font-size: 24px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+
+    .colored-text {
+      color: $app-main-color2;
+    }
+
+    .centred-text {
+      align-self: center;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import './LobbyPage.scss';
+import './Lobby-page.scss';
 
 import {
   Avatar,
