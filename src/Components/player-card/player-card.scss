@@ -1,0 +1,59 @@
+@import 'src/assets/stylesheets/variables';
+
+.player-card_container {
+  padding: 0 10px;
+  position: relative;
+  width: 290px;
+  height: 75px;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+  border-radius: 5px;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .avatar {
+    background-color: $checked-card-color;
+    height: 50px;
+    width: 50px;
+  }
+
+  .player-info_container {
+    padding-left: 10px;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .not-you_text {
+      display: none;
+    }
+
+    .its-you_text {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .player-name_text {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .player-position_text {
+      font-size: 14px;
+    }
+  }
+
+  .kick-icon {
+    color: gray;
+    width: 1.5em;
+    height: 1.5em;
+  }
+}
+
+.player-card_container:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 4px 3px rgba(0,0,0,0.25);
+  transition: all 0.15s ease-in;
+}

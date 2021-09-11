@@ -1,26 +1,22 @@
-import './kick-player.scss';
+import './kick-message.scss';
 
 import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import React, { FC, useState } from 'react';
 
 import { Transition } from '../transition';
 
-interface KickPlayerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   initiator: string;
   target: string;
+  idPlayer: number;
 }
 
-const KickPlayer: FC<KickPlayerProps> = ({ initiator, target }) => {
-  const [open, setOpen] = useState(false);
+const KickMessage: FC<IProps> = ({ initiator, target, idPlayer }) => {
+  const [open, setOpen] = useState(true);
 
   const sendResponseToServer = (answer: boolean) => {
     // TODO send information to server
-    console.log(answer);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
+    console.log(`kick player #${idPlayer}: ${answer}`);
   };
 
   const handleClickClose = (answer: boolean) => {
@@ -30,9 +26,6 @@ const KickPlayer: FC<KickPlayerProps> = ({ initiator, target }) => {
 
   return (
     <div>
-      <NotInterestedIcon onClick={handleClickOpen} className="kick-icon">
-        Connect
-      </NotInterestedIcon>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -40,7 +33,7 @@ const KickPlayer: FC<KickPlayerProps> = ({ initiator, target }) => {
         onClose={handleClickClose}
         aria-labelledby="alert-dialog-slide-title"
         className="dialog-wrapper">
-        <DialogContent className="dialog-content">
+        <DialogContent className="kick-message-content">
           <span className="large-text">Kick</span>
           <div className="message-text">
             <div>
@@ -73,4 +66,4 @@ const KickPlayer: FC<KickPlayerProps> = ({ initiator, target }) => {
   );
 };
 
-export default KickPlayer;
+export default KickMessage;

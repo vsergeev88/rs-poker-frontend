@@ -132,7 +132,7 @@ const ConnectDialog: FunctionComponent = () => {
                   Upload
                 </Button>
               </div>
-              <Avatar alt={`${name} ${lastName}`} src={imgUrl}>
+              <Avatar alt={`${name} ${lastName}`} src={imgUrl} className="avatar">
                 {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
               </Avatar>
             </div>
