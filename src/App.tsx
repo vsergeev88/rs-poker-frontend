@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Footer from './Components/Footer';
 import Header from './Components/Header';
-import GamePage from './Pages/GamePage';
-import LobbyPage from './Pages/LobbyPage';
-import MainPage from './Pages/MainPage';
+import GamePage from './Pages/Game-page';
+import LobbyPage from './Pages/Lobby-page';
+import MainPage from './Pages/Main-page';
 
 function App() {
   return (

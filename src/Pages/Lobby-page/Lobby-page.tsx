@@ -1,4 +1,4 @@
-import './LobbyPage.scss';
+import './Lobby-page.scss';
 
 import type { FunctionComponent, HTMLAttributes } from 'react';
 import React from 'react';

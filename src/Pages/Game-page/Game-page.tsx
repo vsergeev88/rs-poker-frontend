@@ -1,4 +1,4 @@
-import './GamePage.scss';
+import './Game-page.scss';
 
 import type { FunctionComponent, HTMLAttributes } from 'react';
 import React from 'react';
