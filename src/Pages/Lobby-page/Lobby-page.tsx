@@ -1,44 +1,28 @@
 import './Lobby-page.scss';
 
 import {
-  Avatar,
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   Container,
-  /*   FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText, */
   Grid,
   IconButton,
   makeStyles,
   Switch,
   TextField,
   Typography,
-  /*   Dialog,
-  DialogActions,
-  DialogContent,
-  FormControl,
-  Input,
-  InputLabel,
-  Switch,
-  TextField, */
 } from '@material-ui/core';
-/* import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormHelperText from '@material-ui/core/FormHelperText'; */
 import AddIcon from '@material-ui/icons/Add';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import BlockIcon from '@material-ui/icons/Block';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import type { FunctionComponent, HTMLAttributes } from 'react';
 import React from 'react';
+
+import PlayerCard from '../../Components/player-card';
+import { playersMockData } from '../../data/game';
 
 /* const [state, setState] = React.useState({
   gilad: true,
@@ -63,13 +47,8 @@ const useStyles = makeStyles({
   root: {
     minWidth: 275,
   },
-  /*   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  }, */
-  title: {
-    fontSize: 14,
+  h1: {
+    fontSize: 16,
   },
   pos: {
     marginBottom: 12,
@@ -81,100 +60,76 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   // const bull = <span className={classes.bullet}>•</span>;
   return (
     <Container className="lobby-page">
-      <div className="lobby-page">
-        <div className="lobby-page-wrapper">Lobby Page</div>
-        <Typography variant="h5" component="h2">
+      <Container className="lobby-page-wrapper">
+        <Typography variant="h4" component="h1" gutterBottom>
           Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)
         </Typography>
-        <Typography variant="h5" component="h2">
-          Scram master:
-        </Typography>
-        <Card className={classes.root}>
-          <CardContent>
-            <Avatar>RG</Avatar>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-              IT’S YOU
+        <Box className="start-game section" component="section">
+          <Typography
+            className="label-scram-master text-center"
+            variant="h5"
+            component="h2"
+            gutterBottom>
+            Scram master:
+          </Typography>
+          <Box className="card-master mb-20">
+            <PlayerCard player={playersMockData[0]} key={playersMockData[0].playerId} />
+          </Box>
+          <Box className="link-to-lobby">
+            <Typography
+              className="label-link-to-lobby"
+              variant="h5"
+              component="h2"
+              gutterBottom>
+              Link to lobby:
             </Typography>
-            <Typography variant="h5" component="h2">
-              Rick Giligan
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              lead software engeneer
-            </Typography>
-          </CardContent>
-        </Card>
-        <Typography variant="h5" component="h2">
-          Link to lobby:
-        </Typography>
-        <TextField
-          disabled
-          id="outlined-helperText"
-          label="http://pockerplanning.com"
-          variant="outlined"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <Button variant="contained" color="primary" onClick={() => copyUrlLobby()}>
-          Copy
-        </Button>
-        <Button variant="contained" color="primary" onClick={() => startGame()}>
-          Start Game
-        </Button>
-        <Button variant="outlined" color="primary" onClick={() => cancelGame()}>
-          Cancel game
-        </Button>
-        <Typography variant="h5" component="h2">
-          Members:
-        </Typography>
-        <Card className={classes.root}>
-          <CardContent>
-            <Avatar alt="Remy Sharp" src="/src/assets/png/avatar-girl.png" />
-            <Typography variant="h5" component="h2">
-              Rick Giligan 333
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              lead software engeneer
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="Block user">
-              <BlockIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
-        <Card className={classes.root}>
-          <CardContent>
-            <Avatar alt="Remy Sharp" src="/src/assets/png/avatar-girl.png" />
-            <Typography variant="h5" component="h2">
-              Rick Giligan 333
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              lead software engeneer
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="Block user">
-              <BlockIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
-        <Card className={classes.root}>
-          <CardContent>
-            <Avatar alt="Remy Sharp" src="/src/assets/png/avatar-girl.png" />
-            <Typography variant="h5" component="h2">
-              Rick Giligan 333
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              lead software engeneer
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="Block user">
-              <BlockIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
+            <Box className="copy-to-lobby">
+              <TextField
+                className="input-link-to-label"
+                disabled
+                id="outlined-helperText"
+                label="http://pockerplanning.com"
+                variant="outlined"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <Button variant="contained" color="primary" onClick={() => copyUrlLobby()}>
+                Copy
+              </Button>
+            </Box>
+          </Box>
+          <Box className="buttons-game mt-20 mb-20">
+            <Button
+              className="p-10"
+              variant="contained"
+              color="primary"
+              onClick={() => startGame()}>
+              Start Game
+            </Button>
+            <Button
+              className="p-10"
+              variant="outlined"
+              color="primary"
+              onClick={() => cancelGame()}>
+              Cancel game
+            </Button>
+          </Box>
+        </Box>
+        <Box className="members section" component="section">
+          <Typography
+            className="label-members text-center"
+            variant="h5"
+            component="h2"
+            gutterBottom>
+            Members:
+          </Typography>
+          <Box className="cards-wrapper mb-20">
+            {playersMockData.map((el) => (
+              <PlayerCard player={el} key={el.playerId} />
+            ))}
+          </Box>
+        </Box>
         <Typography variant="h5" component="h2">
           Issues:
         </Typography>
@@ -333,7 +288,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <AddCircleOutlineIcon color="primary" fontSize="large" />
           </CardContent>
         </Card>
-      </div>
+      </Container>
     </Container>
   );
 };

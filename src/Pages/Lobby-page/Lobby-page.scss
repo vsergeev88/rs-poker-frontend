@@ -2,8 +2,6 @@
   position: relative;
   max-width: 1280px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
   min-height: calc(100vh - 134px);
 }
 
@@ -11,4 +9,19 @@
   width: 100%;
   height: 100%;
   margin: 50px auto;
+}
+.copy-to-lobby {
+  display: flex;
+}
+.input-link-to-label > .MuiInputBase-root {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.copy-to-lobby > .MuiButton-root{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.buttons-game {
+  display: flex;
+  justify-content: space-between;
 }
