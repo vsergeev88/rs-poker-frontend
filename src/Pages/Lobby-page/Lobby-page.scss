@@ -17,11 +17,14 @@
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-.copy-to-lobby > .MuiButton-root{
+.copy-to-lobby > .MuiButton-root {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
 .buttons-game {
   display: flex;
+  justify-content: space-between;
+}
+.setting > .MuiGrid-container {
   justify-content: space-between;
 }
