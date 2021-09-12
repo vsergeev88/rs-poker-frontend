@@ -17,8 +17,8 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Card: FC<CardProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
   const [cardValue, setCardValue] = useState(propCardValue);
-  const [editMode, setEditMode] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const handleClose = () => {
     setEditMode(false);

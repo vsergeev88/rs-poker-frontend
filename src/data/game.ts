@@ -85,3 +85,39 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
 ];
+
+export type TPriority = 'Low' | 'Middle' | 'Hight';
+
+export type TIssue = {
+  issueID: number;
+  name: string;
+  priority: TPriority;
+  current: boolean;
+};
+
+export const issueMockData: TIssue[] = [
+  {
+    issueID: 1,
+    name: 'Choose stack',
+    priority: 'Hight',
+    current: false,
+  },
+  {
+    issueID: 2,
+    name: 'Develop architecture',
+    priority: 'Hight',
+    current: false,
+  },
+  {
+    issueID: 3,
+    name: 'Create design',
+    priority: 'Middle',
+    current: true,
+  },
+  {
+    issueID: 3,
+    name: 'Make tests',
+    priority: 'Low',
+    current: false,
+  },
+];
