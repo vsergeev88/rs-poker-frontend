@@ -24,6 +24,11 @@ const Header: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             Game
           </Link>
         </li>
+        <li>
+          <Link to="/test" className="header-link">
+            Test
+          </Link>
+        </li>
       </ul>
       <div className="header-menu_bottom"></div>
     </div>

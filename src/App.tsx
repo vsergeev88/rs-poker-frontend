@@ -8,6 +8,7 @@ import Header from './Components/Header';
 import GamePage from './Pages/Game-page';
 import LobbyPage from './Pages/Lobby-page';
 import MainPage from './Pages/Main-page';
+import TestPage from './Pages/Test-page';
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path="/game">
           <GamePage />
+        </Route>
+        <Route path="/test">
+          <TestPage />
         </Route>
       </Switch>
       <div>
