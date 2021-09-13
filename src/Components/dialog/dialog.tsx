@@ -9,12 +9,14 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   handlePositive(): void;
   handleNegative(): void;
   isOpen: boolean;
+  anotherButtons?: boolean | undefined;
 }
 
 const CustomDialog: FC<IProps> = ({
   handlePositive,
   handleNegative,
   isOpen,
+  anotherButtons,
   children,
 }) => {
   const [open, setOpen] = useState(isOpen);
@@ -41,7 +43,7 @@ const CustomDialog: FC<IProps> = ({
               handlePositive();
             }}
             color="primary">
-            Yes
+            {anotherButtons ? 'Confirm' : 'Yes'}
           </Button>
           <Button
             onClick={() => {
@@ -49,7 +51,7 @@ const CustomDialog: FC<IProps> = ({
               handleNegative();
             }}
             color="primary">
-            No
+            {anotherButtons ? 'Cancel' : 'No'}
           </Button>
         </DialogActions>
       </Dialog>
