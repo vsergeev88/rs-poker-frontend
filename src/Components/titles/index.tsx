@@ -1,8 +1,3 @@
-/* import TitleAdd1 from '../titles/title-add1';
-import TitleAdd2 from '../titles/title-add2';
-import TitleMain from '../titles/title-main/';
-import Titles from './Titles'; */
-
 import './Titles.scss';
 
 import { Typography } from '@material-ui/core';

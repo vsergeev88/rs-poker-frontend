@@ -19,11 +19,42 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   };
 
   const copyUrlLobby = (copyText: string) => {
-    console.log('copyUrlLobby');
     navigator.clipboard.writeText(copyText);
+    setCopyTextBtn('Copied');
   };
 
   const [copyText, setCopyText] = useState(window.location.host);
+  const [copyTextBtn, setCopyTextBtn] = useState('Copy');
+  const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(false);
+  const [isCardRound, setIsCardRound] = useState(true);
+  const [isTimerNeed, setIsTimerNeed] = useState(true);
+  const [scoreType, setScoreType] = useState('Story point');
+  const [isScoreTypeError, setIsScoreTypeError] = useState(false);
+  const [scoreTypeShort, setScoreTypeShort] = useState('SP');
+  const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(false);
+  const [roundTime, setRoundTime] = useState('00:01:30');
+
+  const handleChangeScoreTypeShort = (event: string) => {
+    const maxLength = 2;
+    if (event.length > maxLength) {
+      setIsScoreTypeShortError(true);
+      setScoreTypeShort(event.substring(0, maxLength));
+    } else {
+      setIsScoreTypeShortError(false);
+      setScoreTypeShort(event);
+    }
+  };
+
+  const handleChangeScoreType = (event: string) => {
+    const maxLength = 15;
+    if (event.length > maxLength) {
+      setIsScoreTypeError(true);
+      setScoreType(event.substring(0, maxLength));
+    } else {
+      setIsScoreTypeError(false);
+      setScoreType(event);
+    }
+  };
 
   return (
     <Box className="lobby-page">
@@ -48,13 +79,16 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
                 InputProps={{
                   readOnly: true,
                 }}
-                onChange={(e) => setCopyText(e.target.value)}
+                onChange={(e) => {
+                  setCopyText(e.target.value);
+                  setCopyTextBtn('Copy');
+                }}
               />
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => copyUrlLobby(copyText)}>
-                Copy
+                {copyTextBtn}
               </Button>
             </Box>
           </Box>
@@ -105,8 +139,10 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             </Grid>
             <Grid item xs={1}>
               <Switch
+                checked={isMasterAsPlayer}
                 color="primary"
-                name="checkedB"
+                name="masterAsPlayer"
+                onChange={() => setIsMasterAsPlayer(!isMasterAsPlayer)}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
             </Grid>
@@ -115,8 +151,10 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             </Grid>
             <Grid item xs={1}>
               <Switch
+                checked={isCardRound}
                 color="primary"
-                name="checkedB"
+                name="cardRound"
+                onChange={() => setIsCardRound(!isCardRound)}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
             </Grid>
@@ -125,8 +163,10 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             </Grid>
             <Grid item xs={1}>
               <Switch
+                checked={isTimerNeed}
                 color="primary"
-                name="checkedB"
+                name="timerNeed"
+                onChange={() => setIsTimerNeed(!isTimerNeed)}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
             </Grid>
@@ -135,16 +175,24 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             </Grid>
             <Grid item xs={2}>
               <TextField
+                error={isScoreTypeError}
                 id="setting-scrore-type"
-                label="story point"
                 variant="outlined"
+                defaultValue={scoreType}
+                onChange={(e) => handleChangeScoreType(e.target.value)}
               />
             </Grid>
             <Grid item xs={6}>
               <TitleAdd2>Score type (Short):</TitleAdd2>
             </Grid>
             <Grid item xs={2}>
-              <TextField id="setting-scrore-type" label="SP" variant="outlined" />
+              <TextField
+                error={isScoreTypeShortError}
+                id="setting-scrore-type"
+                variant="outlined"
+                defaultValue={scoreTypeShort}
+                onChange={(e) => handleChangeScoreTypeShort(e.target.value)}
+              />
             </Grid>
             <Grid item xs={6}>
               <TitleAdd2>Round time:</TitleAdd2>
@@ -152,9 +200,9 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <Grid item xs={2}>
               <TextField
                 id="time"
-                label="Round time"
                 type="time"
-                defaultValue="00:01:30"
+                defaultValue={roundTime}
+                onChange={(e) => setRoundTime(e.target.value)}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -173,7 +221,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             {cardMockData2.map((el, key) => (
               <Card
                 propCardValue={el.toString()}
-                shortScoreType={'SP'}
+                shortScoreType={scoreTypeShort}
                 allowEdit={true}
                 key={key}
               />
