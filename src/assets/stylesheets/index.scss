@@ -24,7 +24,14 @@ code {
   row-gap: 10px;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+  }
 }
+
 button,
 .btn {
   cursor: pointer;
