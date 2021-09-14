@@ -1,0 +1,48 @@
+@import 'src/assets/stylesheets/variables';
+
+.add-issue_container {
+  position: relative;
+  padding: 0 10px;
+  width: 290px;
+  height: 75px;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+  border-radius: 5px;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .add-issue_icon {
+    color: gray;
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .add-issue_icon:hover {
+    cursor: pointer;
+    color: blue;
+    transition: all 0.15s ease-in;
+  }
+}
+
+.add-issue_container:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 4px 3px rgba(0,0,0,0.25);
+  transition: all 0.15s ease-in;
+}
+
+.props-container {
+  margin: 0 20px;
+  width: 500px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-row-gap: 20px;
+  column-gap: 20px;
+  align-items: center;
+}
