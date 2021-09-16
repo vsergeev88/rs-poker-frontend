@@ -126,21 +126,3 @@ export const issueMockData: TIssue[] = [
     current: false,
   },
 ];
-
-export const cardMockData1: Array<Number | String> = [
-  0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,
-];
-export const cardMockData2: Array<Number | String> = [
-  0,
-  1,
-  2,
-  3,
-  5,
-  8,
-  13,
-  20,
-  40,
-  100,
-  '?',
-  'Coffee',
-];
