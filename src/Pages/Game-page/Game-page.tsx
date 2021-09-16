@@ -15,30 +15,13 @@ import Issue from '../../Components/issue';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { issueMockData, playersMockData } from '../../data/game';
+import Timer from '../../Components/Timer';
 
 const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
-  const [roundTime, setRoundTime] = useState(120);
-
-  const padTime = useCallback((time) => {
-    return String(time).length === 1 ? `0${time}` : `${time}`;
-  }, []);
 
   const handleClickStopGame = useCallback(() => console.log('stopGame'), []);
 
   const handleClickRunRound = useCallback(() => console.log('runRound'), []);
-
-  const format = useMemo(() => {
-    const hours = Math.floor(roundTime / 3600);
-    const minutes = Math.floor(roundTime / 60) - 60 * hours;
-    const seconds = roundTime % 60;
-    return `${padTime(hours)}:${padTime(minutes)}:${padTime(seconds)}`;
-  }, [roundTime, padTime]);
-
-  useEffect(() => {
-    if (roundTime > 0) {
-      setTimeout(() => setRoundTime(roundTime - 1), 1000);
-    }
-  }, [roundTime]);
 
   return (
     <Box className="game-page">
@@ -73,7 +56,7 @@ const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             </Box>
             <Box className="run-wrapper">
               <Grid item xs={2}>
-                <div className="timer">{roundTime === 0 ? '00:00:00' : format}</div>
+                <Timer />
               </Grid>
               <Button
                 className="p-10"
