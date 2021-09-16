@@ -1,14 +1,25 @@
 import './Lobby-page.scss';
 
-import { Box, Button, Container, Grid, Switch, TextField } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Collapse,
+  Container,
+  Grid,
+  Switch,
+  TextField,
+} from '@material-ui/core';
 import { FunctionComponent, HTMLAttributes, useState } from 'react';
 import React from 'react';
 
+import AddCard from '../../Components/Add-card';
 import Card from '../../Components/card';
 import Issue from '../../Components/issue';
+import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
-import { cardMockData2, issueMockData, playersMockData } from '../../data/game';
+import { deck2 } from '../../data/deck';
+import { issueMockData, playersMockData } from '../../data/game';
 
 const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   const startGame = () => {
@@ -23,7 +34,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
     setCopyTextBtn('Copied');
   };
 
-  const [copyText, setCopyText] = useState(window.location.host);
+  const [copyText, setCopyText] = useState(`${window.location.host}/game/game-id`);
   const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(false);
   const [isCardRound, setIsCardRound] = useState(true);
@@ -114,9 +125,11 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
         <Box className="members section" component="section">
           <TitleAdd1 className="label-members text-center">Members:</TitleAdd1>
           <Box className="cards-wrapper mb-20">
-            {playersMockData.map((el) => (
-              <PlayerCard player={el} key={el.playerId} />
-            ))}
+            {playersMockData
+              .filter((e) => !e.master)
+              .map((el) => (
+                <PlayerCard player={el} key={el.playerId} />
+              ))}
           </Box>
         </Box>
 
@@ -125,8 +138,9 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
           <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
           <Box className="cards-wrapper mb-20">
             <Issue issue={issueMockData[0]} isLobby={true} />
-            <Issue issue={issueMockData[1]} isLobby={false} />
-            <Issue issue={issueMockData[2]} isLobby={false} />
+            <Issue issue={issueMockData[1]} isLobby={true} />
+            <Issue issue={issueMockData[2]} isLobby={true} />
+            <IssueAdd />
           </Box>
         </Box>
 
@@ -194,31 +208,35 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
                 onChange={(e) => handleChangeScoreTypeShort(e.target.value)}
               />
             </Grid>
-            <Grid item xs={6}>
-              <TitleAdd2>Round time:</TitleAdd2>
-            </Grid>
-            <Grid item xs={2}>
-              <TextField
-                id="time"
-                type="time"
-                defaultValue={roundTime}
-                onChange={(e) => setRoundTime(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 10, // 5 min
-                }}
-              />
-            </Grid>
           </Grid>
+          <Collapse in={isTimerNeed} timeout={1000}>
+            <Grid className="setting-grid mt-10" container spacing={3}>
+              <Grid item xs={10}>
+                <TitleAdd2>Round time:</TitleAdd2>
+              </Grid>
+              <Grid item xs={2}>
+                <TextField
+                  id="time"
+                  type="time"
+                  defaultValue={roundTime}
+                  onChange={(e) => setRoundTime(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 10, // 5 min
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Collapse>
         </Container>
 
         {/******************** Add Cards Section ********************/}
         <Container className="add-cards section" component="section">
           <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
           <Box className="cards-wrapper justify-content-start mb-20">
-            {cardMockData2.map((el, key) => (
+            {deck2.map((el, key) => (
               <Card
                 propCardValue={el.toString()}
                 shortScoreType={scoreTypeShort}
@@ -226,6 +244,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
                 key={key}
               />
             ))}
+            <AddCard />
           </Box>
         </Container>
       </Container>
