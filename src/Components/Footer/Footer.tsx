@@ -28,9 +28,9 @@ const Footer: FunctionComponent = () => (
         className="link-footer"
         target="_blank"
         rel="noreferrer"
-        href="https://github.com/pashasok">
+        href="https://github.com/dashaostrikova">
         <img src="src/assets/png/github-logo.png" alt="github"></img>
-        <span>pashasok</span>
+        <span>dashaostrikova</span>
       </a>
       <a
         className="school-link"

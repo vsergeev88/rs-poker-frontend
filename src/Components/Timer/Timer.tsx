@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import './Timer.scss';
+
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function Timer() {
   const [roundTime, setRoundTime] = useState(120);
@@ -26,9 +27,7 @@ export default function Timer() {
         <div>minutes</div>
         <div>seconds</div>
       </div>
-      <div className="timer__time">
-        {roundTime === 0 ? '00:00' : format}
-      </div>
+      <div className="timer__time">{roundTime === 0 ? '00:00' : format}</div>
     </div>
   );
 }

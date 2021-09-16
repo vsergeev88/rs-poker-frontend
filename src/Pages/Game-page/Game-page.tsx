@@ -1,24 +1,16 @@
 import './Game-page.scss';
 
 import { Box, Button, Container, Grid } from '@material-ui/core';
-import {
-  FunctionComponent,
-  HTMLAttributes,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FunctionComponent, HTMLAttributes, useCallback } from 'react';
 import React from 'react';
 
 import Issue from '../../Components/issue';
 import PlayerCard from '../../Components/player-card';
+import Timer from '../../Components/Timer';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { issueMockData, playersMockData } from '../../data/game';
-import Timer from '../../Components/Timer';
 
 const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
-
   const handleClickStopGame = useCallback(() => console.log('stopGame'), []);
 
   const handleClickRunRound = useCallback(() => console.log('runRound'), []);
