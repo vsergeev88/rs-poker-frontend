@@ -15,7 +15,6 @@ const MainPage: FC = () => {
 
   useEffect(() => {
     socket?.on('users', (users) => {
-      console.log(users);
       appState?.setUsers(users);
     });
   });

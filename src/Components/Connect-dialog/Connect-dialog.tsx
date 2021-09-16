@@ -40,7 +40,7 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
     if (createMode) {
       socket?.emit(
         'createRoom',
-        { name, lastName, jobPosition, isObserver, imgUrl },
+        { name, lastName, position: jobPosition, observer: isObserver, imgUrl },
         (tmp: string) => {
           console.log('room created: ' + tmp);
         },
