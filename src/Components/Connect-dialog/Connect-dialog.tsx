@@ -11,13 +11,19 @@ import {
   InputLabel,
   Switch,
 } from '@material-ui/core';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
 import { uploadAvatar } from '../../Api/cloudinary';
+import { SocketContext } from '../../content/socket';
 import { getCapitalLetters } from '../../utils/formatters';
 import { Transition } from '../transition';
 
-const ConnectDialog: FunctionComponent = () => {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+  roomId?: string;
+  createMode?: boolean;
+}
+
+const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -26,9 +32,39 @@ const ConnectDialog: FunctionComponent = () => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
+  const socket = useContext(SocketContext);
+
+  const handleSubmit = () => {
+    if (createMode) {
+      socket?.emit(
+        'createRoom',
+        { name, lastName, jobPosition, isObserver, imgUrl },
+        (tmp: string) => {
+          console.log('room created: ' + tmp);
+        },
+      );
+    } else {
+      socket?.emit(
+        'login',
+        { name, lastName, jobPosition, isObserver, imgUrl },
+        roomId,
+        (name1: string, tmp: string) => {
+          console.log(name1 + 'logged to room: ' + tmp);
+        },
+      );
+    }
+
+    handleClose();
+  };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (createMode) {
+      setOpen(true);
+    } else {
+      socket?.emit('checkRoom', roomId, (isMatched: boolean) => {
+        isMatched ? setOpen(true) : setOpen(false);
+      });
+    }
   };
 
   const handleClose = () => {
@@ -50,7 +86,7 @@ const ConnectDialog: FunctionComponent = () => {
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Connect
+        {createMode ? 'Start new game' : 'Connect'}
       </Button>
       <Dialog
         open={open}
@@ -61,18 +97,22 @@ const ConnectDialog: FunctionComponent = () => {
         className="dialog-wrapper">
         <DialogContent className="dialog-content">
           <div className="title-wrapper">
-            <span className="large-text">Connect to lobby</span>
-            <div className="switch-container">
-              <span className="switch-text">Connect as observer</span>
-              <Switch
-                checked={isObserver}
-                onChange={() => {
-                  setObserver(!isObserver);
-                }}
-                color="primary"
-                name="observer"
-              />
-            </div>
+            <span className="large-text">
+              {createMode ? 'Start new game' : 'Connect to lobby'}
+            </span>
+            {!createMode && (
+              <div className="switch-container">
+                <span className="switch-text">Connect as observer</span>
+                <Switch
+                  checked={isObserver}
+                  onChange={() => {
+                    setObserver(!isObserver);
+                  }}
+                  color="primary"
+                  name="observer"
+                />
+              </div>
+            )}
           </div>
           <div className="content-wrapper">
             <div className="input-wrapper">
@@ -144,7 +184,7 @@ const ConnectDialog: FunctionComponent = () => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleClose} color="primary">
+          <Button variant="contained" onClick={handleSubmit} color="primary">
             Confirm
           </Button>
           <Button onClick={handleClose} color="primary">

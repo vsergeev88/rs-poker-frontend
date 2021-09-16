@@ -1,12 +1,25 @@
 import './Main-page.scss';
 
-import { Button, TextField } from '@material-ui/core';
-import type { FunctionComponent, HTMLAttributes } from 'react';
+import { TextField } from '@material-ui/core';
+import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
 import ConnectDialog from '../../Components/Connect-dialog';
+import { SocketContext } from '../../content/socket';
+import { UsersContext } from '../../content/users';
 
-const MainPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
+const MainPage: FC = () => {
+  const socket = useContext(SocketContext);
+  const usersState = useContext(UsersContext);
+  const [roomId, setRoomId] = useState('');
+
+  useEffect(() => {
+    socket?.on('users', (users) => {
+      console.log(users);
+      usersState?.setUsers(users);
+    });
+  });
+
   return (
     <div className="main-page">
       <div className="main-page-wrapper">
@@ -14,18 +27,19 @@ const MainPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
         <span className="large-text">Start your planing:</span>
         <div className="input-wrapper">
           <span>Create session:</span>
-          <Button variant="contained" color="primary">
-            Start new game
-          </Button>
+          <ConnectDialog createMode={true} />
         </div>
         <span className="large-text text-center">OR:</span>
         <div className="input-wrapper">
           <TextField
             id="outlined-basic"
-            label="Connect to lobby by URL"
+            label="Connect to lobby by ID"
             variant="outlined"
+            onChange={(e) => {
+              setRoomId(e.target.value);
+            }}
           />
-          <ConnectDialog />
+          <ConnectDialog roomId={roomId} />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Footer from './Components/Footer';
 import Header from './Components/Header';
+import { SocketProvider } from './content/socket';
 import GamePage from './Pages/Game-page';
 import LobbyPage from './Pages/Lobby-page';
 import MainPage from './Pages/Main-page';
@@ -15,17 +16,19 @@ function App() {
       <div>
         <Header />
       </div>
-      <Switch>
-        <Route exact path="/">
-          <MainPage />
-        </Route>
-        <Route path="/lobby">
-          <LobbyPage />
-        </Route>
-        <Route path="/game">
-          <GamePage />
-        </Route>
-      </Switch>
+      <SocketProvider>
+        <Switch>
+          <Route exact path="/">
+            <MainPage />
+          </Route>
+          <Route path="/lobby">
+            <LobbyPage />
+          </Route>
+          <Route path="/game">
+            <GamePage />
+          </Route>
+        </Switch>
+      </SocketProvider>
       <div>
         <Footer />
       </div>
