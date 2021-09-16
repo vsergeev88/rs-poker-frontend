@@ -5,7 +5,7 @@
   padding: 0 10px;
   width: 290px;
   height: 75px;
-  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   user-select: none;
   display: flex;
@@ -21,10 +21,10 @@
     height: 75px;
     border-radius: 5px;
     background-color: $checked-card-color;
-    opacity: .5;
+    opacity: 0.5;
   }
 
-  .player-info_container {
+  .issue-info_container {
     padding-left: 10px;
     width: -webkit-fill-available;
     display: flex;
@@ -55,7 +55,7 @@
 
   .edit-icon:hover {
     cursor: pointer;
-    color: blue;
+    color: #3f51b5;
     transition: all 0.15s ease-in;
   }
 
@@ -74,13 +74,15 @@
     margin-left: -10px;
     position: absolute;
     width: 290px;
-    height: 75px;
+    height: 100px;
     border-radius: 5px;
     background-color: white;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.15s ease-in;
 
     .edit-captions_wrapper {
       display: flex;
@@ -95,7 +97,7 @@
         padding-right: 5px;
       }
     }
-    
+
     .radio-group_container {
       flex-direction: row;
       justify-content: space-between;
@@ -116,7 +118,7 @@
       width: 1.5em;
       height: 1.5em;
     }
-  
+
     .done-icon:hover {
       cursor: pointer;
       color: green;
@@ -125,8 +127,8 @@
   }
 }
 
-.issue_container:hover {
+.issue_container:hover,
+.edit-issue_wrapper:hover {
   box-shadow: 0px 4px 4px 3px rgba(0,0,0,0.25);
   transition: all 0.15s ease-in;
 }
-

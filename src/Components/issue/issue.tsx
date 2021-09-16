@@ -13,12 +13,13 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Issue: FC<IProps> = ({ issue, isLobby }) => {
-  const { issueID, name, current, priority } = issue;
+  const { issueID, name, current, priority, link } = issue;
   const [editMode, setEditMode] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
   const [openDelDialog, setDelDialog] = useState(false);
   const [checkedPriority, setPriority] = useState(priority);
   const [changedName, setName] = useState(name);
+  const [changedLink, setLink] = useState(link);
 
   const handleOpen = () => {
     setEditMode(true);
@@ -28,7 +29,7 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
     setEditMode(false);
     //TODO!! change ISSUE info on server
     console.log(
-      `Edit issue ${issueID}: name-${changedName}, priority-${checkedPriority}`,
+      `Edit issue ${issueID}: name-${changedName}, link-${changedLink}, priority-${checkedPriority}`,
     );
   };
 
@@ -51,7 +52,7 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
   return (
     <div role="none" className="issue_container">
       {current && <div className="current-cover"></div>}
-      <div className="player-info_container">
+      <div className="issue-info_container">
         {current && <span className="current-issue_text">current</span>}
         <span className="issue-name_text">{name}</span>
         <span className="issue-priority_text">{priority} priority</span>
@@ -107,6 +108,7 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
         <div className="edit-issue_wrapper">
           <div className="edit-captions_wrapper">
             <div className="edit_caption">Issue:</div>
+            <div className="edit_caption">Link:</div>
             <div className="edit_caption">Priority:</div>
           </div>
           <div className="edit-group_container">
@@ -116,6 +118,14 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
               defaultValue={name}
               onChange={(e) => {
                 setName(e.target.value);
+              }}
+            />
+            <TextField
+              id="standard-basic"
+              size="small"
+              defaultValue={link}
+              onChange={(e) => {
+                setLink(e.target.value);
               }}
             />
             <div className="radio-group_container">

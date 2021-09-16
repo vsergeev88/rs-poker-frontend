@@ -12,6 +12,7 @@ import {
   Switch,
 } from '@material-ui/core';
 import React, { FC, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { uploadAvatar } from '../../Api/cloudinary';
 import { SocketContext } from '../../content/socket';
@@ -33,6 +34,7 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
   const socket = useContext(SocketContext);
+  const history = useHistory();
 
   const handleSubmit = () => {
     if (createMode) {
@@ -49,11 +51,11 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
         { name, lastName, jobPosition, isObserver, imgUrl },
         roomId,
         (name1: string, tmp: string) => {
-          console.log(name1 + 'logged to room: ' + tmp);
+          console.log(name1 + ' logged to room: ' + tmp);
         },
       );
     }
-
+    history.push('/lobby');
     handleClose();
   };
 

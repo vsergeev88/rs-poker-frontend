@@ -45,7 +45,7 @@ const KickDialog: FC<IProps> = ({ target, playerId }) => {
           isOpen={openKickDialog}>
           <span className="large-text">Kick player?</span>
           <div className="message-text">
-            <span> Are you really want to remove player </span>
+            <span> Do you really want to remove player </span>
             <span className="colored-text">{target}</span>
             <span> from game session?</span>
           </div>

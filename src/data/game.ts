@@ -92,6 +92,7 @@ export type TIssue = {
   issueID: number;
   name: string;
   priority: TPriority;
+  link: string;
   current: boolean;
 };
 
@@ -100,24 +101,46 @@ export const issueMockData: TIssue[] = [
     issueID: 1,
     name: 'Choose stack',
     priority: 'Hight',
+    link: 'http://my-company.has/many-issues/issue-123',
     current: false,
   },
   {
     issueID: 2,
     name: 'Develop architecture',
     priority: 'Hight',
+    link: 'http://my-company.has/many-issues/issue-456',
     current: false,
   },
   {
     issueID: 3,
     name: 'Create design',
     priority: 'Middle',
+    link: 'http://my-company.has/many-issues/issue-678',
     current: true,
   },
   {
-    issueID: 3,
+    issueID: 4,
     name: 'Make tests',
     priority: 'Low',
+    link: 'http://my-company.has/many-issues/issue-999',
     current: false,
   },
+];
+
+export const cardMockData1: Array<Number | String> = [
+  0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89,
+];
+export const cardMockData2: Array<Number | String> = [
+  0,
+  1,
+  2,
+  3,
+  5,
+  8,
+  13,
+  20,
+  40,
+  100,
+  '?',
+  'Coffee',
 ];

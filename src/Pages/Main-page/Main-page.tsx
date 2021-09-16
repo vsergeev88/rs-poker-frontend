@@ -5,18 +5,18 @@ import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
 import ConnectDialog from '../../Components/Connect-dialog';
+import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { UsersContext } from '../../content/users';
 
 const MainPage: FC = () => {
   const socket = useContext(SocketContext);
-  const usersState = useContext(UsersContext);
+  const appState = useContext(AppContext);
   const [roomId, setRoomId] = useState('');
 
   useEffect(() => {
     socket?.on('users', (users) => {
       console.log(users);
-      usersState?.setUsers(users);
+      appState?.setUsers(users);
     });
   });
 
