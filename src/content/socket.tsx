@@ -7,8 +7,8 @@ const SocketContext = React.createContext<
 >(undefined);
 
 const SocketProvider: FC = ({ children }) => {
-  // const ENDPOINT = 'https://pocker-server.herokuapp.com';
-  const ENDPOINT = 'localhost:5000';
+  const ENDPOINT = 'https://pocker-server.herokuapp.com';
+  // const ENDPOINT = 'localhost:5000';
 
   const socket = io(ENDPOINT, { transports: ['websocket', 'polling'] });
 
