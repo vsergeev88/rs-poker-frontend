@@ -94,6 +94,7 @@ export type TIssue = {
   priority: TPriority;
   link: string;
   current: boolean;
+  room?: string;
 };
 
 export const issueMockData: TIssue[] = [

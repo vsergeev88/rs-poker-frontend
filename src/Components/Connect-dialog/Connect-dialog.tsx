@@ -1,4 +1,4 @@
-import './Connect-dialog.scss';
+import './connect-dialog.scss';
 
 import {
   Avatar,
@@ -30,7 +30,7 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [lastName, setLastName] = useState('');
   const [jobPosition, setJobPosition] = useState('');
   const [isObserver, setObserver] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
   const socket = useContext(SocketContext);
@@ -155,11 +155,13 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
                 />
               </FormControl>
               <div className="choose-file-wrapper">
-                <label htmlFor="image_uploads" className="choose-file_label">
+                <label
+                  htmlFor={createMode ? 'image_master' : 'image_user'}
+                  className="choose-file_label">
                   {selectedFile ? selectedFile.name : `Choose file`}
                 </label>
                 <input
-                  id="image_uploads"
+                  id={createMode ? 'image_master' : 'image_user'}
                   className="choose-file_input"
                   type="file"
                   onChange={(e) => {

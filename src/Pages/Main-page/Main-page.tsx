@@ -4,7 +4,7 @@ import { TextField } from '@material-ui/core';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
-import ConnectDialog from '../../Components/Connect-dialog';
+import ConnectDialog from '../../Components/connect-dialog';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 
@@ -16,6 +16,9 @@ const MainPage: FC = () => {
   useEffect(() => {
     socket?.on('users', (users) => {
       appState?.setUsers(users);
+    });
+    socket?.on('issues', (issues) => {
+      appState?.setIssues(issues);
     });
   });
 

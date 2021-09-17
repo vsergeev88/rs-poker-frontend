@@ -1,3 +1,3 @@
-import ConnectDialog from './Connect-dialog';
+import ConnectDialog from './connect-dialog';
 
 export default ConnectDialog;

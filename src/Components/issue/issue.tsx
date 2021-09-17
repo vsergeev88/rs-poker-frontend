@@ -2,8 +2,9 @@ import './issue.scss';
 
 import { Radio, TextField } from '@material-ui/core';
 import { CheckCircle, Delete, DeleteOutline, Edit } from '@material-ui/icons';
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
+import { SocketContext } from '../../content/socket';
 import { TIssue, TPriority } from '../../data/game';
 import CustomDialog from '../dialog';
 
@@ -13,24 +14,35 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Issue: FC<IProps> = ({ issue, isLobby }) => {
-  const { issueID, name, current, priority, link } = issue;
+  const { issueID, name, current, priority, link, room } = issue;
   const [editMode, setEditMode] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
   const [openDelDialog, setDelDialog] = useState(false);
   const [checkedPriority, setPriority] = useState(priority);
   const [changedName, setName] = useState(name);
   const [changedLink, setLink] = useState(link);
+  const socket = useContext(SocketContext);
 
   const handleOpen = () => {
     setEditMode(true);
   };
 
   const handleClose = () => {
-    setEditMode(false);
-    //TODO!! change ISSUE info on server
-    console.log(
-      `Edit issue ${issueID}: name-${changedName}, link-${changedLink}, priority-${checkedPriority}`,
+    socket?.emit(
+      'editIssue',
+      {
+        issueID,
+        name: changedName,
+        current,
+        priority: checkedPriority,
+        link: changedLink,
+        room,
+      },
+      (issueID: string) => {
+        console.log('issue changed: ' + issueID);
+      },
     );
+    setEditMode(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,16 +56,17 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
   };
 
   const deleteIssue = () => {
+    socket?.emit('deleteIssue', issueID, (issueID: string) => {
+      console.log('issue deleted: ' + issueID);
+    });
     closeDelDialog();
-    //TODO!! delete ISSUE on server
-    console.log(`Delete Issue: ${issueID}`);
   };
 
   return (
     <div role="none" className="issue_container">
-      {current && <div className="current-cover"></div>}
+      {!isLobby && current && <div className="current-cover"></div>}
       <div className="issue-info_container">
-        {current && <span className="current-issue_text">current</span>}
+        {!isLobby && current && <span className="current-issue_text">current</span>}
         <span className="issue-name_text">{name}</span>
         <span className="issue-priority_text">{priority} priority</span>
       </div>

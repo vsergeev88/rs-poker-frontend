@@ -25,7 +25,6 @@ import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
-import { SocketContext } from '../../content/socket';
 import { deck2 } from '../../data/deck';
 import { issueMockData, playersMockData } from '../../data/game';
 
@@ -54,12 +53,11 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   const [roundTime, setRoundTime] = useState('00:01:30');
 
   const appState = useContext(AppContext);
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     console.log(appState?.users);
-    console.log(socket?.id);
-  }, [appState?.users]);
+    console.log(appState?.issues);
+  }, [appState?.users, appState?.issues]);
 
   const handleChangeScoreTypeShort = (event: string) => {
     const maxLength = 2;
@@ -156,6 +154,10 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <Issue issue={issueMockData[0]} isLobby={true} />
             <Issue issue={issueMockData[1]} isLobby={true} />
             <Issue issue={issueMockData[2]} isLobby={true} />
+            {appState?.issues &&
+              appState?.issues.map((el) => (
+                <Issue issue={el} isLobby={true} key={el.issueID} />
+              ))}
             <IssueAdd />
           </Box>
         </Box>
