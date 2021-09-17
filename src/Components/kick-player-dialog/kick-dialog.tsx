@@ -7,7 +7,7 @@ import CustomDialog from '../dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   target: string;
-  playerId: number;
+  playerId: string;
 }
 
 const KickDialog: FC<IProps> = ({ target, playerId }) => {

@@ -1,6 +1,7 @@
 import './Main-page.scss';
 
 import { TextField } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
@@ -12,6 +13,7 @@ const MainPage: FC = () => {
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
   const [roomId, setRoomId] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     socket?.on('users', (users) => {
@@ -19,6 +21,9 @@ const MainPage: FC = () => {
     });
     socket?.on('issues', (issues) => {
       appState?.setIssues(issues);
+    });
+    socket?.on('notification', ({ description }) => {
+      enqueueSnackbar(description, { variant: 'info' });
     });
   });
 

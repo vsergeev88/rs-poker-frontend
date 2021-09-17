@@ -19,7 +19,7 @@ function App() {
       <div>
         <Header />
       </div>
-      <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
+      <SnackbarProvider maxSnack={3} autoHideDuration={3000} preventDuplicate>
         <SocketProvider>
           <AppProvider>
             <Switch>
