@@ -1,16 +1,17 @@
 export type TPlayer = {
-  playerId: number;
+  playerId: string;
   name: string;
   lastName: string;
   position: string;
   imgUrl: string;
   master: boolean;
   observer: boolean;
+  room?: string;
 };
 
 export const playersMockData: TPlayer[] = [
   {
-    playerId: 0,
+    playerId: '0',
     name: 'Rick',
     lastName: 'Giligan',
     position: 'lead software engineer',
@@ -19,7 +20,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 1,
+    playerId: '1',
     name: 'David',
     lastName: 'Blane',
     position: 'senior software developer',
@@ -29,7 +30,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 2,
+    playerId: '2',
     name: 'Mark',
     lastName: 'Single',
     position: 'senior software developer',
@@ -38,7 +39,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 3,
+    playerId: '3',
     name: 'Fill',
     lastName: '',
     position: 'QA engineer',
@@ -47,7 +48,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 4,
+    playerId: '4',
     name: 'Dayana',
     lastName: 'Ross',
     position: 'junior software developer',
@@ -57,7 +58,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 5,
+    playerId: '5',
     name: 'Jane',
     lastName: 'Ring',
     position: 'software engineer',
@@ -66,7 +67,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 6,
+    playerId: '6',
     name: 'Daniel',
     lastName: 'Horn',
     position: '',
@@ -76,7 +77,7 @@ export const playersMockData: TPlayer[] = [
     observer: false,
   },
   {
-    playerId: 7,
+    playerId: '7',
     name: 'Larry',
     lastName: 'King',
     position: 'junior software engineer',
@@ -89,7 +90,7 @@ export const playersMockData: TPlayer[] = [
 export type TPriority = 'Low' | 'Middle' | 'Hight';
 
 export type TIssue = {
-  issueID: number;
+  issueID: string;
   name: string;
   priority: TPriority;
   link: string;
@@ -99,28 +100,28 @@ export type TIssue = {
 
 export const issueMockData: TIssue[] = [
   {
-    issueID: 1,
+    issueID: '1',
     name: 'Choose stack',
     priority: 'Hight',
     link: 'http://my-company.has/many-issues/issue-123',
     current: false,
   },
   {
-    issueID: 2,
+    issueID: '2',
     name: 'Develop architecture',
     priority: 'Hight',
     link: 'http://my-company.has/many-issues/issue-456',
     current: false,
   },
   {
-    issueID: 3,
+    issueID: '3',
     name: 'Create design',
     priority: 'Middle',
     link: 'http://my-company.has/many-issues/issue-678',
     current: true,
   },
   {
-    issueID: 4,
+    issueID: '4',
     name: 'Make tests',
     priority: 'Low',
     link: 'http://my-company.has/many-issues/issue-999',

@@ -1,5 +1,6 @@
 import './App.scss';
 
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -18,24 +19,26 @@ function App() {
       <div>
         <Header />
       </div>
-      <SocketProvider>
-        <AppProvider>
-          <Switch>
-            <Route exact path="/">
-              <MainPage />
-            </Route>
-            <Route path="/lobby">
-              <LobbyPage />
-            </Route>
-            <Route path="/game">
-              <GamePage />
-            </Route>
-            <Route path="/test">
-              <TestPage />
-            </Route>
-          </Switch>
-        </AppProvider>
-      </SocketProvider>
+      <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
+        <SocketProvider>
+          <AppProvider>
+            <Switch>
+              <Route exact path="/">
+                <MainPage />
+              </Route>
+              <Route path="/lobby">
+                <LobbyPage />
+              </Route>
+              <Route path="/game">
+                <GamePage />
+              </Route>
+              <Route path="/test">
+                <TestPage />
+              </Route>
+            </Switch>
+          </AppProvider>
+        </SocketProvider>
+      </SnackbarProvider>
       <div>
         <Footer />
       </div>

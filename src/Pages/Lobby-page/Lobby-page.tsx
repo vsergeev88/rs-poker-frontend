@@ -36,12 +36,14 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
     console.log('cancelGame');
   };
 
-  const copyUrlLobby = (copyText: string) => {
-    navigator.clipboard.writeText(copyText);
-    setCopyTextBtn('Copied');
+  const copyUrlLobby = (copyText: string | undefined) => {
+    if (copyText) {
+      navigator.clipboard.writeText(copyText);
+      setCopyTextBtn('Copied');
+    }
   };
 
-  const [copyText, setCopyText] = useState(`${window.location.host}/game/game-id`);
+  const [copyText, setCopyText] = useState<string | undefined>('');
   const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(false);
   const [isCardRound, setIsCardRound] = useState(true);
@@ -57,6 +59,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   useEffect(() => {
     console.log(appState?.users);
     console.log(appState?.issues);
+    if (appState?.users.length) setCopyText(appState?.users[0].playerId);
   }, [appState?.users, appState?.issues]);
 
   const handleChangeScoreTypeShort = (event: string) => {
@@ -93,13 +96,13 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <PlayerCard player={playersMockData[0]} key={playersMockData[0].playerId} />
           </Box>
           <Box className="link-to-lobby">
-            <TitleAdd1 className="label-link-to-lobby">Link to lobby:</TitleAdd1>
+            <TitleAdd1 className="label-link-to-lobby">Lobby ID:</TitleAdd1>
             <Box className="copy-to-lobby">
               <TextField
                 disabled
                 className="input-link-to-label"
                 id="outlined-helperText"
-                defaultValue={copyText}
+                value={copyText}
                 variant="outlined"
                 InputProps={{
                   readOnly: true,

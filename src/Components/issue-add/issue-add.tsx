@@ -2,6 +2,7 @@ import './issue-add.scss';
 
 import { Input, MenuItem, Select } from '@material-ui/core';
 import { ControlPoint } from '@material-ui/icons';
+import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useState } from 'react';
 
 import { AppContext } from '../../content/app-state';
@@ -16,11 +17,12 @@ const IssueAdd: FC = () => {
   const [priority, setPriority] = useState<TPriority>('Middle');
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleKickPlayer = () => {
     const roomId = appState?.users[0].playerId;
-    socket?.emit('addIssue', { name, link, priority }, roomId, (tmp: string) => {
-      console.log('issue added: ' + tmp);
+    socket?.emit('addIssue', { name, link, priority }, roomId, (error: string) => {
+      enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
     });
     closeDialog();
   };
@@ -32,6 +34,9 @@ const IssueAdd: FC = () => {
   const closeDialog = () => {
     setTimeout(() => {
       setDialog(false);
+      setName('Issue');
+      setLink('http://');
+      setPriority('Middle');
     }, 500);
   };
 
