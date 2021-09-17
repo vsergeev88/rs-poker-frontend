@@ -3,6 +3,7 @@ import './connect-dialog.scss';
 import {
   Avatar,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -34,8 +35,10 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
-  const socket = useContext(SocketContext);
+  const [isImgLoading, setLoading] = useState(false);
+
   const history = useHistory();
+  const socket = useContext(SocketContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
@@ -54,7 +57,7 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
     } else {
       socket?.emit(
         'login',
-        { name, lastName, jobPosition, isObserver, imgUrl },
+        { name, lastName, position: jobPosition, observer: isObserver, imgUrl },
         roomId,
         (error: string) => {
           if (error) {
@@ -74,7 +77,10 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
       setOpen(true);
     } else {
       socket?.emit('checkRoom', roomId, (isMatched: boolean) => {
-        isMatched ? setOpen(true) : setOpen(false);
+        console.log(isMatched);
+        isMatched
+          ? setOpen(true)
+          : enqueueSnackbar(`Error: Wrong room ID!`, { variant: 'error' });
       });
     }
   };
@@ -91,8 +97,10 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   };
 
   const setAvatar = async () => {
+    setLoading(true);
     let url = await uploadAvatar(selectedFile);
     setUrl(url);
+    setLoading(false);
   };
 
   return (
@@ -191,14 +199,21 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
               </Avatar>
             </div>
             <div className="errors-wrapper">
-              {isNameDirty && !name && (
+              {isNameDirty && !name ? (
                 <span className="error-text">Enter your name</span>
+              ) : (
+                <div></div>
               )}
+              {isImgLoading && <CircularProgress className="loading_position" />}
             </div>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleSubmit} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+            disabled={!name}>
             Confirm
           </Button>
           <Button onClick={handleClose} color="primary">
