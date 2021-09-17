@@ -9,7 +9,13 @@ import {
   Switch,
   TextField,
 } from '@material-ui/core';
-import { FunctionComponent, HTMLAttributes, useState } from 'react';
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import React from 'react';
 
 import AddCard from '../../Components/Add-card';
@@ -18,6 +24,8 @@ import Issue from '../../Components/issue';
 import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
+import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
 import { deck2 } from '../../data/deck';
 import { issueMockData, playersMockData } from '../../data/game';
 
@@ -44,6 +52,14 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   const [scoreTypeShort, setScoreTypeShort] = useState('SP');
   const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(false);
   const [roundTime, setRoundTime] = useState('00:01:30');
+
+  const appState = useContext(AppContext);
+  const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    console.log(appState?.users);
+    console.log(socket?.id);
+  }, [appState?.users]);
 
   const handleChangeScoreTypeShort = (event: string) => {
     const maxLength = 2;
