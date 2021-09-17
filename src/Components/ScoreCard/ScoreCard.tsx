@@ -1,5 +1,6 @@
-import React from "react";
 import './ScoreCard.scss';
+
+import React from 'react';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   score: number | null;

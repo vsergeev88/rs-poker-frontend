@@ -9,14 +9,14 @@ import KickDialog from '../kick-player-dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   player: TPlayer;
-  cardType: 'big'|'small';
+  cardType: 'big' | 'small';
 }
 
 const PlayerCard: FC<IProps> = ({ player, cardType }) => {
   const { name, lastName, imgUrl, playerId, position, master } = player;
 
   const format = useMemo(() => {
-    return (cardType === 'small') ? 'player-card_container_aside' : '';
+    return cardType === 'small' ? 'player-card_container_aside' : '';
   }, [cardType]);
 
   return (

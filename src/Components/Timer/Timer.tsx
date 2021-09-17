@@ -1,9 +1,13 @@
 import './Timer.scss';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+  time: number;
+}
 
-export default function Timer() {
-  const [roundTime, setRoundTime] = useState(120);
+
+export default function Timer({time}: IProps) {
+  const [roundTime, setRoundTime] = useState(time);
 
   const padTime = useCallback((time) => {
     return String(time).length === 1 ? `0${time}` : `${time}`;
