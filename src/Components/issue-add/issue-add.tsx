@@ -2,21 +2,29 @@ import './issue-add.scss';
 
 import { Input, MenuItem, Select } from '@material-ui/core';
 import { ControlPoint } from '@material-ui/icons';
-import React, { FC, useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { FC, useContext, useState } from 'react';
 
+import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
 import { TPriority } from '../../data/game';
 import CustomDialog from '../dialog';
 
 const IssueAdd: FC = () => {
   const [openDialog, setDialog] = useState(false);
-  const [title, setTitle] = useState('Issue');
+  const [name, setName] = useState('Issue');
   const [link, setLink] = useState('http://');
   const [priority, setPriority] = useState<TPriority>('Middle');
+  const socket = useContext(SocketContext);
+  const appState = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleKickPlayer = () => {
+    const roomId = appState?.users[0].playerId;
+    socket?.emit('addIssue', { name, link, priority }, roomId, (error: string) => {
+      enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+    });
     closeDialog();
-    // TODO!! create new issue on server
-    console.log(`Send info - title:${title}, link:${link}, priority:${priority},`);
   };
 
   const handleClickOpen = () => {
@@ -26,6 +34,9 @@ const IssueAdd: FC = () => {
   const closeDialog = () => {
     setTimeout(() => {
       setDialog(false);
+      setName('Issue');
+      setLink('http://');
+      setPriority('Middle');
     }, 500);
   };
 
@@ -50,9 +61,9 @@ const IssueAdd: FC = () => {
             <span>Title:</span>
             <Input
               className="message-text"
-              defaultValue={title}
+              defaultValue={name}
               onChange={(event) => {
-                setTitle(event.target.value);
+                setName(event.target.value);
               }}
             />
             <span>Lick:</span>

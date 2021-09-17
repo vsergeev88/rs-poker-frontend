@@ -25,7 +25,6 @@ import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
-import { SocketContext } from '../../content/socket';
 import { deck2 } from '../../data/deck';
 import { issueMockData, playersMockData } from '../../data/game';
 
@@ -37,12 +36,14 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
     console.log('cancelGame');
   };
 
-  const copyUrlLobby = (copyText: string) => {
-    navigator.clipboard.writeText(copyText);
-    setCopyTextBtn('Copied');
+  const copyUrlLobby = (copyText: string | undefined) => {
+    if (copyText) {
+      navigator.clipboard.writeText(copyText);
+      setCopyTextBtn('Copied');
+    }
   };
 
-  const [copyText, setCopyText] = useState(`${window.location.host}/game/game-id`);
+  const [copyText, setCopyText] = useState<string | undefined>('');
   const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(false);
   const [isCardRound, setIsCardRound] = useState(true);
@@ -54,12 +55,12 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   const [roundTime, setRoundTime] = useState('00:01:30');
 
   const appState = useContext(AppContext);
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     console.log(appState?.users);
-    console.log(socket?.id);
-  }, [appState?.users]);
+    console.log(appState?.issues);
+    if (appState?.users.length) setCopyText(appState?.users[0].playerId);
+  }, [appState?.users, appState?.issues]);
 
   const handleChangeScoreTypeShort = (event: string) => {
     const maxLength = 2;
@@ -95,13 +96,13 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <PlayerCard player={playersMockData[0]} key={playersMockData[0].playerId} />
           </Box>
           <Box className="link-to-lobby">
-            <TitleAdd1 className="label-link-to-lobby">Link to lobby:</TitleAdd1>
+            <TitleAdd1 className="label-link-to-lobby">Lobby ID:</TitleAdd1>
             <Box className="copy-to-lobby">
               <TextField
                 disabled
                 className="input-link-to-label"
                 id="outlined-helperText"
-                defaultValue={copyText}
+                value={copyText}
                 variant="outlined"
                 InputProps={{
                   readOnly: true,
@@ -156,6 +157,10 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             <Issue issue={issueMockData[0]} isLobby={true} />
             <Issue issue={issueMockData[1]} isLobby={true} />
             <Issue issue={issueMockData[2]} isLobby={true} />
+            {appState?.issues &&
+              appState?.issues.map((el) => (
+                <Issue issue={el} isLobby={true} key={el.issueID} />
+              ))}
             <IssueAdd />
           </Box>
         </Box>

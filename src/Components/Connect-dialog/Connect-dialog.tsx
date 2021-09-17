@@ -1,4 +1,4 @@
-import './Connect-dialog.scss';
+import './connect-dialog.scss';
 
 import {
   Avatar,
@@ -11,6 +11,7 @@ import {
   InputLabel,
   Switch,
 } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -30,19 +31,24 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [lastName, setLastName] = useState('');
   const [jobPosition, setJobPosition] = useState('');
   const [isObserver, setObserver] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
   const socket = useContext(SocketContext);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
     if (createMode) {
       socket?.emit(
         'createRoom',
         { name, lastName, position: jobPosition, observer: isObserver, imgUrl },
-        (tmp: string) => {
-          console.log('room created: ' + tmp);
+        (error: string) => {
+          if (error) {
+            enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+          } else {
+            enqueueSnackbar('New room created!', { variant: 'success' });
+          }
         },
       );
     } else {
@@ -50,8 +56,12 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
         'login',
         { name, lastName, jobPosition, isObserver, imgUrl },
         roomId,
-        (name1: string, tmp: string) => {
-          console.log(name1 + ' logged to room: ' + tmp);
+        (error: string) => {
+          if (error) {
+            enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+          } else {
+            enqueueSnackbar('Successful connection!', { variant: 'success' });
+          }
         },
       );
     }
@@ -155,11 +165,13 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
                 />
               </FormControl>
               <div className="choose-file-wrapper">
-                <label htmlFor="image_uploads" className="choose-file_label">
+                <label
+                  htmlFor={createMode ? 'image_master' : 'image_user'}
+                  className="choose-file_label">
                   {selectedFile ? selectedFile.name : `Choose file`}
                 </label>
                 <input
-                  id="image_uploads"
+                  id={createMode ? 'image_master' : 'image_user'}
                   className="choose-file_input"
                   type="file"
                   onChange={(e) => {
