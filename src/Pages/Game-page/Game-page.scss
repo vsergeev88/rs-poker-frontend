@@ -1,36 +1,51 @@
 .game-page {
   position: relative;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 65% 35%;
   min-height: calc(100vh - 134px);
 
-  &-wrapper {
+  &__wrapper {
     width: 100%;
     height: 100%;
-    margin: 50px auto;
-    display: flex;
-    flex-direction: row;
-    column-gap: 10px;
-    row-gap: 10px;
-    flex-wrap: wrap;
+    border-right: 2px solid rgb(0 0 0 / 20%);
+
+    .title {
+      margin-top: 50px;
+    }
   }
 }
 
-.button-game {
+.button-stop {
   display: flex;
   justify-content: flex-end;
 }
 
-.issues-wrapper {
+.issues__title {
+  width: 310px;
+}
+
+.issues__wrapper {
   display: flex;
   gap: 60px;
 }
 
-.run-wrapper {
+.run__wrapper {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+
+.aside {
+  display: flex;
+  gap: 15px;
+  padding: 50px 30px;
+
+  .cards__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

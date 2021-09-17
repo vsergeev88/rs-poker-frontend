@@ -16,7 +16,7 @@ code {
 }
 .cards-wrapper{
   width: 100%;
-  height: 100%;
+  // height: 100%;
   margin: 50px auto;
   display: flex;
   flex-direction: row;
@@ -25,8 +25,7 @@ code {
   flex-wrap: wrap;
   justify-content: space-between;
 
-  &-column {
-    display: flex;
+  &_column {
     flex-direction: column;
     row-gap: 20px;
   }
