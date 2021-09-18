@@ -5,7 +5,7 @@ import React, { FC, useContext } from 'react';
 
 import { SocketContext } from '../../content/socket';
 import { TPlayer } from '../../data/game';
-import { getCapitalLetters } from '../../utils/formatters';
+import { getCapitalLetters, stringToColor } from '../../utils/formatters';
 import KickDialog from '../kick-player-dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -19,7 +19,11 @@ const PlayerCard: FC<IProps> = ({ player }) => {
 
   return (
     <div role="none" className="player-card_container">
-      <Avatar alt={`${name} ${lastName}`} src={imgUrl} className="avatar">
+      <Avatar
+        alt={`${name} ${lastName}`}
+        src={imgUrl}
+        className="avatar"
+        style={{ backgroundColor: `${stringToColor(`${name} ${lastName}`)}` }}>
         {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
       </Avatar>
       <div className="player-info_container">

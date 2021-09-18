@@ -1,0 +1,36 @@
+@import 'src/assets/stylesheets/variables';
+
+.player-card-chat_container {
+  padding: 0 10px;
+  position: relative;
+  width: 130px;
+  height: 40px;
+  box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+  border-radius: 5px;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .avatar-chat {
+    background-color: $checked-card-color;
+    font-size: 15px;
+    font-weight: 700;
+    height: 30px;
+    width: 30px;
+  }
+
+  .player-info-chat_container {
+    padding-left: 10px;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .player-name-chat_text {
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+}

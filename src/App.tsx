@@ -19,7 +19,14 @@ function App() {
       <div>
         <Header />
       </div>
-      <SnackbarProvider maxSnack={3} autoHideDuration={3000} preventDuplicate>
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={3000}
+        preventDuplicate
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}>
         <SocketProvider>
           <AppProvider>
             <Switch>
