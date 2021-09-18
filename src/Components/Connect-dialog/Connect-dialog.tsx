@@ -1,8 +1,9 @@
-import './Connect-dialog.scss';
+import './connect-dialog.scss';
 
 import {
   Avatar,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,24 +12,77 @@ import {
   InputLabel,
   Switch,
 } from '@material-ui/core';
-import React, { FunctionComponent, useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { FC, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { uploadAvatar } from '../../Api/cloudinary';
+import { SocketContext } from '../../content/socket';
 import { getCapitalLetters } from '../../utils/formatters';
 import { Transition } from '../transition';
 
-const ConnectDialog: FunctionComponent = () => {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+  roomId?: string;
+  createMode?: boolean;
+}
+
+const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [jobPosition, setJobPosition] = useState('');
   const [isObserver, setObserver] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [imgUrl, setUrl] = useState('');
   const [isNameDirty, setNameDirty] = useState(false);
+  const [isImgLoading, setLoading] = useState(false);
+
+  const history = useHistory();
+  const socket = useContext(SocketContext);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleSubmit = () => {
+    if (createMode) {
+      socket?.emit(
+        'createRoom',
+        { name, lastName, position: jobPosition, observer: isObserver, imgUrl },
+        (error: string) => {
+          if (error) {
+            enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+          } else {
+            enqueueSnackbar('New room created!', { variant: 'success' });
+          }
+        },
+      );
+    } else {
+      socket?.emit(
+        'login',
+        { name, lastName, position: jobPosition, observer: isObserver, imgUrl },
+        roomId,
+        (error: string) => {
+          if (error) {
+            enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+          } else {
+            enqueueSnackbar('Successful connection!', { variant: 'success' });
+          }
+        },
+      );
+    }
+    history.push('/lobby');
+    handleClose();
+  };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (createMode) {
+      setOpen(true);
+    } else {
+      socket?.emit('checkRoom', roomId, (isMatched: boolean) => {
+        console.log(isMatched);
+        isMatched
+          ? setOpen(true)
+          : enqueueSnackbar(`Error: Wrong room ID!`, { variant: 'error' });
+      });
+    }
   };
 
   const handleClose = () => {
@@ -43,14 +97,16 @@ const ConnectDialog: FunctionComponent = () => {
   };
 
   const setAvatar = async () => {
+    setLoading(true);
     let url = await uploadAvatar(selectedFile);
     setUrl(url);
+    setLoading(false);
   };
 
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Connect
+        {createMode ? 'Start new game' : 'Connect'}
       </Button>
       <Dialog
         open={open}
@@ -61,18 +117,22 @@ const ConnectDialog: FunctionComponent = () => {
         className="dialog-wrapper">
         <DialogContent className="dialog-content">
           <div className="title-wrapper">
-            <span className="large-text">Connect to lobby</span>
-            <div className="switch-container">
-              <span className="switch-text">Connect as observer</span>
-              <Switch
-                checked={isObserver}
-                onChange={() => {
-                  setObserver(!isObserver);
-                }}
-                color="primary"
-                name="observer"
-              />
-            </div>
+            <span className="large-text">
+              {createMode ? 'Start new game' : 'Connect to lobby'}
+            </span>
+            {!createMode && (
+              <div className="switch-container">
+                <span className="switch-text">Connect as observer</span>
+                <Switch
+                  checked={isObserver}
+                  onChange={() => {
+                    setObserver(!isObserver);
+                  }}
+                  color="primary"
+                  name="observer"
+                />
+              </div>
+            )}
           </div>
           <div className="content-wrapper">
             <div className="input-wrapper">
@@ -113,11 +173,13 @@ const ConnectDialog: FunctionComponent = () => {
                 />
               </FormControl>
               <div className="choose-file-wrapper">
-                <label htmlFor="image_uploads" className="choose-file_label">
+                <label
+                  htmlFor={createMode ? 'image_master' : 'image_user'}
+                  className="choose-file_label">
                   {selectedFile ? selectedFile.name : `Choose file`}
                 </label>
                 <input
-                  id="image_uploads"
+                  id={createMode ? 'image_master' : 'image_user'}
                   className="choose-file_input"
                   type="file"
                   onChange={(e) => {
@@ -137,14 +199,21 @@ const ConnectDialog: FunctionComponent = () => {
               </Avatar>
             </div>
             <div className="errors-wrapper">
-              {isNameDirty && !name && (
+              {isNameDirty && !name ? (
                 <span className="error-text">Enter your name</span>
+              ) : (
+                <div></div>
               )}
+              {isImgLoading && <CircularProgress className="loading_position" />}
             </div>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleClose} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleSubmit}
+            color="primary"
+            disabled={!name}>
             Confirm
           </Button>
           <Button onClick={handleClose} color="primary">

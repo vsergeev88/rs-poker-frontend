@@ -27,7 +27,8 @@
         }
     }
 
-    .content-wrapper{
+    .content-wrapper {
+        min-width: 550px;
         display: flex;
     }
 
@@ -74,10 +75,17 @@
 
     .errors-wrapper{
         margin: 20px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         .error-text{
             color: red;
             font-weight: 500;
+        }
+        
+        .loading_position {
+            margin-bottom: 35px;
         }
     }    
 }
