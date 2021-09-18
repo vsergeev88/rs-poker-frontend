@@ -4,7 +4,7 @@ import { Avatar } from '@material-ui/core';
 import React, { FC } from 'react';
 
 import { TPlayer } from '../../data/game';
-import { getCapitalLetters } from '../../utils/formatters';
+import { getCapitalLetters, stringToColor } from '../../utils/formatters';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   player: TPlayer;
@@ -15,7 +15,11 @@ const PlayerCardChat: FC<IProps> = ({ player }) => {
 
   return (
     <div className="player-card-chat_container">
-      <Avatar alt={`${name} ${lastName}`} src={imgUrl} className="avatar-chat">
+      <Avatar
+        alt={`${name} ${lastName}`}
+        src={imgUrl}
+        className="avatar-chat"
+        style={{ backgroundColor: `${stringToColor(`${name} ${lastName}`)}` }}>
         {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
       </Avatar>
       <div className="player-info-chat_container">
