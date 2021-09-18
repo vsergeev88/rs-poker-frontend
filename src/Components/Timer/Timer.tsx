@@ -5,8 +5,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   time: number;
 }
 
-
-export default function Timer({time}: IProps) {
+export default function Timer({ time }: IProps) {
   const [roundTime, setRoundTime] = useState(time);
 
   const padTime = useCallback((time) => {

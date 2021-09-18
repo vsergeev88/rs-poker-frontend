@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 import React from 'react';
+import { useHistory } from 'react-router';
 
 import AddCard from '../../Components/Add-card';
 import Card from '../../Components/card';
@@ -61,16 +62,19 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
 
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
+  const history = useHistory();
 
   useEffect(() => {
     console.log(appState?.users);
     console.log(appState?.issues);
+
     if (appState?.users.length) {
+      setCopyText(appState?.users[0].playerId);
+
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
-      setMaster(user?.master as boolean);
+      user ? setMaster(user?.master as boolean) : history.push('/');
     }
-    if (appState?.users.length) setCopyText(appState?.users[0].playerId);
   }, [appState?.users, appState?.issues]);
 
   const handleChangeScoreTypeShort = (event: string) => {
@@ -184,9 +188,6 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
           <Box className="issues section" component="section">
             <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
             <Box className="cards-wrapper mb-20">
-              {/* <Issue issue={issueMockData[0]} isLobby={true} />
-              <Issue issue={issueMockData[1]} isLobby={true} />
-              <Issue issue={issueMockData[2]} isLobby={true} /> */}
               {appState?.issues &&
                 appState?.issues.map((el) => (
                   <Issue issue={el} isLobby={true} key={el.issueID} />
