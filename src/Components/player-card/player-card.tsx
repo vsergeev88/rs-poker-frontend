@@ -1,7 +1,8 @@
 import './player-card.scss';
 
 import { Avatar } from '@material-ui/core';
-import React, { FC, useContext } from 'react';
+
+import React, { FC, useContext, useMemo } from 'react';
 
 import { SocketContext } from '../../content/socket';
 import { TPlayer } from '../../data/game';
@@ -10,15 +11,21 @@ import KickDialog from '../kick-player-dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   player: TPlayer;
+  cardType: 'big' | 'small';
 }
 
-const PlayerCard: FC<IProps> = ({ player }) => {
+const PlayerCard: FC<IProps> = ({ player, cardType }) => {
   const { name, lastName, imgUrl, playerId, position, master } = player;
+
+  const format = useMemo(() => {
+    return cardType === 'small' ? 'player-card_container_aside' : '';
+  }, [cardType]);
+  
   const socket = useContext(SocketContext);
   const isSelf = playerId !== socket?.id;
-
+  
   return (
-    <div role="none" className="player-card_container">
+    <div role="none" className={`player-card_container ${format}`}>
       <Avatar
         alt={`${name} ${lastName}`}
         src={imgUrl}

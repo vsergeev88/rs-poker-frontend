@@ -9,7 +9,7 @@ interface ITitle extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const TitleMain: FC<ITitle> = (props) => (
-  <Typography variant="h4" component="h1" gutterBottom>
+  <Typography className={props.className} variant="h4" component="h1" gutterBottom>
     {props.children}
   </Typography>
 );
