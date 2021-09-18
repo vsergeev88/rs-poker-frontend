@@ -1,8 +1,10 @@
 import './kick-dialog.scss';
 
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
+import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
 import CustomDialog from '../dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,10 +15,19 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 const KickDialog: FC<IProps> = ({ target, playerId }) => {
   const [openKickDialog, setKickDialog] = useState(false);
 
+  const appState = useContext(AppContext);
+  const socket = useContext(SocketContext);
+
   const handleKickPlayer = () => {
+    const isWho = appState?.users.find((el) => el.playerId === socket?.id);
+    console.log();
+    if (isWho?.master) {
+      socket?.emit('kickPlayer', playerId);
+    } else {
+      // TODO send information to server
+      console.log(`kick by pool playerId: ${playerId}`);
+    }
     closeKickDialog();
-    // TODO send information to server
-    console.log(`Send kicking request with playerId: ${playerId}`);
   };
 
   const handleClickOpen = () => {

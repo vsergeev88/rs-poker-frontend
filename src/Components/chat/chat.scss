@@ -1,6 +1,6 @@
 .chat_wrapper {
   margin-top: 30px;
-  width: 380px;
+  width: 480px;
   max-height: 50vh;
 
   .messages_wrapper {
@@ -18,7 +18,7 @@
 
     .chat-message {
       width: fit-content;
-      max-width: 55%;
+      max-width: 50%;
       height: fit-content;
       padding: 5px;
       background-color: rgb(240, 240, 240);

@@ -50,6 +50,7 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
           if (error) {
             enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
           } else {
+            history.push('/lobby');
             enqueueSnackbar('New room created!', { variant: 'success' });
           }
         },
@@ -63,12 +64,12 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
           if (error) {
             enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
           } else {
+            history.push('/lobby');
             enqueueSnackbar('Successful connection!', { variant: 'success' });
           }
         },
       );
     }
-    history.push('/lobby');
     handleClose();
   };
 
