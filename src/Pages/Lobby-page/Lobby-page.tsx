@@ -20,6 +20,7 @@ import React from 'react';
 
 import AddCard from '../../Components/Add-card';
 import Card from '../../Components/card';
+import Chat from '../../Components/chat';
 import Issue from '../../Components/issue';
 import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
@@ -305,6 +306,11 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
           </Container>
         )}
       </Container>
+
+      {/******************** Chat Section ********************/}
+      <div className="chat-container">
+        <Chat />
+      </div>
     </Box>
   );
 };

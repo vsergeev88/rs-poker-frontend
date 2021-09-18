@@ -3,13 +3,16 @@
   max-width: 1280px;
   margin: 0 auto;
   min-height: calc(100vh - 134px);
+  display: flex;
+  justify-content: space-between;
 }
 
 .lobby-page-wrapper {
   width: 100%;
-  height: 100%;
-  margin: 50px auto;
+  padding-top: 30px;
+  border-right: 2px solid gray;
 }
+
 .copy-to-lobby {
   display: flex;
 }
@@ -27,4 +30,9 @@
 }
 .setting > .MuiGrid-container {
   justify-content: space-between;
+}
+
+.chat-container {
+  width: 400px;
+  padding-left: 20px;
 }
