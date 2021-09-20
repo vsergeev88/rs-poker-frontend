@@ -10,18 +10,20 @@ import KickDialog from '../kick-player-dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   player: TPlayer;
+  playersCount: number;
+  isMaster: boolean;
   cardType?: 'big' | 'small';
 }
 
-const PlayerCard: FC<IProps> = ({ player, cardType }) => {
+const PlayerCard: FC<IProps> = ({ player, cardType, playersCount, isMaster }) => {
   const { name, lastName, imgUrl, playerId, position, master } = player;
+
+  const socket = useContext(SocketContext);
+  const isSelf = playerId === socket?.id;
 
   const format = useMemo(() => {
     return cardType === 'small' ? 'player-card_container_aside' : '';
   }, [cardType]);
-
-  const socket = useContext(SocketContext);
-  const isSelf = playerId !== socket?.id;
 
   return (
     <div role="none" className={`player-card_container ${format}`}>
@@ -33,11 +35,11 @@ const PlayerCard: FC<IProps> = ({ player, cardType }) => {
         {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
       </Avatar>
       <div className="player-info_container">
-        <span className={isSelf ? 'not-you_text' : 'its-you_text'}>{`IT'S YOU`}</span>
+        <span className={!isSelf ? 'not-you_text' : 'its-you_text'}>{`IT'S YOU`}</span>
         <span className="player-name_text">{`${name} ${lastName}`}</span>
         <span className="player-position_text">{position}</span>
       </div>
-      {!master && isSelf && cardType !== 'small' && (
+      {!master && !isSelf && cardType !== 'small' && (playersCount > 3 || isMaster) && (
         <KickDialog target={`${name} ${lastName}`} playerId={playerId} />
       )}
     </div>

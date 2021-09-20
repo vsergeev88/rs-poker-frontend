@@ -24,6 +24,8 @@ import Card from '../../Components/card';
 import Chat from '../../Components/chat';
 import Issue from '../../Components/issue';
 import IssueAdd from '../../Components/issue-add';
+import KickMessage from '../../Components/kick-player-message';
+import { TKickOptions } from '../../Components/kick-player-message/kick-message';
 import PlayerCard from '../../Components/player-card';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
@@ -59,23 +61,38 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(false);
   const [roundTime, setRoundTime] = useState('00:01:30');
   const [isMaster, setMaster] = useState(false);
+  const [showKickMessage, setKickMessage] = useState(false);
+  const [kickOptions, setKickOptions] = useState<TKickOptions | {}>({});
 
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
 
   useEffect(() => {
-    console.log(appState?.users);
-    console.log(appState?.issues);
-
     if (appState?.users.length) {
-      setCopyText(appState?.users[0].playerId);
-
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
       user ? setMaster(user?.master as boolean) : history.push('/');
+
+      setCopyText(appState?.users[0].playerId);
     }
   }, [appState?.users, appState?.issues]);
+
+  useEffect(() => {
+    socket?.on('issues', (issues) => {
+      appState?.setIssues(issues);
+    });
+    socket?.on('startKickPool', (targetId, initiatorId) => {
+      setKickOptions({ targetId, initiatorId });
+
+      const id = socket?.id;
+      const masterId = appState?.users[0].playerId;
+
+      if (masterId !== id && id !== initiatorId && id !== targetId) {
+        setKickMessage(true);
+      }
+    });
+  }, []);
 
   const handleChangeScoreTypeShort = (event: string) => {
     const maxLength = 2;
@@ -112,6 +129,8 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
               <PlayerCard
                 player={appState?.users[0] as TPlayer}
                 key={appState?.users[0].playerId}
+                playersCount={appState?.users.length}
+                isMaster={isMaster}
               />
             )}
           </Box>
@@ -180,7 +199,14 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
             {appState?.users.length &&
               appState?.users
                 .filter((e) => !e.master)
-                .map((el) => <PlayerCard player={el} key={el.playerId} />)}
+                .map((el) => (
+                  <PlayerCard
+                    player={el}
+                    key={el.playerId}
+                    playersCount={appState?.users.length}
+                    isMaster={isMaster}
+                  />
+                ))}
           </Box>
         </Box>
         {/******************** Issues Section ********************/}
@@ -312,6 +338,15 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
       <div className="chat-container">
         <Chat />
       </div>
+
+      {/******************** Kick-message Section ********************/}
+      {showKickMessage && (
+        <KickMessage
+          kickOptions={kickOptions as TKickOptions}
+          isOpen={showKickMessage}
+          handle={setKickMessage}
+        />
+      )}
     </Box>
   );
 };
