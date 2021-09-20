@@ -19,9 +19,6 @@ const MainPage: FC = () => {
     socket?.on('users', (users) => {
       appState?.setUsers(users);
     });
-    socket?.on('issues', (issues) => {
-      appState?.setIssues(issues);
-    });
     socket?.on('notification', ({ description }) => {
       enqueueSnackbar(description, { variant: 'info' });
     });

@@ -19,13 +19,12 @@ const KickDialog: FC<IProps> = ({ target, playerId }) => {
   const socket = useContext(SocketContext);
 
   const handleKickPlayer = () => {
-    const isWho = appState?.users.find((el) => el.playerId === socket?.id);
+    const initiator = appState?.users.find((el) => el.playerId === socket?.id);
     console.log();
-    if (isWho?.master) {
+    if (initiator?.master) {
       socket?.emit('kickPlayer', playerId);
     } else {
-      // TODO send information to server
-      console.log(`kick by pool playerId: ${playerId}`);
+      socket?.emit('triggerKickPool', playerId, initiator?.playerId);
     }
     closeKickDialog();
   };

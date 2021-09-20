@@ -1,21 +1,31 @@
 import './kick-message.scss';
 
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, FC, SetStateAction, useContext } from 'react';
 
+import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
 import CustomDialog from '../dialog';
 
+export type TKickOptions = {
+  targetId: string;
+  initiatorId: string;
+};
+
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
-  initiator: string;
-  target: string;
-  idPlayer: number;
+  kickOptions: TKickOptions;
   isOpen: boolean;
   handle: Dispatch<SetStateAction<boolean>>;
 }
 
-const KickMessage: FC<IProps> = ({ initiator, target, idPlayer, isOpen, handle }) => {
+const KickMessage: FC<IProps> = ({ kickOptions, isOpen, handle }) => {
+  const appState = useContext(AppContext);
+  const socket = useContext(SocketContext);
+  const { initiatorId, targetId } = kickOptions;
+  const initiator = appState?.users.find((el) => el.playerId === initiatorId);
+  const target = appState?.users.find((el) => el.playerId === targetId);
+
   const sendResponseToServer = (answer: boolean) => {
-    // TODO!! send information to server
-    console.log(`kick player - id = ${idPlayer}: ${answer}`);
+    socket?.emit('setKickDecision', targetId, answer);
   };
 
   const handleClickClose = (answer: boolean) => {
@@ -38,9 +48,9 @@ const KickMessage: FC<IProps> = ({ initiator, target, idPlayer, isOpen, handle }
         <span className="large-text">Kick</span>
         <div className="message-text">
           <div>
-            <span className="colored-text">{initiator}</span>
+            <span className="colored-text">{`${initiator?.name} ${initiator?.lastName}`}</span>
             <span> wants to kick member </span>
-            <span className="colored-text">{target}.</span>
+            <span className="colored-text">{`${target?.name} ${target?.lastName}`}.</span>
           </div>
           <span className="centred-text">Do you agree with it?</span>
         </div>
