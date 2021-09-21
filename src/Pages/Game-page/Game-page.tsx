@@ -1,18 +1,42 @@
 import './Game-page.scss';
 
 import { Box, Button, Container } from '@material-ui/core';
-import { FunctionComponent, HTMLAttributes, useCallback } from 'react';
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import React from 'react';
 
+// import { useHistory } from 'react-router-dom';
 import Issue from '../../Components/issue';
 import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import ScoreCard from '../../Components/ScoreCard';
 import Timer from '../../Components/Timer';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
-import { issueMockData, playersMockData } from '../../data/game';
+import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
+import { TPlayer } from '../../data/game';
 
 const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
+  const [isMaster, setMaster] = useState(false);
+
+  const appState = useContext(AppContext);
+  const socket = useContext(SocketContext);
+  // const history = useHistory();
+
+  useEffect(() => {
+    if (appState?.users.length) {
+      const id = socket?.id;
+      const user = appState?.users.find((user) => user.playerId === id);
+      user ? setMaster(user?.master as boolean) : ''; //history.push('/');
+    }
+  }, [appState?.users, appState?.issues]);
+
   const handleClickStopGame = useCallback(() => console.log('stopGame'), []);
 
   const handleClickRunRound = useCallback(() => console.log('runRound'), []);
@@ -28,11 +52,14 @@ const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
         <Box className="start-game section" component="section">
           <TitleAdd1 className="text-center">Scram master:</TitleAdd1>
           <Box className="card-master">
-            <PlayerCard
-              player={playersMockData[0]}
-              key={playersMockData[0].playerId}
-              cardType="big"
-            />
+            {appState?.users.length && (
+              <PlayerCard
+                player={appState?.users[0] as TPlayer}
+                key={appState?.users[0].playerId}
+                playersCount={appState?.users.length}
+                isMaster={isMaster}
+              />
+            )}
           </Box>
           <Box className="button-stop mb-20">
             <Button
@@ -52,9 +79,10 @@ const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
           </div>
           <Box className="issues__wrapper">
             <Box className="cards-wrapper_column mb-20">
-              <Issue issue={issueMockData[2]} isLobby={false} />
-              <Issue issue={issueMockData[1]} isLobby={false} />
-              <Issue issue={issueMockData[0]} isLobby={false} />
+              {appState?.issues &&
+                appState?.issues.map((el) => (
+                  <Issue issue={el} isLobby={true} key={el.issueID} />
+                ))}
               <IssueAdd />
             </Box>
             <Box className="run__wrapper">
@@ -86,41 +114,18 @@ const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
         <Box>
           <TitleAdd1 className="text-center">Players:</TitleAdd1>
           <Box className="cards__wrapper mb-20">
-            <PlayerCard
-              player={playersMockData[0]}
-              key={playersMockData[0].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[2]}
-              key={playersMockData[2].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[5]}
-              key={playersMockData[5].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[7]}
-              key={playersMockData[7].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[3]}
-              key={playersMockData[3].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[4]}
-              key={playersMockData[4].playerId}
-              cardType="small"
-            />
-            <PlayerCard
-              player={playersMockData[6]}
-              key={playersMockData[6].playerId}
-              cardType="small"
-            />
+            {appState?.users.length &&
+              appState?.users
+                // .filter((e) => !e.master) // alow master to participate depends of settings
+                .map((el) => (
+                  <PlayerCard
+                    player={el}
+                    key={el.playerId}
+                    playersCount={appState?.users.length}
+                    isMaster={isMaster}
+                    cardType="small"
+                  />
+                ))}
           </Box>
         </Box>
       </Box>

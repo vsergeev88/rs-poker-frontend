@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
+import imgUrl from '../../assets/img/poker-planing.jpg';
 import ConnectDialog from '../../Components/connect-dialog';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
@@ -27,7 +28,7 @@ const MainPage: FC = () => {
   return (
     <div className="main-page">
       <div className="main-page-wrapper">
-        <img src="src/assets/img/poker-planing.jpg" alt="poker-planing" />
+        <img src={imgUrl} alt="poker-planing" />
         <span className="large-text">Start your planing:</span>
         <div className="input-wrapper">
           <span>Create session:</span>
