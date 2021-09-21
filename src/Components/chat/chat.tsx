@@ -1,7 +1,7 @@
 import './chat.scss';
 
 import { Button, Input } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 
 import { SocketContext } from '../../content/socket';
 import { TPlayer } from '../../data/game';
@@ -12,7 +12,12 @@ type TMessage = {
   message: string;
 };
 
-const Chat = () => {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+  playersCount: number;
+  isMaster: boolean;
+}
+
+const Chat: FC<IProps> = ({ playersCount, isMaster }) => {
   const socket = useContext(SocketContext);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<TMessage[]>([]);
@@ -40,7 +45,12 @@ const Chat = () => {
         {messages.map((el, indx) => (
           <div className="message_container" key={indx}>
             <div className="chat-message">{el.message}</div>
-            <PlayerCard player={el.user} cardType="small" />
+            <PlayerCard
+              player={el.user}
+              cardType="small"
+              isMaster={isMaster}
+              playersCount={playersCount}
+            />
           </div>
         ))}
       </div>

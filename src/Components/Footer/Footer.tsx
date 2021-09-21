@@ -3,6 +3,8 @@ import './Footer.scss';
 import type { FunctionComponent } from 'react';
 import React from 'react';
 
+import pngUrl from '../../assets/png/github-logo.png';
+
 const Footer: FunctionComponent = () => (
   <div className="footer">
     <div className="footer-container">
@@ -13,7 +15,7 @@ const Footer: FunctionComponent = () => (
         target="_blank"
         rel="noreferrer"
         href="https://github.com/dinosavr">
-        <img src="src/assets/png/github-logo.png" alt="github"></img>
+        <img src={pngUrl} alt="github"></img>
         <span>dinosavr</span>
       </a>
       <a
@@ -21,7 +23,7 @@ const Footer: FunctionComponent = () => (
         target="_blank"
         rel="noreferrer"
         href="https://github.com/micolka">
-        <img src="src/assets/png/github-logo.png" alt="github"></img>
+        <img src={pngUrl} alt="github"></img>
         <span>micolka</span>
       </a>
       <a
@@ -29,7 +31,7 @@ const Footer: FunctionComponent = () => (
         target="_blank"
         rel="noreferrer"
         href="https://github.com/dashaostrikova">
-        <img src="src/assets/png/github-logo.png" alt="github"></img>
+        <img src={pngUrl} alt="github"></img>
         <span>dashaostrikova</span>
       </a>
       <a

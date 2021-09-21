@@ -336,7 +336,7 @@ const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
 
       {/******************** Chat Section ********************/}
       <div className="chat-container">
-        <Chat />
+        <Chat playersCount={appState?.users.length as number} isMaster={isMaster} />
       </div>
 
       {/******************** Kick-message Section ********************/}

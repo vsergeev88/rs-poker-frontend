@@ -4,10 +4,12 @@ import type { FunctionComponent, HTMLAttributes } from 'react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import pngUrl from '../../assets/png/logo.png';
+
 const Header: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
   return (
     <div className="header-menu">
-      <img src="src/assets/png/logo.png" alt="logo"></img>
+      <img src={pngUrl} alt="logo"></img>
       <ul>
         <li>
           <Link to="/" className="header-link">
