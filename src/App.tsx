@@ -4,8 +4,7 @@ import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Footer from './Components/footer';
-import Header from './Components/header';
+import { Footer, Header } from './Components';
 import { AppProvider } from './content/app-state';
 import { SocketProvider } from './content/socket';
 import { GamePage, LobbyPage, MainPage, TestPage } from './Pages';
