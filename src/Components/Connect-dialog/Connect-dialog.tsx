@@ -19,9 +19,9 @@ import { useHistory } from 'react-router-dom';
 import { uploadAvatar } from '../../Api/cloudinary';
 import { SocketContext } from '../../content/socket';
 import { getCapitalLetters } from '../../utils/formatters';
-import { Transition } from '../transition';
+import Transition from '../transition';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   roomId?: string;
   createMode?: boolean;
 }

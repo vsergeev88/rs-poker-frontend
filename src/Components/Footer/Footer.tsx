@@ -1,11 +1,11 @@
-import './Footer.scss';
+import './footer.scss';
 
-import type { FunctionComponent } from 'react';
+import type { FC } from 'react';
 import React from 'react';
 
 import pngUrl from '../../assets/png/github-logo.png';
 
-const Footer: FunctionComponent = () => (
+const Footer: FC = () => (
   <div className="footer">
     <div className="footer-container">
       {' '}

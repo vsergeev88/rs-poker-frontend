@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 
-import { TIssue, TPlayer } from '../data/game';
+import { TIssue, TPlayer } from '../data/types';
 
 type TAppState = {
   users: TPlayer[];

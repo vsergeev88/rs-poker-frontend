@@ -1,7 +1,7 @@
-import './Timer.scss';
+import './timer.scss';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   time: number;
 }
 

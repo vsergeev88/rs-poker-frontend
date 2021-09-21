@@ -5,10 +5,10 @@ import { CheckCircle, Delete, DeleteOutline, Edit } from '@material-ui/icons';
 import React, { FC, useContext, useState } from 'react';
 
 import { SocketContext } from '../../content/socket';
-import { TIssue, TPriority } from '../../data/game';
+import { TIssue, TPriority } from '../../data/types';
 import CustomDialog from '../dialog';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   issue: TIssue;
   isLobby: boolean;
 }

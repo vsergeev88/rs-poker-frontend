@@ -1,10 +1,10 @@
-import './Titles.scss';
+import './titles.scss';
 
 import { Typography } from '@material-ui/core';
 import type { FC } from 'react';
 import React from 'react';
 
-interface ITitle extends React.HTMLAttributes<HTMLDivElement> {
+interface ITitle {
   className?: string;
 }
 

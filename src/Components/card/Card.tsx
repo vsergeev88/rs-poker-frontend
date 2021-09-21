@@ -1,4 +1,4 @@
-import './Card.scss';
+import './card.scss';
 
 import { MenuItem, Select } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/EditOutlined';
@@ -9,13 +9,13 @@ import React from 'react';
 
 import { deck2 } from '../../data/deck';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   propCardValue: string;
   shortScoreType: string;
   allowEdit: boolean;
 }
 
-const Card: FC<CardProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
+const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
   const [cardValue, setCardValue] = useState(propCardValue);
   const [editMode, setEditMode] = useState(false);
   const [checked, setChecked] = useState(false);
