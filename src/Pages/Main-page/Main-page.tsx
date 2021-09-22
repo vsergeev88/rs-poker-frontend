@@ -6,7 +6,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
 import imgUrl from '../../assets/img/poker-planing.jpg';
-import ConnectDialog from '../../Components/connect-dialog';
+import ConnectDialog from '../../Components/Connect-dialog';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 

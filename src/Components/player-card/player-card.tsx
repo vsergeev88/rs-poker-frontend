@@ -10,8 +10,8 @@ import KickDialog from '../kick-player-dialog';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   player: TPlayer;
-  playersCount: number;
-  isMaster: boolean;
+  playersCount?: number;
+  isMaster?: boolean;
   cardType?: 'big' | 'small';
 }
 
