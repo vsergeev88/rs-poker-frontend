@@ -11,6 +11,7 @@ import KickDialog from './kick-player-dialog';
 import KickMessage from './kick-player-message';
 import PlayerCard from './player-card';
 import ScoreCard from './score-card';
+import Settings from './settings';
 import Timer from './timer';
 import Transition from './transition';
 
@@ -28,6 +29,7 @@ export {
   KickMessage,
   PlayerCard,
   ScoreCard,
+  Settings,
   Timer,
   Transition,
 };
