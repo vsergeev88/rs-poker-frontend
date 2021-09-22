@@ -1,3 +1,3 @@
-import Card from './Add-card';
+import AddCard from './add-card';
 
-export default Card;
+export default AddCard;

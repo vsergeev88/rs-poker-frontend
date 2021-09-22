@@ -4,14 +4,10 @@ import React, { Dispatch, FC, SetStateAction, useContext } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
+import { TKickOptions } from '../../data/types';
 import CustomDialog from '../dialog';
 
-export type TKickOptions = {
-  targetId: string;
-  initiatorId: string;
-};
-
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   kickOptions: TKickOptions;
   isOpen: boolean;
   handle: Dispatch<SetStateAction<boolean>>;

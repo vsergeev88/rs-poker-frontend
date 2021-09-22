@@ -4,7 +4,7 @@ import { Button, Input } from '@material-ui/core';
 import React, { FC, useContext, useEffect, useState } from 'react';
 
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/game';
+import { TPlayer } from '../../data/types';
 import PlayerCard from '../player-card';
 
 type TMessage = {
@@ -12,7 +12,7 @@ type TMessage = {
   message: string;
 };
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   playersCount: number;
   isMaster: boolean;
 }

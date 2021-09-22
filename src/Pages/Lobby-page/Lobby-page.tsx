@@ -9,31 +9,26 @@ import {
   Switch,
   TextField,
 } from '@material-ui/core';
-import {
-  FunctionComponent,
-  HTMLAttributes,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router';
 
-import AddCard from '../../Components/Add-card';
-import Card from '../../Components/card';
-import Chat from '../../Components/chat';
-import Issue from '../../Components/issue';
-import IssueAdd from '../../Components/issue-add';
-import KickMessage from '../../Components/kick-player-message';
-import { TKickOptions } from '../../Components/kick-player-message/kick-message';
-import PlayerCard from '../../Components/player-card';
+import {
+  AddCard,
+  Card,
+  Chat,
+  Issue,
+  IssueAdd,
+  KickMessage,
+  PlayerCard,
+} from '../../Components';
 import { TitleAdd1, TitleAdd2, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { deck2 } from '../../data/deck';
-import { TPlayer } from '../../data/game';
+import { TKickOptions, TPlayer } from '../../data/types';
 
-const LobbyPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
+const LobbyPage: FC = () => {
   const startGame = () => {
     console.log('startGame');
   };

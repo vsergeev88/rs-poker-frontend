@@ -3,9 +3,9 @@ import './dialog.scss';
 import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 
-import { Transition } from '../transition';
+import Transition from '../transition';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   handlePositive(): void;
   handleNegative(): void;
   isOpen: boolean;

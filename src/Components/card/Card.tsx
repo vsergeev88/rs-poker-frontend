@@ -1,21 +1,19 @@
-import './Card.scss';
+import './card.scss';
 
 import { MenuItem, Select } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/EditOutlined';
-import LocalCafeIcon from '@material-ui/icons/LocalCafe';
-import OfflinePinIcon from '@material-ui/icons/OfflinePin';
+import { EditOutlined, LocalCafe, OfflinePin } from '@material-ui/icons/';
 import { FC, useState } from 'react';
 import React from 'react';
 
 import { deck2 } from '../../data/deck';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   propCardValue: string;
   shortScoreType: string;
   allowEdit: boolean;
 }
 
-const Card: FC<CardProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
+const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
   const [cardValue, setCardValue] = useState(propCardValue);
   const [editMode, setEditMode] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -54,10 +52,10 @@ const Card: FC<CardProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
             </Select>
           </>
         )}
-        {allowEdit && <EditIcon className="edit-icon" onClick={handleOpen} />}
+        {allowEdit && <EditOutlined className="edit-icon" onClick={handleOpen} />}
       </div>
       {cardValue === 'Coffee' ? (
-        <LocalCafeIcon className="score-type_text" />
+        <LocalCafe className="score-type_text" />
       ) : cardValue === '?' ? (
         <span className="score-type_text">?</span>
       ) : (
@@ -69,7 +67,7 @@ const Card: FC<CardProps> = ({ propCardValue, shortScoreType, allowEdit }) => {
         <>
           <div className="checked-cover"></div>
           <div className="check-icon-wrapper">
-            <OfflinePinIcon className="check-icon" />
+            <OfflinePin className="check-icon" />
           </div>
         </>
       )}

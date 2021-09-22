@@ -1,14 +1,13 @@
 import './Test-page.scss';
 
-import { FunctionComponent, HTMLAttributes } from 'react';
-import React from 'react';
+import React, { FC } from 'react';
 
 import Issue from '../../Components/issue';
 import IssueAdd from '../../Components/issue-add';
 import PlayerCard from '../../Components/player-card';
 import { issueMockData, playersMockData } from '../../data/game';
 
-const TestPage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
+const TestPage: FC = () => {
   return (
     <div className="test-page">
       CARDS

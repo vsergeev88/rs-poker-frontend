@@ -1,28 +1,17 @@
 import './Game-page.scss';
 
 import { Box, Button, Container } from '@material-ui/core';
-import {
-  FunctionComponent,
-  HTMLAttributes,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
 // import { useHistory } from 'react-router-dom';
-import Issue from '../../Components/issue';
-import IssueAdd from '../../Components/issue-add';
-import PlayerCard from '../../Components/player-card';
-import ScoreCard from '../../Components/ScoreCard';
-import Timer from '../../Components/Timer';
+import { Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/game';
+import { TPlayer } from '../../data/types';
 
-const GamePage: FunctionComponent<HTMLAttributes<HTMLDivElement>> = () => {
+const GamePage: FC = () => {
   const [isMaster, setMaster] = useState(false);
 
   const appState = useContext(AppContext);

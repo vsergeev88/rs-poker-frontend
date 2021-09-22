@@ -4,14 +4,10 @@ import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Footer from './Components/Footer';
-import Header from './Components/Header';
+import { Footer, Header } from './Components';
 import { AppProvider } from './content/app-state';
 import { SocketProvider } from './content/socket';
-import GamePage from './Pages/Game-page';
-import LobbyPage from './Pages/Lobby-page';
-import MainPage from './Pages/Main-page';
-import TestPage from './Pages/Test-page';
+import { GamePage, LobbyPage, MainPage, TestPage } from './Pages';
 
 function App() {
   return (

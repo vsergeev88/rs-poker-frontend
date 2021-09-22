@@ -4,11 +4,11 @@ import { Avatar } from '@material-ui/core';
 import React, { FC, useContext, useMemo } from 'react';
 
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/game';
+import { TPlayer } from '../../data/types';
 import { getCapitalLetters, stringToColor } from '../../utils/formatters';
 import KickDialog from '../kick-player-dialog';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   player: TPlayer;
   playersCount: number;
   isMaster: boolean;

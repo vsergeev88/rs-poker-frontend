@@ -1,4 +1,4 @@
-import './Add-card.scss';
+import './add-card.scss';
 
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import React, { FC } from 'react';

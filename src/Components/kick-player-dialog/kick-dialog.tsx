@@ -7,7 +7,7 @@ import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import CustomDialog from '../dialog';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   target: string;
   playerId: string;
 }
