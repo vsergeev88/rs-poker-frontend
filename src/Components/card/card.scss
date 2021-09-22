@@ -74,13 +74,20 @@
   transition: all 0.15s ease-in;
 }
 
-.edit-icon {
+.edit-card_icon, 
+.delete-card_icon {
   font-size: 28px;
   transition: all 0.15s ease-in;
 }
 
-.edit-icon:hover {
+.edit-card_icon:hover {
   cursor: pointer;
   color: $app-main-color2;
+  transition: all 0.15s ease-in;
+}
+
+.delete-card_icon:hover {
+  cursor: pointer;
+  color: red;
   transition: all 0.15s ease-in;
 }

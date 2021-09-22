@@ -6,8 +6,6 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import {
-  AddCard,
-  Card,
   Chat,
   Issue,
   IssueAdd,
@@ -18,7 +16,6 @@ import {
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { deck2 } from '../../data/deck';
 import { TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
@@ -59,9 +56,6 @@ const LobbyPage: FC = () => {
   }, [appState?.users, appState?.issues]);
 
   useEffect(() => {
-    socket?.on('issues', (issues) => {
-      appState?.setIssues(issues);
-    });
     socket?.on('startKickPool', (targetId, initiatorId) => {
       setKickOptions({ targetId, initiatorId });
 
@@ -183,26 +177,6 @@ const LobbyPage: FC = () => {
 
         {/******************** Setting Section ********************/}
         {isMaster && <Settings />}
-
-        {/******************** Add Cards Section ********************/}
-        {isMaster && (
-          <Container className="add-cards section" component="section">
-            <TitleAdd1 className="label-add-cards text-center">
-              Add card values:
-            </TitleAdd1>
-            <Box className="cards-wrapper justify-content-start mb-20">
-              {deck2.map((el, key) => (
-                <Card
-                  propCardValue={el.toString()}
-                  shortScoreType={'SP'}
-                  allowEdit={true}
-                  key={key}
-                />
-              ))}
-              <AddCard />
-            </Box>
-          </Container>
-        )}
       </Container>
 
       {/******************** Chat Section ********************/}
