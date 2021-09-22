@@ -24,3 +24,12 @@ export type TKickOptions = {
   targetId: string;
   initiatorId: string;
 };
+
+export type TSettings = {
+  isMasterAsPlayer: boolean;
+  isCardRound: boolean;
+  isTimerNeed: boolean;
+  scoreType: string;
+  scoreTypeShort: string;
+  roundTime: number;
+};

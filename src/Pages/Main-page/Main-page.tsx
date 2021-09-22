@@ -20,6 +20,29 @@ const MainPage: FC = () => {
     socket?.on('users', (users) => {
       appState?.setUsers(users);
     });
+    socket?.on('issues', (issues) => {
+      appState?.setIssues(issues);
+    });
+    socket?.on('settings', (settings) => {
+      const {
+        isMasterAsPlayer,
+        isCardRound,
+        isTimerNeed,
+        scoreType,
+        scoreTypeShort,
+        roundTime,
+        cardsDeck,
+      } = settings;
+      appState?.setSettings({
+        isMasterAsPlayer,
+        isCardRound,
+        isTimerNeed,
+        scoreType,
+        scoreTypeShort,
+        roundTime,
+      });
+      appState?.setCardsDeck(cardsDeck);
+    });
     socket?.on('notification', ({ description }) => {
       enqueueSnackbar(description, { variant: 'info' });
     });
