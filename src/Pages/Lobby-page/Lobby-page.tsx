@@ -20,23 +20,6 @@ import { SocketContext } from '../../content/socket';
 import { TIssue, TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
-  const startGame = () => {
-    console.log('startGame');
-  };
-  const cancelGame = () => {
-    console.log('cancelGame');
-  };
-  const exitGame = () => {
-    console.log('exitGame');
-  };
-  const copyUrlLobby = (copyText: string | undefined) => {
-    if (copyText) {
-      navigator.clipboard.writeText(copyText);
-      setCopyTextBtn('Copied');
-      enqueueSnackbar('Copied', { variant: 'success' });
-    }
-  };
-
   const [copyText, setCopyText] = useState<string | undefined>('');
   const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMaster, setMaster] = useState(false);
@@ -55,8 +38,17 @@ const LobbyPage: FC = () => {
       user ? setMaster(user?.master as boolean) : history.push('/');
 
       setCopyText(appState?.users[0].playerId);
+    } else {
+      history.push('/');
     }
-  }, [appState?.users, appState?.issues]);
+  }, [appState?.users]);
+
+  useEffect(() => {
+    if (appState?.settings.isGameStarted) {
+      history.push('/game');
+      if (!isMaster) enqueueSnackbar('Game started!', { variant: 'info' });
+    }
+  }, [appState?.settings.isGameStarted]);
 
   useEffect(() => {
     socket?.on('startKickPool', (targetId, initiatorId) => {
@@ -70,6 +62,34 @@ const LobbyPage: FC = () => {
       }
     });
   }, []);
+
+  const startGame = () => {
+    const roomId = appState?.users[0].playerId;
+    const cardsDeck = appState?.cardsDeck;
+    const settings = { ...appState?.settings, isGameStarted: true, cardsDeck };
+    socket?.emit('saveSettings', settings, roomId, (error: string) => {
+      error
+        ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
+        : enqueueSnackbar('Game created!', { variant: 'success' });
+    });
+  };
+
+  const cancelGame = () => {
+    const roomId = appState?.users[0].playerId;
+    socket?.emit('cancelGame', roomId, 'Game was closed by master!');
+  };
+
+  const exitGame = () => {
+    socket?.emit('kickPlayer', socket?.id, 'just left the game');
+  };
+
+  const copyUrlLobby = (copyText: string | undefined) => {
+    if (copyText) {
+      navigator.clipboard.writeText(copyText);
+      setCopyTextBtn('Copied');
+      enqueueSnackbar('Copied', { variant: 'success' });
+    }
+  };
 
   const isMemberSectionShow = (usersLength: number | undefined) => {
     const minNumberOfUsers = 1;

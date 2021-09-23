@@ -25,6 +25,7 @@ const MainPage: FC = () => {
     });
     socket?.on('settings', (settings) => {
       const {
+        isGameStarted,
         isMasterAsPlayer,
         isCardRound,
         isTimerNeed,
@@ -34,6 +35,7 @@ const MainPage: FC = () => {
         cardsDeck,
       } = settings;
       appState?.setSettings({
+        isGameStarted,
         isMasterAsPlayer,
         isCardRound,
         isTimerNeed,
@@ -45,6 +47,9 @@ const MainPage: FC = () => {
     });
     socket?.on('notification', ({ description }) => {
       enqueueSnackbar(description, { variant: 'info' });
+    });
+    socket?.on('warning', ({ description }) => {
+      enqueueSnackbar(description, { variant: 'warning' });
     });
   });
 

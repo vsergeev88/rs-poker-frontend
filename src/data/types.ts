@@ -26,6 +26,7 @@ export type TKickOptions = {
 };
 
 export type TSettings = {
+  isGameStarted: boolean;
   isMasterAsPlayer: boolean;
   isCardRound: boolean;
   isTimerNeed: boolean;
