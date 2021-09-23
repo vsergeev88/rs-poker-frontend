@@ -36,12 +36,17 @@ const Settings: FC = () => {
     handleSaveSettings();
   }, []);
 
+  useEffect(() => {
+    console.log(appState?.settings);
+  }, [appState?.settings]);
+
   const handleSaveSettings = () => {
     const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;
     socket?.emit(
       'saveSettings',
       {
+        isGameStarted: false,
         isMasterAsPlayer,
         isCardRound,
         isTimerNeed,

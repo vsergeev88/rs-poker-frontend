@@ -3,8 +3,8 @@ import './Game-page.scss';
 import { Box, Button, Container } from '@material-ui/core';
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-// import { useHistory } from 'react-router-dom';
 import { Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
@@ -16,15 +16,19 @@ const GamePage: FC = () => {
 
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
-  // const history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     if (appState?.users.length) {
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
-      user ? setMaster(user?.master as boolean) : ''; //history.push('/');
+      user ? setMaster(user?.master as boolean) : history.push('/');
     }
-  }, [appState?.users, appState?.issues]);
+  }, [appState?.users]);
+
+  useEffect(() => {
+    console.log(appState?.settings);
+  }, [appState?.settings]);
 
   const handleClickStopGame = useCallback(() => console.log('stopGame'), []);
 

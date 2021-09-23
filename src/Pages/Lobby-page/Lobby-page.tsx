@@ -1,6 +1,7 @@
 import './Lobby-page.scss';
 
 import { Box, Button, Container, TextField } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router';
@@ -19,22 +20,6 @@ import { SocketContext } from '../../content/socket';
 import { TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
-  const startGame = () => {
-    console.log('startGame');
-  };
-  const cancelGame = () => {
-    console.log('cancelGame');
-  };
-  const exitGame = () => {
-    console.log('exitGame');
-  };
-  const copyUrlLobby = (copyText: string | undefined) => {
-    if (copyText) {
-      navigator.clipboard.writeText(copyText);
-      setCopyTextBtn('Copied');
-    }
-  };
-
   const [copyText, setCopyText] = useState<string | undefined>('');
   const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMaster, setMaster] = useState(false);
@@ -44,6 +29,7 @@ const LobbyPage: FC = () => {
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -53,7 +39,13 @@ const LobbyPage: FC = () => {
 
       setCopyText(appState?.users[0].playerId);
     }
-  }, [appState?.users, appState?.issues]);
+  }, [appState?.users]);
+
+  useEffect(() => {
+    if (appState?.settings.isGameStarted) {
+      history.push('/game');
+    }
+  }, [appState?.settings.isGameStarted]);
 
   useEffect(() => {
     socket?.on('startKickPool', (targetId, initiatorId) => {
@@ -67,6 +59,33 @@ const LobbyPage: FC = () => {
       }
     });
   }, []);
+
+  const startGame = () => {
+    console.log('startGame');
+    const roomId = appState?.users[0].playerId;
+    const cardsDeck = appState?.cardsDeck;
+    const settings = { ...appState?.settings, isGameStarted: true, cardsDeck };
+    socket?.emit('saveSettings', settings, roomId, (error: string) => {
+      error
+        ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
+        : enqueueSnackbar('Game created!', { variant: 'success' });
+    });
+  };
+
+  const cancelGame = () => {
+    console.log('cancelGame');
+  };
+
+  const exitGame = () => {
+    console.log('exitGame');
+  };
+
+  const copyUrlLobby = (copyText: string | undefined) => {
+    if (copyText) {
+      navigator.clipboard.writeText(copyText);
+      setCopyTextBtn('Copied');
+    }
+  };
 
   return (
     <Box className="lobby-page">

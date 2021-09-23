@@ -14,6 +14,7 @@ type TAppState = {
 };
 
 const InitialSettings: TSettings = {
+  isGameStarted: false,
   isCardRound: true,
   isMasterAsPlayer: false,
   isTimerNeed: true,
