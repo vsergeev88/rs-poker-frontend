@@ -67,7 +67,16 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
       {!isLobby && current && <div className="current-cover"></div>}
       <div className="issue-info_container">
         {!isLobby && current && <span className="current-issue_text">current</span>}
-        <span className="issue-name_text">{name}</span>
+        {!link && <span className="issue-name_text">{name}</span>}
+        {link && (
+          <a
+            className="issue-name_link"
+            href={`${link}`}
+            target="_blank"
+            rel="noreferrer">
+            {name}
+          </a>
+        )}
         <span className="issue-priority_text">{priority} priority</span>
       </div>
       {isLobby && (

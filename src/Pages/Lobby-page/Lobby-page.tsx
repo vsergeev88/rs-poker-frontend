@@ -1,6 +1,7 @@
 import './Lobby-page.scss';
 
 import { Box, Button, Container, TextField } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router';
@@ -16,7 +17,7 @@ import {
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TKickOptions, TPlayer } from '../../data/types';
+import { TIssue, TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
   const startGame = () => {
@@ -32,6 +33,7 @@ const LobbyPage: FC = () => {
     if (copyText) {
       navigator.clipboard.writeText(copyText);
       setCopyTextBtn('Copied');
+      enqueueSnackbar('Copied', { variant: 'success' });
     }
   };
 
@@ -44,6 +46,7 @@ const LobbyPage: FC = () => {
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -68,10 +71,26 @@ const LobbyPage: FC = () => {
     });
   }, []);
 
+  const isMemberSectionShow = (usersLength: number | undefined) => {
+    const minNumberOfUsers = 1;
+    return (usersLength ? usersLength : 0) > minNumberOfUsers;
+  };
+
+  const showIssueTitleList = (issues: TIssue[] | undefined) => {
+    const maxNumberIssues: Number = 5;
+    let titleList: Array<String> = [];
+    issues &&
+      issues.map((el) => titleList.length < maxNumberIssues && titleList.push(el.name));
+    return titleList.join(', ');
+  };
+
   return (
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
-        <TitleMain>Spring 13 planning (issues 13, 533, 5623, 3252, 6623, ...)</TitleMain>
+        <TitleMain>
+          Обсуждаем:&nbsp;
+          {appState?.issues && showIssueTitleList(appState?.issues)}
+        </TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -89,7 +108,9 @@ const LobbyPage: FC = () => {
           {isMaster ? (
             <>
               <Box className="link-to-lobby">
-                <TitleAdd1 className="label-link-to-lobby">Lobby ID:</TitleAdd1>
+                <TitleAdd1 className="label-link-to-lobby text-center">
+                  Lobby ID:
+                </TitleAdd1>
                 <Box className="copy-to-lobby">
                   <TextField
                     disabled
@@ -145,32 +166,34 @@ const LobbyPage: FC = () => {
         </Box>
 
         {/******************** Members Section ********************/}
-        <Box className="members section" component="section">
-          <TitleAdd1 className="label-members text-center">Members:</TitleAdd1>
-          <Box className="cards-wrapper mb-20">
-            {appState?.users.length &&
-              appState?.users
-                .filter((e) => !e.master)
-                .map((el) => (
-                  <PlayerCard
-                    player={el}
-                    key={el.playerId}
-                    playersCount={appState?.users.length}
-                    isMaster={isMaster}
-                  />
-                ))}
+        {isMemberSectionShow(appState?.users.length) && (
+          <Box className="members section" component="section">
+            <TitleAdd1 className="label-members text-center">Members:</TitleAdd1>
+            <Box className="cards-wrapper mb-20">
+              {appState?.users.length &&
+                appState?.users
+                  .filter((e) => !e.master)
+                  .map((el) => (
+                    <PlayerCard
+                      player={el}
+                      key={el.playerId}
+                      playersCount={appState?.users.length}
+                      isMaster={isMaster}
+                    />
+                  ))}
+            </Box>
           </Box>
-        </Box>
+        )}
         {/******************** Issues Section ********************/}
         {isMaster && (
           <Box className="issues section" component="section">
             <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
             <Box className="cards-wrapper mb-20">
+              <IssueAdd />
               {appState?.issues &&
                 appState?.issues.map((el) => (
                   <Issue issue={el} isLobby={true} key={el.issueID} />
                 ))}
-              <IssueAdd />
             </Box>
           </Box>
         )}
