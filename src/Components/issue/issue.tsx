@@ -4,8 +4,10 @@ import { Radio, TextField } from '@material-ui/core';
 import { CheckCircle, Delete, DeleteOutline, Edit } from '@material-ui/icons';
 import React, { FC, useContext, useState } from 'react';
 
+import { ISSUE_CARD_NAME_LENGTH } from '../../config';
 import { SocketContext } from '../../content/socket';
 import { TIssue, TPriority } from '../../data/types';
+import { truncate } from '../../utils/formatters';
 import CustomDialog from '../dialog';
 
 interface IProps {
@@ -67,7 +69,21 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
       {!isLobby && current && <div className="current-cover"></div>}
       <div className="issue-info_container">
         {!isLobby && current && <span className="current-issue_text">current</span>}
-        <span className="issue-name_text">{name}</span>
+        {!link && (
+          <span className="issue-name_text" title={name}>
+            {truncate(name, ISSUE_CARD_NAME_LENGTH)}
+          </span>
+        )}
+        {link && (
+          <a
+            className="issue-name_link"
+            href={`${link}`}
+            target="_blank"
+            rel="noreferrer"
+            title={name}>
+            {truncate(name, ISSUE_CARD_NAME_LENGTH)}
+          </a>
+        )}
         <span className="issue-priority_text">{priority} priority</span>
       </div>
       {isLobby && (

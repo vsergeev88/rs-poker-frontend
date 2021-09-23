@@ -31,7 +31,10 @@ const AddCard: FC = () => {
   return (
     <>
       {showComponent && (
-        <div role="none" className="card_container" onClick={handleAddCard}>
+        <div
+          role="none"
+          className="card_container primary-bg-color primary-color"
+          onClick={handleAddCard}>
           <ControlPointIcon className="control-icon" />
         </div>
       )}
