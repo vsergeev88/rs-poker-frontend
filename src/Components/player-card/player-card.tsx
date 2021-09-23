@@ -34,7 +34,7 @@ const PlayerCard: FC<IProps> = ({ player, cardType, playersCount, isMaster }) =>
         src={imgUrl}
         className="avatar"
         style={{ backgroundColor: `${stringToColor(`${name} ${lastName}`)}` }}>
-        {!imgUrl ? (name ? getCapitalLetters(lastName, name) : 'NN') : ''}
+        {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
       </Avatar>
       <div className="player-info_container">
         <span className={!isSelf ? 'not-you_text' : 'its-you_text'}>{`IT'S YOU`}</span>
