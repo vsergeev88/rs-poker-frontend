@@ -88,7 +88,7 @@ const LobbyPage: FC = () => {
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
         <TitleMain>
-          Обсуждаем:&nbsp;
+          Subject of discussion:&nbsp;
           {appState?.issues && showIssueTitleList(appState?.issues)}
         </TitleMain>
 
@@ -188,8 +188,8 @@ const LobbyPage: FC = () => {
         {isMaster && (
           <Box className="issues section" component="section">
             <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
+            <IssueAdd />
             <Box className="cards-wrapper mb-20">
-              <IssueAdd />
               {appState?.issues &&
                 appState?.issues.map((el) => (
                   <Issue issue={el} isLobby={true} key={el.issueID} />

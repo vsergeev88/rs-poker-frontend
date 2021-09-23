@@ -3,8 +3,10 @@ import './player-card.scss';
 import { Avatar } from '@material-ui/core';
 import React, { FC, useContext, useMemo } from 'react';
 
+import { PLAYER_CARD_NAME_LENGTH } from '../../config';
 import { SocketContext } from '../../content/socket';
 import { TPlayer } from '../../data/types';
+import { truncate } from '../../utils/formatters';
 import { getCapitalLetters, stringToColor } from '../../utils/formatters';
 import KickDialog from '../kick-player-dialog';
 
@@ -32,15 +34,17 @@ const PlayerCard: FC<IProps> = ({ player, cardType, playersCount, isMaster }) =>
         src={imgUrl}
         className="avatar"
         style={{ backgroundColor: `${stringToColor(`${name} ${lastName}`)}` }}>
-        {!imgUrl ? (name ? getCapitalLetters(name, lastName) : 'NN') : ''}
+        {!imgUrl ? (name ? getCapitalLetters(lastName, name) : 'NN') : ''}
       </Avatar>
       <div className="player-info_container">
         <span className={!isSelf ? 'not-you_text' : 'its-you_text'}>{`IT'S YOU`}</span>
-        <span className="player-name_text">{`${name} ${lastName}`}</span>
+        <span className="player-name_text" title={`${lastName} ${name}`}>
+          {truncate(`${lastName} ${name}`, PLAYER_CARD_NAME_LENGTH)}
+        </span>
         <span className="player-position_text">{position}</span>
       </div>
       {!master && !isSelf && cardType !== 'small' && (playersCount > 3 || isMaster) && (
-        <KickDialog target={`${name} ${lastName}`} playerId={playerId} />
+        <KickDialog target={`${lastName} ${name}`} playerId={playerId} />
       )}
     </div>
   );
