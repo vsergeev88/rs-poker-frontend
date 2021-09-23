@@ -48,6 +48,9 @@ const MainPage: FC = () => {
     socket?.on('notification', ({ description }) => {
       enqueueSnackbar(description, { variant: 'info' });
     });
+    socket?.on('warning', ({ description }) => {
+      enqueueSnackbar(description, { variant: 'warning' });
+    });
   });
 
   return (

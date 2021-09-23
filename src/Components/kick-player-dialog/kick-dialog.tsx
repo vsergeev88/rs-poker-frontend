@@ -20,9 +20,8 @@ const KickDialog: FC<IProps> = ({ target, playerId }) => {
 
   const handleKickPlayer = () => {
     const initiator = appState?.users.find((el) => el.playerId === socket?.id);
-    console.log();
     if (initiator?.master) {
-      socket?.emit('kickPlayer', playerId);
+      socket?.emit('kickPlayer', playerId, 'kicked by master');
     } else {
       socket?.emit('triggerKickPool', playerId, initiator?.playerId);
     }

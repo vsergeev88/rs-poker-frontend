@@ -1,6 +1,7 @@
 import './Game-page.scss';
 
 import { Box, Button, Container } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -17,20 +18,39 @@ const GamePage: FC = () => {
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (appState?.users.length) {
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
       user ? setMaster(user?.master as boolean) : history.push('/');
+    } else {
+      history.push('/');
     }
   }, [appState?.users]);
 
   useEffect(() => {
-    console.log(appState?.settings);
-  }, [appState?.settings]);
+    if (!appState?.settings.isGameStarted) {
+      history.push('/lobby');
+      if (!isMaster) enqueueSnackbar('Game canceled!', { variant: 'warning' });
+    }
+  }, [appState?.settings.isGameStarted]);
 
-  const handleClickStopGame = useCallback(() => console.log('stopGame'), []);
+  const handleClickStopGame = () => {
+    if (isMaster) {
+      const roomId = appState?.users[0].playerId;
+      const cardsDeck = appState?.cardsDeck;
+      const settings = { ...appState?.settings, isGameStarted: false, cardsDeck };
+      socket?.emit('saveSettings', settings, roomId, (error: string) => {
+        error
+          ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
+          : enqueueSnackbar('Game stopped!', { variant: 'success' });
+      });
+    } else {
+      socket?.emit('kickPlayer', socket?.id, 'just left the game');
+    }
+  };
 
   const handleClickRunRound = useCallback(() => console.log('runRound'), []);
 
@@ -60,7 +80,7 @@ const GamePage: FC = () => {
               variant="outlined"
               color="primary"
               onClick={handleClickStopGame}>
-              Stop game
+              {isMaster ? 'Stop game' : 'Exit'}
             </Button>
           </Box>
         </Box>

@@ -38,12 +38,15 @@ const LobbyPage: FC = () => {
       user ? setMaster(user?.master as boolean) : history.push('/');
 
       setCopyText(appState?.users[0].playerId);
+    } else {
+      history.push('/');
     }
   }, [appState?.users]);
 
   useEffect(() => {
     if (appState?.settings.isGameStarted) {
       history.push('/game');
+      if (!isMaster) enqueueSnackbar('Game started!', { variant: 'info' });
     }
   }, [appState?.settings.isGameStarted]);
 
@@ -72,11 +75,12 @@ const LobbyPage: FC = () => {
   };
 
   const cancelGame = () => {
-    console.log('cancelGame');
+    const roomId = appState?.users[0].playerId;
+    socket?.emit('cancelGame', roomId, 'Game was closed by master!');
   };
 
   const exitGame = () => {
-    console.log('exitGame');
+    socket?.emit('kickPlayer', socket?.id, 'just left the game');
   };
 
   const copyUrlLobby = (copyText: string | undefined) => {
