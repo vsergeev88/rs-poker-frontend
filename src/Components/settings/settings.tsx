@@ -203,6 +203,7 @@ const Settings: FC = () => {
       <Container className="add-cards section" component="section">
         <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
         <Box className="cards-wrapper justify-content-start mb-20">
+          <AddCard />
           {appState?.cardsDeck.length
             ? appState?.cardsDeck.map((el, key) => (
                 <Card
@@ -214,7 +215,6 @@ const Settings: FC = () => {
                 />
               ))
             : ''}
-          <AddCard />
         </Box>
       </Container>
     </>

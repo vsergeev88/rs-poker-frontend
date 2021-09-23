@@ -3,7 +3,7 @@
 .issue_container {
   position: relative;
   padding: 0 10px;
-  width: 290px;
+  width: 260px;
   height: 75px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
@@ -17,7 +17,7 @@
     padding: 0 10px;
     margin-left: -10px;
     position: absolute;
-    width: 290px;
+    width: 260px;
     height: 75px;
     border-radius: 5px;
     background-color: $checked-card-color;
@@ -41,6 +41,11 @@
       font-weight: 500;
     }
 
+    .issue-name_link {
+      font-size: 22px;
+      font-weight: 500;
+      color: #000;
+    }
     .issue-priority_text {
       font-size: 12px;
     }
@@ -76,7 +81,7 @@
     height: 100px;
     border-radius: 5px;
     background-color: white;
-    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -128,6 +133,6 @@
 
 .issue_container:hover,
 .edit-issue_wrapper:hover {
-  box-shadow: 0px 4px 4px 3px rgba(0,0,0,0.25);
+  box-shadow: 0px 4px 4px 3px rgba(0, 0, 0, 0.25);
   transition: all 0.15s ease-in;
 }

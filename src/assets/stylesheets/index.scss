@@ -23,7 +23,7 @@ code {
   column-gap: 10px;
   row-gap: 10px;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 
   &_column {
     flex-direction: column;
@@ -102,4 +102,13 @@ button,
 .justify-content-around {
   -ms-flex-pack: distribute!important;
   justify-content: space-around!important;
+}
+.primary-color{
+  color: $primary-color;
+}
+.primary-bg-color{
+  background-color: $primary-bg-color;
+}
+.primary-bg-color:hover{
+  background-color: $primary-hover-bg-color;
 }

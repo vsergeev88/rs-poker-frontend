@@ -13,7 +13,7 @@ import CustomDialog from '../dialog';
 const IssueAdd: FC = () => {
   const [openDialog, setDialog] = useState(false);
   const [name, setName] = useState('Issue');
-  const [link, setLink] = useState('http://');
+  const [link, setLink] = useState('');
   const [priority, setPriority] = useState<TPriority>('Middle');
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
@@ -35,7 +35,7 @@ const IssueAdd: FC = () => {
     setTimeout(() => {
       setDialog(false);
       setName('Issue');
-      setLink('http://');
+      setLink('');
       setPriority('Middle');
     }, 500);
   };
@@ -66,7 +66,7 @@ const IssueAdd: FC = () => {
                 setName(event.target.value);
               }}
             />
-            <span>Lick:</span>
+            <span>Link:</span>
             <Input
               className="message-text"
               defaultValue={link}
