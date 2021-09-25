@@ -5,8 +5,8 @@ import { DeleteOutlined, EditOutlined, LocalCafe, OfflinePin } from '@material-u
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
+import { CARD_DECKS, SETTING_CARD_DECK_NUM_DEF } from '../../config';
 import { AppContext } from '../../content/app-state';
-import { deck2 } from '../../data/deck';
 
 interface IProps {
   propCardValue: string;
@@ -16,9 +16,11 @@ interface IProps {
 }
 
 const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex }) => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [menuItems, setMenuItems] = useState<string[]>(deck2);
+  const [menuItems, setMenuItems] = useState<string[]>(
+    CARD_DECKS[SETTING_CARD_DECK_NUM_DEF],
+  );
   const [showEditBtn, setShowEditBtn] = useState(allowEdit);
 
   const appState = useContext(AppContext);
@@ -51,7 +53,11 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
 
   const getAvailableCards = () => {
     let availableCards: string[] = [];
-    deck2.forEach((card) => {
+    const currentCardDeckNumber = appState?.settings.cardDeckNumber
+      ? appState?.settings.cardDeckNumber
+      : 0;
+    console.log(appState?.settings);
+    CARD_DECKS[currentCardDeckNumber].forEach((card) => {
       if (!appState?.cardsDeck.includes(card)) availableCards.push(card);
     });
     return availableCards;

@@ -17,6 +17,7 @@ const InitialSettings: TSettings = {
   isGameStarted: false,
   isCardRound: true,
   isMasterAsPlayer: false,
+  cardDeckNumber: 0,
   isTimerNeed: true,
   roundTime: 90,
   scoreType: 'Story point',
