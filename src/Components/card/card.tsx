@@ -7,6 +7,7 @@ import React from 'react';
 
 import { CARD_DECKS, SETTING_CARD_DECK_NUM_DEF } from '../../config';
 import { AppContext } from '../../content/app-state';
+import getAvailableCards2 from './function';
 
 interface IProps {
   propCardValue: string;
@@ -25,8 +26,15 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
 
   const appState = useContext(AppContext);
 
+  const currentCardDeckNumber = appState?.settings.cardDeckNumber || 0;
+  const fullCardDeck =
+    currentCardDeckNumber > 0
+      ? CARD_DECKS[currentCardDeckNumber].concat(CARD_DECKS[0])
+      : CARD_DECKS[currentCardDeckNumber];
+  const currentCardDeck = appState?.cardsDeck || [];
+
   useEffect(() => {
-    setMenuItems(getAvailableCards());
+    setMenuItems(getAvailableCards2(fullCardDeck, currentCardDeck));
     if (!menuItems.length) {
       setShowEditBtn(false);
       setEditMode(false);
@@ -49,18 +57,6 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
       tempArr.splice(cardIndex, 1);
       appState?.setCardsDeck(tempArr);
     }
-  };
-
-  // work: duplicate function card.tsx
-  const getAvailableCards = () => {
-    let availableCards: string[] = [];
-    const currentCardDeckNumber = appState?.settings.cardDeckNumber
-      ? appState?.settings.cardDeckNumber
-      : 0;
-    CARD_DECKS[currentCardDeckNumber].forEach((card) => {
-      if (!appState?.cardsDeck.includes(card)) availableCards.push(card);
-    });
-    return availableCards;
   };
 
   return (

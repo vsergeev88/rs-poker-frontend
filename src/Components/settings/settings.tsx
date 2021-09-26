@@ -149,7 +149,7 @@ const Settings: FC = () => {
                 autoWidth={true}
                 id="deck-select"
                 className="deck-select"
-                defaultValue={cardDeckNumber}
+                defaultValue={SETTING_CARD_DECK_NUM_DEF}
                 onChange={(e) => {
                   const cardDeckNumber = e.target.value as number;
                   setCardDeckNumber(cardDeckNumber);

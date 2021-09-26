@@ -17,6 +17,7 @@ export const SETTING_SCORE_TYPE_SHORT_DEF = 'SP';
 export const SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF = false;
 export const SETTING_ROUND_TIME_DEF = 90;
 
+export const DECK_ACTION = ['?', 'Inf', 'Coffee'];
 export const DECK_FIBONACCI = [
   '0',
   '1',
@@ -32,5 +33,4 @@ export const DECK_FIBONACCI = [
 ];
 export const DECK_COHN = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100'];
 export const DECK_POWERS_OF_TWO = ['0', '1', '2', '4', '8', '16', '32', '64', '128'];
-export const DECK_ACTION = ['?', 'Inf', 'Coffee'];
 export const CARD_DECKS = [DECK_ACTION, DECK_FIBONACCI, DECK_COHN, DECK_POWERS_OF_TWO];
