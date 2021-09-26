@@ -65,8 +65,6 @@ const Settings: FC = () => {
   const handleSaveSettings = () => {
     const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;
-    console.log('handleSaveSettings');
-    console.log(cardDeckNumber);
     socket?.emit(
       'saveSettings',
       {
@@ -155,6 +153,17 @@ const Settings: FC = () => {
                 onChange={(e) => {
                   const cardDeckNumber = e.target.value as number;
                   setCardDeckNumber(cardDeckNumber);
+                  // May be is not optimal solution
+                  appState?.setSettings({
+                    isGameStarted: false,
+                    isMasterAsPlayer,
+                    cardDeckNumber,
+                    isCardRound,
+                    isTimerNeed,
+                    scoreType,
+                    scoreTypeShort,
+                    roundTime,
+                  });
                   appState?.setCardsDeck(
                     cardDeckNumber > 0
                       ? CARD_DECKS[cardDeckNumber].concat(CARD_DECKS[0])

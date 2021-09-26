@@ -3,8 +3,8 @@ import './add-card.scss';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import React, { FC, useContext, useEffect, useState } from 'react';
 
+import { CARD_DECKS } from '../../config';
 import { AppContext } from '../../content/app-state';
-import { deck2 } from '../../data/deck';
 
 const AddCard: FC = () => {
   const appState = useContext(AppContext);
@@ -16,9 +16,13 @@ const AddCard: FC = () => {
     }
   };
 
+  // work: duplicate function card.tsx
   const getAvailableCards = () => {
     let availableCards: string[] = [];
-    deck2.forEach((card) => {
+    const currentCardDeckNumber = appState?.settings.cardDeckNumber
+      ? appState?.settings.cardDeckNumber
+      : 0;
+    CARD_DECKS[currentCardDeckNumber].forEach((card) => {
       if (!appState?.cardsDeck.includes(card)) availableCards.push(card);
     });
     return availableCards;

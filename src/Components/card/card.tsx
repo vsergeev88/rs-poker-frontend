@@ -51,12 +51,12 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
     }
   };
 
+  // work: duplicate function card.tsx
   const getAvailableCards = () => {
     let availableCards: string[] = [];
     const currentCardDeckNumber = appState?.settings.cardDeckNumber
       ? appState?.settings.cardDeckNumber
       : 0;
-    console.log(appState?.settings);
     CARD_DECKS[currentCardDeckNumber].forEach((card) => {
       if (!appState?.cardsDeck.includes(card)) availableCards.push(card);
     });

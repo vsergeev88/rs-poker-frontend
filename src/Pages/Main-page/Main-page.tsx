@@ -27,6 +27,7 @@ const MainPage: FC = () => {
       const {
         isGameStarted,
         isMasterAsPlayer,
+        cardDeckNumber,
         isCardRound,
         isTimerNeed,
         scoreType,
@@ -37,6 +38,7 @@ const MainPage: FC = () => {
       appState?.setSettings({
         isGameStarted,
         isMasterAsPlayer,
+        cardDeckNumber,
         isCardRound,
         isTimerNeed,
         scoreType,

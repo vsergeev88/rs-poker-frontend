@@ -32,5 +32,5 @@ export const DECK_FIBONACCI = [
 ];
 export const DECK_COHN = ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100'];
 export const DECK_POWERS_OF_TWO = ['0', '1', '2', '4', '8', '16', '32', '64', '128'];
-export const DECK_ACTION = ['?', 'Infinity', 'Coffee'];
+export const DECK_ACTION = ['?', 'Inf', 'Coffee'];
 export const CARD_DECKS = [DECK_ACTION, DECK_FIBONACCI, DECK_COHN, DECK_POWERS_OF_TWO];
