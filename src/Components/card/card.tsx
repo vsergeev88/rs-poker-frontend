@@ -1,13 +1,20 @@
 import './card.scss';
 
-import { MenuItem, Select } from '@material-ui/core';
-import { DeleteOutlined, EditOutlined, LocalCafe, OfflinePin } from '@material-ui/icons/';
+import { MenuItem, Select, TextField } from '@material-ui/core';
+import {
+  CheckCircle,
+  DeleteOutlined,
+  EditOutlined,
+  LocalCafe,
+  OfflinePin,
+} from '@material-ui/icons/';
+import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 
-import { CARD_DECKS, SETTING_CARD_DECK_NUM_DEF } from '../../config';
+import { CARD_DECKS, DECK_ACTION, SETTING_CARD_DECK_NUM_DEF } from '../../config';
 import { AppContext } from '../../content/app-state';
-import getAvailableCards2 from './function';
+import { getAvailableCards, isNewValueCustomCardWell } from './function';
 
 interface IProps {
   propCardValue: string;
@@ -23,8 +30,13 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
     CARD_DECKS[SETTING_CARD_DECK_NUM_DEF],
   );
   const [showEditBtn, setShowEditBtn] = useState(allowEdit);
+  const [showDoneBtn, setShowDoneBtn] = useState(false);
+
+  const [prevCardValue, setPrevCardValue] = useState('');
+  const [newCardValue, setNewCardValue] = useState('');
 
   const appState = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const currentCardDeckNumber = appState?.settings.cardDeckNumber || 0;
   const fullCardDeck =
@@ -33,9 +45,13 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
       : CARD_DECKS[currentCardDeckNumber];
   const currentCardDeck = appState?.cardsDeck || [];
 
+  const isCustomCardDeck = currentCardDeckNumber === 0;
+
+  const isCardAction = DECK_ACTION.indexOf(propCardValue) !== -1;
+
   useEffect(() => {
-    setMenuItems(getAvailableCards2(fullCardDeck, currentCardDeck));
-    if (!menuItems.length) {
+    setMenuItems(getAvailableCards(fullCardDeck, currentCardDeck));
+    if (!menuItems.length && !isCustomCardDeck) {
       setShowEditBtn(false);
       setEditMode(false);
     } else {
@@ -45,10 +61,41 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
 
   const handleClose = () => {
     setEditMode(false);
+    setShowDoneBtn(false);
+  };
+
+  const handleDone = () => {
+    if (
+      newCardValue &&
+      newCardValue !== prevCardValue &&
+      isNewValueCustomCardWell(newCardValue, currentCardDeck)
+    ) {
+      const prevCardValueIndex = currentCardDeck.indexOf(prevCardValue);
+      const newCardDeck = currentCardDeck.slice();
+      newCardDeck[prevCardValueIndex] = newCardValue;
+      appState?.setCardsDeck(newCardDeck);
+      setNewCardValue('');
+      enqueueSnackbar('Success: Card value saved!', { variant: 'success' });
+    } else {
+      if (newCardValue === prevCardValue) {
+        enqueueSnackbar(`Warning: The value has not changed`, { variant: 'warning' });
+      } else if (!newCardValue) {
+        enqueueSnackbar(`Warning: New value was empty. Try to set new value again`, {
+          variant: 'warning',
+        });
+      } else enqueueSnackbar(`Error: Invalid value`, { variant: 'error' });
+    }
+
+    setEditMode(false);
+    setShowDoneBtn(false);
+    setShowEditBtn(true);
   };
 
   const handleOpen = () => {
     setEditMode(true);
+    currentCardDeckNumber === 0
+      ? (setShowEditBtn(false), setShowDoneBtn(true))
+      : setEditMode(true);
   };
 
   const deleteCard = () => {
@@ -67,8 +114,28 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
         setChecked(!checked);
       }}>
       <div className="top-wrapper">
-        <span className="card-value_text">{propCardValue}</span>
-        {editMode && (
+        {!editMode && (
+          <span className={`card-value_text ${isCardAction ? 'action-card' : ''}`}>
+            {propCardValue}
+          </span>
+        )}
+        {editMode && isCustomCardDeck && showDoneBtn && (
+          <>
+            <TextField
+              id={propCardValue}
+              size="small"
+              defaultValue={Number(propCardValue) || 0}
+              variant="outlined"
+              className="edit-card-value mt-5 ml-5"
+              onChange={(e) => {
+                setPrevCardValue(propCardValue);
+                setNewCardValue(e.target.value);
+              }}
+              type="number"
+            />
+          </>
+        )}
+        {editMode && !isCustomCardDeck && (
           <>
             <Select
               id="select-label"
@@ -93,22 +160,29 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
         )}
         {allowEdit && (
           <div>
+            {showDoneBtn && <CheckCircle onClick={handleDone} className="done-icon" />}
             {showEditBtn && (
               <EditOutlined className="edit-card_icon" onClick={handleOpen} />
             )}
-            <DeleteOutlined className="delete-card_icon" onClick={deleteCard} />
+            {!showDoneBtn && (
+              <DeleteOutlined className="delete-card_icon" onClick={deleteCard} />
+            )}
           </div>
         )}
       </div>
       {propCardValue === 'Coffee' ? (
         <LocalCafe className="score-type_text" />
+      ) : propCardValue === 'Inf' ? (
+        <span className="score-type_text">Inf</span>
       ) : propCardValue === '?' ? (
         <span className="score-type_text">?</span>
       ) : (
         <span className="score-type_text">{shortScoreType}</span>
       )}
 
-      <span className="card-value_text rotate">{propCardValue}</span>
+      <span className={`card-value_text rotate ${isCardAction ? 'action-card' : ''}`}>
+        {propCardValue}
+      </span>
       {!allowEdit && checked && (
         <>
           <div className="checked-cover"></div>

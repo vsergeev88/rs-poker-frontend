@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 
+import { INITAL_DECK } from '../config';
 import { TIssue, TPlayer, TSettings } from '../data/types';
 
 type TAppState = {
@@ -30,7 +31,7 @@ const AppProvider: FC = ({ children }) => {
   const [users, setUsers] = useState<TPlayer[]>([]);
   const [issues, setIssues] = useState<TIssue[]>([]);
   const [settings, setSettings] = useState<TSettings>(InitialSettings);
-  const [cardsDeck, setCardsDeck] = useState<string[]>([]);
+  const [cardsDeck, setCardsDeck] = useState<string[]>(INITAL_DECK);
 
   return (
     <AppContext.Provider

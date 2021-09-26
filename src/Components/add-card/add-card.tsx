@@ -5,20 +5,11 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 
 import { CARD_DECKS } from '../../config';
 import { AppContext } from '../../content/app-state';
-import getAvailableCards2 from '../card/function';
+import { getAvailableCards, getNewValueCustomCard } from '../card/function';
 
 const AddCard: FC = () => {
   const appState = useContext(AppContext);
   const [showComponent, setShowComponent] = useState(true);
-
-  const handleAddCard = () => {
-    if (appState?.cardsDeck) {
-      appState?.setCardsDeck((prev) => [
-        ...prev,
-        getAvailableCards2(fullCardDeck, currentCardDeck)[0],
-      ]);
-    }
-  };
 
   const currentCardDeckNumber = appState?.settings.cardDeckNumber || 0;
   const fullCardDeck =
@@ -27,8 +18,19 @@ const AddCard: FC = () => {
       : CARD_DECKS[currentCardDeckNumber];
   const currentCardDeck = appState?.cardsDeck || [];
 
+  const isCustomCardDeck = currentCardDeckNumber === 0;
+
+  const handleAddCard = () => {
+    const newCard = !isCustomCardDeck
+      ? getAvailableCards(fullCardDeck, currentCardDeck)[0]
+      : getNewValueCustomCard(currentCardDeck);
+    if (appState?.cardsDeck) {
+      appState?.setCardsDeck((prev) => [...prev, newCard]);
+    }
+  };
+
   useEffect(() => {
-    getAvailableCards2(fullCardDeck, currentCardDeck).length === 0
+    getAvailableCards(fullCardDeck, currentCardDeck).length === 0 && !isCustomCardDeck
       ? setShowComponent(false)
       : setShowComponent(true);
   }, [appState?.cardsDeck]);
