@@ -3,29 +3,36 @@ import './add-card.scss';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import React, { FC, useContext, useEffect, useState } from 'react';
 
+import { CARD_DECKS } from '../../config';
 import { AppContext } from '../../content/app-state';
-import { deck2 } from '../../data/deck';
+import { getAvailableCards, getNewValueCustomCard } from '../card/function';
 
 const AddCard: FC = () => {
   const appState = useContext(AppContext);
   const [showComponent, setShowComponent] = useState(true);
 
+  const currentCardDeckNumber = appState?.settings.cardDeckNumber || 0;
+  const fullCardDeck =
+    currentCardDeckNumber > 0
+      ? CARD_DECKS[currentCardDeckNumber].concat(CARD_DECKS[0])
+      : CARD_DECKS[currentCardDeckNumber];
+  const currentCardDeck = appState?.cardsDeck || [];
+
+  const isCustomCardDeck = currentCardDeckNumber === 0;
+
   const handleAddCard = () => {
+    const newCard = !isCustomCardDeck
+      ? getAvailableCards(fullCardDeck, currentCardDeck)[0]
+      : getNewValueCustomCard(currentCardDeck);
     if (appState?.cardsDeck) {
-      appState?.setCardsDeck((prev) => [...prev, getAvailableCards()[0]]);
+      appState?.setCardsDeck((prev) => [...prev, newCard]);
     }
   };
 
-  const getAvailableCards = () => {
-    let availableCards: string[] = [];
-    deck2.forEach((card) => {
-      if (!appState?.cardsDeck.includes(card)) availableCards.push(card);
-    });
-    return availableCards;
-  };
-
   useEffect(() => {
-    getAvailableCards().length === 0 ? setShowComponent(false) : setShowComponent(true);
+    getAvailableCards(fullCardDeck, currentCardDeck).length === 0 && !isCustomCardDeck
+      ? setShowComponent(false)
+      : setShowComponent(true);
   }, [appState?.cardsDeck]);
 
   return (

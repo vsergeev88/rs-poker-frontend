@@ -4,13 +4,25 @@ import { Typography } from '@material-ui/core';
 import type { FC } from 'react';
 import React from 'react';
 
+import { TIssue } from '../../data/types';
+
 interface ITitle {
   className?: string;
+  issues?: TIssue[] | undefined;
 }
+
+const showIssueTitleList = (issues: TIssue[] | undefined) => {
+  const maxNumberIssues: Number = 5;
+  let titleList: Array<String> = [];
+  issues &&
+    issues.map((el) => titleList.length < maxNumberIssues && titleList.push(el.name));
+  return titleList.join(', ');
+};
 
 export const TitleMain: FC<ITitle> = (props) => (
   <Typography className={props.className} variant="h4" component="h1" gutterBottom>
     {props.children}
+    {props.issues && showIssueTitleList(props.issues)}
   </Typography>
 );
 

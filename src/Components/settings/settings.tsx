@@ -5,7 +5,10 @@ import {
   Button,
   Collapse,
   Container,
+  FormControl,
   Grid,
+  MenuItem,
+  Select,
   Switch,
   TextField,
 } from '@material-ui/core';
@@ -13,19 +16,38 @@ import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useEffect, useState } from 'react';
 
 import { TitleAdd1, TitleAdd2 } from '../../Components/titles';
+import {
+  CARD_DECKS,
+  SETTING_CARD_DECK_NUM_DEF,
+  SETTING_IS_CAR_ROUND_DEF,
+  SETTING_IS_MASTER_AS_PLAYER_DEF,
+  SETTING_IS_SCORE_TYPE_ERROR_DEF,
+  SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF,
+  SETTING_IS_TIMER_NEED_DEF,
+  SETTING_ROUND_TIME_DEF,
+  SETTING_SCORE_TYPE_DEF,
+  SETTING_SCORE_TYPE_SHORT_DEF,
+} from '../../config';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { AddCard, Card } from '..';
 
 const Settings: FC = () => {
-  const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(false);
-  const [isCardRound, setIsCardRound] = useState(true);
-  const [isTimerNeed, setIsTimerNeed] = useState(true);
-  const [scoreType, setScoreType] = useState('Story point');
-  const [isScoreTypeError, setIsScoreTypeError] = useState(false);
-  const [scoreTypeShort, setScoreTypeShort] = useState('SP');
-  const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(false);
-  const [roundTime, setRoundTime] = useState(90);
+  const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(
+    SETTING_IS_MASTER_AS_PLAYER_DEF,
+  );
+  const [cardDeckNumber, setCardDeckNumber] = useState(SETTING_CARD_DECK_NUM_DEF);
+  const [isCardRound, setIsCardRound] = useState(SETTING_IS_CAR_ROUND_DEF);
+  const [isTimerNeed, setIsTimerNeed] = useState(SETTING_IS_TIMER_NEED_DEF);
+  const [scoreType, setScoreType] = useState(SETTING_SCORE_TYPE_DEF);
+  const [isScoreTypeError, setIsScoreTypeError] = useState(
+    SETTING_IS_SCORE_TYPE_ERROR_DEF,
+  );
+  const [scoreTypeShort, setScoreTypeShort] = useState(SETTING_SCORE_TYPE_SHORT_DEF);
+  const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(
+    SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF,
+  );
+  const [roundTime, setRoundTime] = useState(SETTING_ROUND_TIME_DEF);
   const [isSettingChanged, setSettingsChanged] = useState(false);
 
   const socket = useContext(SocketContext);
@@ -48,6 +70,7 @@ const Settings: FC = () => {
       {
         isGameStarted: false,
         isMasterAsPlayer,
+        cardDeckNumber,
         isCardRound,
         isTimerNeed,
         scoreType,
@@ -116,6 +139,44 @@ const Settings: FC = () => {
               }}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
+          </Grid>
+          <Grid item xs={8}>
+            <TitleAdd2>Deck of cards:</TitleAdd2>
+          </Grid>
+          <Grid item xs={3} className="d-flex justify-content-end">
+            <FormControl variant="outlined">
+              <Select
+                autoWidth={true}
+                id="deck-select"
+                className="deck-select"
+                defaultValue={SETTING_CARD_DECK_NUM_DEF}
+                onChange={(e) => {
+                  const cardDeckNumber = e.target.value as number;
+                  setCardDeckNumber(cardDeckNumber);
+                  // May be is not optimal solution
+                  appState?.setSettings({
+                    isGameStarted: false,
+                    isMasterAsPlayer,
+                    cardDeckNumber,
+                    isCardRound,
+                    isTimerNeed,
+                    scoreType,
+                    scoreTypeShort,
+                    roundTime,
+                  });
+                  appState?.setCardsDeck(
+                    cardDeckNumber > 0
+                      ? CARD_DECKS[cardDeckNumber].concat(CARD_DECKS[0])
+                      : CARD_DECKS[cardDeckNumber],
+                  );
+                  setSettingsChanged(true);
+                }}>
+                <MenuItem value={0}>Custom</MenuItem>
+                <MenuItem value={1}>Fibonacci</MenuItem>
+                <MenuItem value={2}>Cohn</MenuItem>
+                <MenuItem value={3}>Powers of two</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={8}>
             <TitleAdd2>Changing card in round end:</TitleAdd2>
@@ -208,7 +269,7 @@ const Settings: FC = () => {
             ? appState?.cardsDeck.map((el, key) => (
                 <Card
                   propCardValue={el}
-                  shortScoreType={'SP'}
+                  shortScoreType={scoreTypeShort}
                   allowEdit={true}
                   cardIndex={key}
                   key={key}

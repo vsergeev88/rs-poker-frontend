@@ -17,7 +17,7 @@ import {
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssue, TKickOptions, TPlayer } from '../../data/types';
+import { TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
   const [copyText, setCopyText] = useState<string | undefined>('');
@@ -96,21 +96,10 @@ const LobbyPage: FC = () => {
     return (usersLength ? usersLength : 0) > minNumberOfUsers;
   };
 
-  const showIssueTitleList = (issues: TIssue[] | undefined) => {
-    const maxNumberIssues: Number = 5;
-    let titleList: Array<String> = [];
-    issues &&
-      issues.map((el) => titleList.length < maxNumberIssues && titleList.push(el.name));
-    return titleList.join(', ');
-  };
-
   return (
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
-        <TitleMain>
-          Subject of discussion:&nbsp;
-          {appState?.issues && showIssueTitleList(appState?.issues)}
-        </TitleMain>
+        <TitleMain issues={appState?.issues}>Subject of discussion:</TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
