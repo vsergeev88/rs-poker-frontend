@@ -6,7 +6,7 @@ import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
+import { Card, Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
@@ -58,19 +58,27 @@ const GamePage: FC = () => {
     <Box className="game-page">
       <Container className="game-page__wrapper">
         <TitleMain className="title">
-          Spring 13 planning (issues 13, 533, 5623, 3252, 6623, ...)
+          Spring 13 planning (
+          {appState?.issues && appState?.issues.map((issue) => issue.name).join(', ')})
         </TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
           <TitleAdd1 className="text-center">Scram master:</TitleAdd1>
-          <Box className="card-master">
-            {appState?.users.length && (
-              <PlayerCard
-                player={appState?.users[0] as TPlayer}
-                key={appState?.users[0].playerId}
-                playersCount={appState?.users.length}
-                isMaster={isMaster}
+          <Box className="card-master-and-timer">
+            <Box className="card-master">
+              {appState?.users.length && (
+                <PlayerCard
+                  player={appState?.users[0] as TPlayer}
+                  key={appState?.users[0].playerId}
+                  playersCount={appState?.users.length}
+                  isMaster={isMaster}
+                />
+              )}
+            </Box>
+            {isMaster ? null : (
+              <Timer
+                time={appState?.settings.roundTime ? appState?.settings.roundTime : 0}
               />
             )}
           </Box>
@@ -86,42 +94,65 @@ const GamePage: FC = () => {
         </Box>
 
         {/******************** Issues Section ********************/}
-        <Box className="issues section" component="section">
-          <div className="issues__title">
-            <TitleAdd1 className="text-center">Issues:</TitleAdd1>
-          </div>
-          <Box className="issues__wrapper">
+        {isMaster ? (
+          <Box className="issues section" component="section">
+            <div className="issues__title">
+              <TitleAdd1 className="text-center">Issues:</TitleAdd1>
+            </div>
+            <Box className="issues__wrapper">
+              <Box className="cards-wrapper_column mb-20">
+                {appState?.issues &&
+                  appState?.issues.map((el) => (
+                    <Issue issue={el} isLobby={true} key={el.issueID} />
+                  ))}
+                <IssueAdd />
+              </Box>
+              <Box className="run__wrapper">
+                <Timer
+                  time={appState?.settings.roundTime ? appState?.settings.roundTime : 0}
+                />
+                <Button
+                  className="p-10"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClickRunRound}>
+                  Run Round
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        ) : (
+          <Box>
             <Box className="cards-wrapper_column mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (
-                  <Issue issue={el} isLobby={true} key={el.issueID} />
+                  <Issue issue={el} isLobby={false} key={el.issueID} />
                 ))}
-              <IssueAdd />
             </Box>
-            <Box className="run__wrapper">
-              <Timer time={120} />
-              <Button
-                className="p-10"
-                variant="contained"
-                color="primary"
-                onClick={handleClickRunRound}>
-                Run Round
-              </Button>
+            <Box className="cards-wrapper justify-content-center mb-20">
+              {appState?.cardsDeck.length
+                ? appState?.cardsDeck.map((el, key) => (
+                    <Card
+                      propCardValue={el}
+                      shortScoreType={'SP'}
+                      allowEdit={false}
+                      cardIndex={key}
+                      key={key}
+                    />
+                  ))
+                : ''}
             </Box>
           </Box>
-        </Box>
+        )}
       </Container>
+
+      {/******************** Aside Section ********************/}
       <Box className="aside section" component="section">
         <Box>
           <TitleAdd1 className="text-center">Score:</TitleAdd1>
           <Box className="cards__wrapper mb-20">
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={5} />
-            <ScoreCard score={null} />
-            <ScoreCard score={null} />
+            {appState?.users.length &&
+              appState?.users.map((el) => <ScoreCard score={null} key={el.playerId}/>)}
           </Box>
         </Box>
         <Box>
