@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 
 import { TitleAdd1, TitleAdd2 } from '../../Components/titles';
 import {
@@ -36,6 +37,7 @@ const Settings: FC = () => {
   const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(
     SETTING_IS_MASTER_AS_PLAYER_DEF,
   );
+  const [isMaster, setMaster] = useState(false);
   const [cardDeckNumber, setCardDeckNumber] = useState(SETTING_CARD_DECK_NUM_DEF);
   const [isCardRound, setIsCardRound] = useState(SETTING_IS_CAR_ROUND_DEF);
   const [isTimerNeed, setIsTimerNeed] = useState(SETTING_IS_TIMER_NEED_DEF);
@@ -52,7 +54,18 @@ const Settings: FC = () => {
 
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (appState?.users.length) {
+      const id = socket?.id;
+      const user = appState?.users.find((user) => user.playerId === id);
+      user ? setMaster(user?.master as boolean) : history.push('/');
+    } else {
+      history.push('/');
+    }
+  }, [appState?.users]);
 
   useEffect(() => {
     handleSaveSettings();
@@ -264,7 +277,7 @@ const Settings: FC = () => {
       <Container className="add-cards section" component="section">
         <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
         <Box className="cards-wrapper justify-content-start mb-20">
-          <AddCard />
+          {isMaster && <AddCard />}
           {appState?.cardsDeck.length
             ? appState?.cardsDeck.map((el, key) => (
                 <Card

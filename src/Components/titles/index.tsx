@@ -12,7 +12,7 @@ interface ITitle {
 }
 
 const showIssueTitleList = (issues: TIssue[] | undefined) => {
-  const maxNumberIssues: Number = 5;
+  const maxNumberIssues: Number = 1;
   let titleList: Array<String> = [];
   issues &&
     issues.map((el) => titleList.length < maxNumberIssues && titleList.push(el.name));

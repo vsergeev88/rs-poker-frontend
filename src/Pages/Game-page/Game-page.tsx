@@ -6,7 +6,16 @@ import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
+import {
+  AddCard,
+  Card,
+  Issue,
+  IssueAdd,
+  LinkToLobby,
+  PlayerCard,
+  ScoreCard,
+  Timer,
+} from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
@@ -19,6 +28,8 @@ const GamePage: FC = () => {
   const socket = useContext(SocketContext);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+
+  const roomId = appState?.users[0].playerId || '';
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -57,9 +68,7 @@ const GamePage: FC = () => {
   return (
     <Box className="game-page">
       <Container className="game-page__wrapper">
-        <TitleMain className="title">
-          Spring 13 planning (issues 13, 533, 5623, 3252, 6623, ...)
-        </TitleMain>
+        <TitleMain issues={appState?.issues}>Issue for vote: </TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -74,6 +83,7 @@ const GamePage: FC = () => {
               />
             )}
           </Box>
+          <LinkToLobby value={roomId} />
           <Box className="button-stop mb-20">
             <Button
               className="p-10"
@@ -94,9 +104,9 @@ const GamePage: FC = () => {
             <Box className="cards-wrapper_column mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (
-                  <Issue issue={el} isLobby={true} key={el.issueID} />
+                  <Issue issue={el} isLobby={isMaster} key={el.issueID} />
                 ))}
-              <IssueAdd />
+              {isMaster && <IssueAdd />}
             </Box>
             <Box className="run__wrapper">
               <Timer time={120} />
@@ -110,6 +120,25 @@ const GamePage: FC = () => {
             </Box>
           </Box>
         </Box>
+
+        {/******************** Add Cards Section ********************/}
+        <Container className="add-cards section" component="section">
+          <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
+          <Box className="cards-wrapper justify-content-start mb-20">
+            {isMaster && <AddCard />}
+            {appState?.cardsDeck.length
+              ? appState?.cardsDeck.map((el, key) => (
+                  <Card
+                    propCardValue={el}
+                    shortScoreType={appState?.settings.scoreTypeShort}
+                    allowEdit={true}
+                    cardIndex={key}
+                    key={key}
+                  />
+                ))
+              : ''}
+          </Box>
+        </Container>
       </Container>
       <Box className="aside section" component="section">
         <Box>
