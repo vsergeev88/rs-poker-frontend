@@ -71,10 +71,6 @@ const Settings: FC = () => {
     handleSaveSettings();
   }, []);
 
-  useEffect(() => {
-    console.log(appState?.settings);
-  }, [appState?.settings]);
-
   const handleSaveSettings = () => {
     const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;

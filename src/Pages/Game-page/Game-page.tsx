@@ -2,12 +2,12 @@ import './Game-page.scss';
 
 import { Box, Button, Container } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import { FC, useCallback, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
-  AddCard,
+  // AddCard,
   Card,
   Issue,
   IssueAdd,
@@ -50,7 +50,6 @@ const GamePage: FC = () => {
 
   const handleClickStopGame = () => {
     if (isMaster) {
-      const roomId = appState?.users[0].playerId;
       const cardsDeck = appState?.cardsDeck;
       const settings = { ...appState?.settings, isGameStarted: false, cardsDeck };
       socket?.emit('saveSettings', settings, roomId, (error: string) => {
@@ -63,7 +62,16 @@ const GamePage: FC = () => {
     }
   };
 
-  const handleClickRunRound = useCallback(() => console.log('runRound'), []);
+  const handleClickRunRound = () => {
+    const settings = {
+      ...appState?.settings,
+      isRoundStarted: true,
+      cardsDeck: appState?.cardsDeck,
+    };
+    socket?.emit('saveSettings', settings, roomId, (error: string) => {
+      if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+    });
+  };
 
   return (
     <Box className="game-page">
@@ -104,19 +112,29 @@ const GamePage: FC = () => {
             <Box className="cards-wrapper_column mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (
-                  <Issue issue={el} isLobby={isMaster} key={el.issueID} />
+                  <Issue
+                    issue={el}
+                    isLobby={false}
+                    key={el.issueID}
+                    isMaster={isMaster}
+                  />
                 ))}
               {isMaster && <IssueAdd />}
             </Box>
             <Box className="run__wrapper">
-              <Timer time={120} />
-              <Button
-                className="p-10"
-                variant="contained"
-                color="primary"
-                onClick={handleClickRunRound}>
-                Run Round
-              </Button>
+              <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
+              {isMaster && (
+                <Button
+                  className="p-10"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClickRunRound}
+                  disabled={
+                    !appState?.issues.length || appState?.settings.isRoundStarted
+                  }>
+                  Run Round
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
@@ -125,13 +143,13 @@ const GamePage: FC = () => {
         <Container className="add-cards section" component="section">
           <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
           <Box className="cards-wrapper justify-content-start mb-20">
-            {isMaster && <AddCard />}
+            {/* {isMaster && <AddCard />} */}
             {appState?.cardsDeck.length
               ? appState?.cardsDeck.map((el, key) => (
                   <Card
                     propCardValue={el}
                     shortScoreType={appState?.settings.scoreTypeShort}
-                    allowEdit={true}
+                    allowEdit={false}
                     cardIndex={key}
                     key={key}
                   />

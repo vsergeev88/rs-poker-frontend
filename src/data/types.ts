@@ -34,4 +34,5 @@ export type TSettings = {
   scoreType: string;
   scoreTypeShort: string;
   roundTime: number;
+  isRoundStarted?: boolean;
 };
