@@ -19,11 +19,17 @@ const IssueAdd: FC = () => {
   const appState = useContext(AppContext);
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleKickPlayer = () => {
+  const handleAddIssue = () => {
     const roomId = appState?.users[0].playerId;
-    socket?.emit('addIssue', { name, link, priority }, roomId, (error: string) => {
-      enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
-    });
+    const current = appState?.issues.length === 0;
+    socket?.emit(
+      'addIssue',
+      { name, link, priority, current },
+      roomId,
+      (error: string) => {
+        enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+      },
+    );
     closeDialog();
   };
 
@@ -52,7 +58,7 @@ const IssueAdd: FC = () => {
             closeDialog();
           }}
           handlePositive={() => {
-            handleKickPlayer();
+            handleAddIssue();
           }}
           isOpen={openDialog}
           anotherButtons={true}>
