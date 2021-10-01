@@ -3,7 +3,7 @@
   max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 1fr 500px;
   min-height: calc(100vh - 134px);
 
   &__wrapper {
@@ -49,3 +49,43 @@
     gap: 10px;
   }
 }
+
+@media (max-width: 1110px) {
+  .game-page {
+    grid-template-columns: 1fr 400px;
+  }
+
+  .aside {
+    gap: 10px;
+    padding: 50px 15px;
+  }
+}
+
+@media (max-width: 980px) {
+  .game-page {
+    display: block;
+
+    &__wrapper {
+      border: none;
+    }
+  }
+
+  .aside {
+    gap: 15px;
+    padding: 10px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .issues__wrapper {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aside {
+    gap: 20px;
+    padding: 10px 20px;
+  }
+}
+

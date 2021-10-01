@@ -3,7 +3,7 @@
 .add-issue_container {
   position: relative;
   padding: 0 10px;
-  width: 290px;
+  width: 260px;
   height: 75px;
   box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
   border-radius: 5px;
@@ -47,4 +47,14 @@
   grid-row-gap: 20px;
   column-gap: 20px;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .add-issue_container {
+    width: 250px;
+  }
+
+  .props-container {
+    width: 85%;
+  }
 }

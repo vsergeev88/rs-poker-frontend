@@ -1,10 +1,9 @@
 import { Box, Container } from '@material-ui/core';
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext } from 'react';
 
-import { Card, Issue} from '../../Components';
+import { Card, Issue } from '../../Components';
 import { TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
-import { SocketContext } from '../../content/socket';
 
 const GameResult: FC = () => {
   const appState = useContext(AppContext);
@@ -20,8 +19,8 @@ const GameResult: FC = () => {
           <Box className="cards-wrapper_column mb-20">
             {appState?.issues &&
               appState?.issues.map((el) => (
-                <Box>
-                  <Issue issue={el} isLobby={true} key={el.issueID} />
+                <Box key={el.issueID}>
+                  <Issue issue={el} isLobby={false} />
                   <Box className="cards-wrapper justify-content-start mb-20">
                     {appState?.cardsDeck.length
                       ? appState?.cardsDeck.map((el, key) => (
