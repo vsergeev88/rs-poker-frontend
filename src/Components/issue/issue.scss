@@ -12,6 +12,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.15s ease-in;
 
   .current-cover {
     padding: 0 10px;
@@ -137,6 +138,18 @@
   transition: all 0.15s ease-in;
 }
 
-.active:hover {
+.issue_active:hover {
   cursor: pointer;
+}
+
+.issue_fade {
+  cursor: default;
+  box-shadow: none;
+  background-color: lightgrey;
+  transition: all 0.15s ease-in;
+}
+
+.issue_fade:hover {
+  cursor: default;
+  box-shadow: none;
 }

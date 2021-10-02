@@ -14,6 +14,7 @@ import React from 'react';
 
 import { CARD_DECKS, DECK_ACTION, SETTING_CARD_DECK_NUM_DEF } from '../../config';
 import { AppContext } from '../../content/app-state';
+import { SocketContext } from '../../content/socket';
 import { getAvailableCards, isNewValueCustomCardWell } from './function';
 
 interface IProps {
@@ -36,6 +37,7 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
   const [newCardValue, setNewCardValue] = useState('');
 
   const appState = useContext(AppContext);
+  const socket = useContext(SocketContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const currentCardDeckNumber = appState?.settings.cardDeckNumber || 0;
@@ -58,6 +60,15 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
       setShowEditBtn(true);
     }
   }, [appState?.cardsDeck, menuItems.length]);
+
+  useEffect(() => {
+    const currentIssue = appState?.issues.find((el) => el.current === true);
+    if (socket?.id && currentIssue?.poolResults?.votes[socket?.id]) {
+      setChecked(propCardValue === currentIssue?.poolResults?.votes[socket?.id]);
+    } else {
+      setChecked(false);
+    }
+  }, [appState?.issues]);
 
   const handleClose = () => {
     setEditMode(false);
@@ -106,13 +117,28 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
     }
   };
 
+  const handleCheckCard = () => {
+    if (appState?.settings.isRoundStarted) {
+      const currentIssue = appState?.issues.find((el) => el.current === true);
+      socket?.emit(
+        'setIssueVote',
+        socket?.id,
+        currentIssue?.issueID,
+        !checked ? propCardValue : 'NONE',
+        (error: string) => {
+          if (error) console.error('Error: ' + error);
+        },
+      );
+    }
+  };
+
   return (
     <div
       role="none"
-      className={`card_container ${allowEdit ? '' : 'active-card'}`}
-      onClick={() => {
-        setChecked(!checked);
-      }}>
+      className={`card_container ${
+        allowEdit || !appState?.settings.isRoundStarted ? '' : 'active-card'
+      }`}
+      onClick={handleCheckCard}>
       <div className="top-wrapper">
         {!editMode && (
           <span className={`card-value_text ${isCardAction ? 'action-card' : ''}`}>

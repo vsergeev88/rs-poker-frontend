@@ -3,7 +3,7 @@ import './score-card.scss';
 import React from 'react';
 
 interface IProps {
-  score: number | null;
+  score: string | null;
 }
 
 export default function ScoreCard({ score }: IProps) {

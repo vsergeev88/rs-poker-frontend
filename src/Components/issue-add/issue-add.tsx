@@ -22,9 +22,13 @@ const IssueAdd: FC = () => {
   const handleAddIssue = () => {
     const roomId = appState?.users[0].playerId;
     const current = appState?.issues.length === 0;
+    const poolResults = {
+      votes: new Map<string, string>(),
+      isVotingPassed: false,
+    };
     socket?.emit(
       'addIssue',
-      { name, link, priority, current },
+      { name, link, priority, current, poolResults },
       roomId,
       (error: string) => {
         enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
@@ -34,7 +38,7 @@ const IssueAdd: FC = () => {
   };
 
   const handleClickOpen = () => {
-    setDialog(true);
+    if (!appState?.settings.isRoundStarted) setDialog(true);
   };
 
   const closeDialog = () => {
@@ -48,7 +52,12 @@ const IssueAdd: FC = () => {
 
   return (
     <>
-      <div role="none" className="add-issue_container" onClick={handleClickOpen}>
+      <div
+        role="none"
+        className={`add-issue_container ${
+          !appState?.settings.isRoundStarted ? 'add-issue_active' : ''
+        }`}
+        onClick={handleClickOpen}>
         <span>Create new Issue</span>
         <ControlPoint className="add-issue_icon" />
       </div>
