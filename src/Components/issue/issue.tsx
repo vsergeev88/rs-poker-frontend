@@ -1,7 +1,14 @@
 import './issue.scss';
 
 import { Radio, TextField } from '@material-ui/core';
-import { CheckCircle, Delete, DeleteOutline, Edit } from '@material-ui/icons';
+import {
+  CheckBox,
+  CheckBoxOutlineBlank,
+  CheckCircle,
+  Delete,
+  DeleteOutline,
+  Edit,
+} from '@material-ui/icons';
 import React, { FC, useContext, useState } from 'react';
 
 import { ISSUE_CARD_NAME_LENGTH } from '../../config';
@@ -18,7 +25,7 @@ interface IProps {
 }
 
 const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
-  const { issueID, name, current, priority, link } = issue;
+  const { issueID, name, current, priority, link, poolResults } = issue;
   const [editMode, setEditMode] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
   const [openDelDialog, setDelDialog] = useState(false);
@@ -111,6 +118,12 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
         )}
         <span className="issue-priority_text">{priority} priority</span>
       </div>
+      {!isLobby &&
+        (poolResults?.isVotingPassed ? (
+          <CheckBox className="check-icon" />
+        ) : (
+          <CheckBoxOutlineBlank className="not-check-icon" />
+        ))}
       {isLobby && (
         <>
           <Edit className="edit-icon" onClick={handleOpen} />

@@ -11,6 +11,11 @@ export type TPlayer = {
 
 export type TPriority = 'Low' | 'Middle' | 'Hight';
 
+export type TPoolResults = {
+  votes: Record<string, string>;
+  isVotingPassed: boolean;
+};
+
 export type TIssue = {
   issueID: string;
   name: string;
@@ -18,10 +23,7 @@ export type TIssue = {
   link: string;
   current: boolean;
   room?: string;
-  poolResults?: {
-    votes: Record<string, string>;
-    isVotingPassed: boolean;
-  };
+  poolResults?: TPoolResults;
 };
 
 export type TKickOptions = {

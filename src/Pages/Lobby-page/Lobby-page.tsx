@@ -33,11 +33,6 @@ const LobbyPage: FC = () => {
   const roomId = appState?.users.length ? appState?.users[0].playerId : '';
 
   useEffect(() => {
-    console.log(appState?.settings);
-    // console.log(appState?.cardsDeck);
-  }, [appState?.settings, appState?.cardsDeck]);
-
-  useEffect(() => {
     if (appState?.users.length) {
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
