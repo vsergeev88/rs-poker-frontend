@@ -49,3 +49,13 @@
   column-gap: 20px;
   align-items: center;
 }
+
+@media (max-width: 768px) {
+  .add-issue_container {
+    width: 250px;
+  }
+
+  .props-container {
+    width: 85%;
+  }
+}

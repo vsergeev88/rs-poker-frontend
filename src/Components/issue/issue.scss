@@ -153,3 +153,9 @@
   cursor: default;
   box-shadow: none;
 }
+
+@media (max-width: 768px) {
+  .issue_container {
+    width: 250px;
+  }
+}

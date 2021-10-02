@@ -13,6 +13,7 @@
     .message_container {
       margin: 10px 0;
       display: flex;
+      gap: 10px;
       justify-content: space-between;
     }
 
@@ -32,6 +33,7 @@
     padding-top: 10px;
     width: 100%;
     display: flex;
+    gap: 10px;
     justify-content: space-between;
 
     .input_props {
@@ -42,5 +44,25 @@
       align-self: end;
       height: 40px;
     }
+  }
+}
+
+@media (max-width: 1110px) {
+  .chat_wrapper {
+    width: 380px;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat_wrapper {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat_wrapper {
+    max-width: 680px;
+    width: 100%;
+    margin-top: 0;
   }
 }

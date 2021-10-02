@@ -20,3 +20,9 @@
     color: black;
   } 
 }
+
+@media (max-width: 768px) {
+  .timer {
+    width: 150px;
+  }
+}

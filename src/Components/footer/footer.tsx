@@ -9,7 +9,7 @@ const Footer: FC = () => (
   <div className="footer">
     <div className="footer-container">
       {' '}
-      <div className="footer-text">2021</div>
+      <div className="footer-text_desktop">2021</div>
       <a
         className="link-footer"
         target="_blank"
@@ -41,6 +41,7 @@ const Footer: FC = () => (
         href="https://rs.school/js/">
         <img src="https://rs.school/images/rs_school_js.svg" alt="rs_school" />
       </a>
+      <div className="footer-text_mobile">2021</div>
     </div>
   </div>
 );

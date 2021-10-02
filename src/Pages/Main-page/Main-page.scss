@@ -38,7 +38,36 @@
   .input-wrapper {
     width: 50%;
     display: flex;
+    gap: 10px;
     justify-content: space-between;
     align-items: center;
+  }
+
+  @media (max-width: 880px) {
+    .input-wrapper {
+      width: 65%;
+    }
+  }
+
+  @media (max-width: 670px) {
+    .input-wrapper {
+      width: 75%;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .input-wrapper {
+      width: 85%;
+    }
+    .large-text {
+      font-size: 40px;
+    }
+  }
+
+}
+
+@media (max-width: 880px) {
+  .main-page {
+    min-height: calc(100vh - 290px);
   }
 }
