@@ -27,8 +27,8 @@ const Header: FC = () => {
           </Link>
         </li>
         <li>
-          <Link to="/test" className="header-link">
-            Test
+          <Link to="/game-result" className="header-link">
+            Game-result
           </Link>
         </li>
       </ul>

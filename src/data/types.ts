@@ -18,6 +18,10 @@ export type TIssue = {
   link: string;
   current: boolean;
   room?: string;
+  poolResults?: {
+    votes: Record<string, string>;
+    isVotingPassed: boolean;
+  };
 };
 
 export type TKickOptions = {
@@ -34,4 +38,5 @@ export type TSettings = {
   scoreType: string;
   scoreTypeShort: string;
   roundTime: number;
+  isRoundStarted?: boolean;
 };

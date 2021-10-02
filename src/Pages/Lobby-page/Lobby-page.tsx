@@ -1,6 +1,6 @@
 import './Lobby-page.scss';
 
-import { Box, Button, Container, TextField } from '@material-ui/core';
+import { Box, Button, Container } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
@@ -11,6 +11,7 @@ import {
   Issue,
   IssueAdd,
   KickMessage,
+  LinkToLobby,
   PlayerCard,
   Settings,
 } from '../../Components';
@@ -20,8 +21,6 @@ import { SocketContext } from '../../content/socket';
 import { TKickOptions, TPlayer } from '../../data/types';
 
 const LobbyPage: FC = () => {
-  const [copyText, setCopyText] = useState<string | undefined>('');
-  const [copyTextBtn, setCopyTextBtn] = useState('Copy');
   const [isMaster, setMaster] = useState(false);
   const [showKickMessage, setKickMessage] = useState(false);
   const [kickOptions, setKickOptions] = useState<TKickOptions | {}>({});
@@ -31,13 +30,18 @@ const LobbyPage: FC = () => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
+  const roomId = appState?.users.length ? appState?.users[0].playerId : '';
+
+  useEffect(() => {
+    console.log(appState?.settings);
+    // console.log(appState?.cardsDeck);
+  }, [appState?.settings, appState?.cardsDeck]);
+
   useEffect(() => {
     if (appState?.users.length) {
       const id = socket?.id;
       const user = appState?.users.find((user) => user.playerId === id);
       user ? setMaster(user?.master as boolean) : history.push('/');
-
-      setCopyText(appState?.users[0].playerId);
     } else {
       history.push('/');
     }
@@ -64,7 +68,7 @@ const LobbyPage: FC = () => {
   }, []);
 
   const startGame = () => {
-    const roomId = appState?.users[0].playerId;
+    // const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;
     const settings = { ...appState?.settings, isGameStarted: true, cardsDeck };
     socket?.emit('saveSettings', settings, roomId, (error: string) => {
@@ -75,20 +79,12 @@ const LobbyPage: FC = () => {
   };
 
   const cancelGame = () => {
-    const roomId = appState?.users[0].playerId;
+    // const roomId = appState?.users[0].playerId;
     socket?.emit('cancelGame', roomId, 'Game was closed by master!');
   };
 
   const exitGame = () => {
     socket?.emit('kickPlayer', socket?.id, 'just left the game');
-  };
-
-  const copyUrlLobby = (copyText: string | undefined) => {
-    if (copyText) {
-      navigator.clipboard.writeText(copyText);
-      setCopyTextBtn('Copied');
-      enqueueSnackbar('Copied', { variant: 'success' });
-    }
   };
 
   const isMemberSectionShow = (usersLength: number | undefined) => {
@@ -99,7 +95,7 @@ const LobbyPage: FC = () => {
   return (
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
-        <TitleMain issues={appState?.issues}>Subject of discussion:</TitleMain>
+        <TitleMain issues={appState?.issues}>Issue for vote: </TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -114,35 +110,9 @@ const LobbyPage: FC = () => {
               />
             )}
           </Box>
+          <LinkToLobby value={roomId} />
           {isMaster ? (
             <>
-              <Box className="link-to-lobby">
-                <TitleAdd1 className="label-link-to-lobby text-center">
-                  Lobby ID:
-                </TitleAdd1>
-                <Box className="copy-to-lobby">
-                  <TextField
-                    disabled
-                    className="input-link-to-label"
-                    id="outlined-helperText"
-                    value={copyText}
-                    variant="outlined"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    onChange={(e) => {
-                      setCopyText(e.target.value);
-                      setCopyTextBtn('Copy');
-                    }}
-                  />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => copyUrlLobby(copyText)}>
-                    {copyTextBtn}
-                  </Button>
-                </Box>
-              </Box>
               <Box className="buttons-game mt-20 mb-20">
                 <Button
                   className="p-10"

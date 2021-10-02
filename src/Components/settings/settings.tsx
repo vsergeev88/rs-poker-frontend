@@ -2,7 +2,6 @@ import './settings.scss';
 
 import {
   Box,
-  Button,
   Collapse,
   Container,
   FormControl,
@@ -14,70 +13,52 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 
 import { TitleAdd1, TitleAdd2 } from '../../Components/titles';
 import {
   CARD_DECKS,
   SETTING_CARD_DECK_NUM_DEF,
-  SETTING_IS_CAR_ROUND_DEF,
-  SETTING_IS_MASTER_AS_PLAYER_DEF,
   SETTING_IS_SCORE_TYPE_ERROR_DEF,
   SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF,
-  SETTING_IS_TIMER_NEED_DEF,
-  SETTING_ROUND_TIME_DEF,
-  SETTING_SCORE_TYPE_DEF,
-  SETTING_SCORE_TYPE_SHORT_DEF,
 } from '../../config';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { AddCard, Card } from '..';
 
 const Settings: FC = () => {
-  const [isMasterAsPlayer, setIsMasterAsPlayer] = useState(
-    SETTING_IS_MASTER_AS_PLAYER_DEF,
-  );
-  const [cardDeckNumber, setCardDeckNumber] = useState(SETTING_CARD_DECK_NUM_DEF);
-  const [isCardRound, setIsCardRound] = useState(SETTING_IS_CAR_ROUND_DEF);
-  const [isTimerNeed, setIsTimerNeed] = useState(SETTING_IS_TIMER_NEED_DEF);
-  const [scoreType, setScoreType] = useState(SETTING_SCORE_TYPE_DEF);
+  const [isMaster, setMaster] = useState(false);
   const [isScoreTypeError, setIsScoreTypeError] = useState(
     SETTING_IS_SCORE_TYPE_ERROR_DEF,
   );
-  const [scoreTypeShort, setScoreTypeShort] = useState(SETTING_SCORE_TYPE_SHORT_DEF);
   const [isScoreTypeShortError, setIsScoreTypeShortError] = useState(
     SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF,
   );
-  const [roundTime, setRoundTime] = useState(SETTING_ROUND_TIME_DEF);
-  const [isSettingChanged, setSettingsChanged] = useState(false);
 
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (appState?.users.length) {
+      const id = socket?.id;
+      const user = appState?.users.find((user) => user.playerId === id);
+      user ? setMaster(user?.master as boolean) : history.push('/');
+    } else {
+      history.push('/');
+    }
+  }, [appState?.users]);
 
   useEffect(() => {
     handleSaveSettings();
   }, []);
 
-  useEffect(() => {
-    console.log(appState?.settings);
-  }, [appState?.settings]);
-
   const handleSaveSettings = () => {
     const roomId = appState?.users[0].playerId;
-    const cardsDeck = appState?.cardsDeck;
     socket?.emit(
       'saveSettings',
-      {
-        isGameStarted: false,
-        isMasterAsPlayer,
-        cardDeckNumber,
-        isCardRound,
-        isTimerNeed,
-        scoreType,
-        scoreTypeShort,
-        roundTime,
-        cardsDeck,
-      },
+      { ...appState?.settings, cardsDeck: appState?.cardsDeck },
       roomId,
       (error: string) => {
         error
@@ -85,57 +66,60 @@ const Settings: FC = () => {
           : enqueueSnackbar('Settings saved!', { variant: 'success' });
       },
     );
-    setSettingsChanged(false);
   };
 
-  const handleChangeScoreTypeShort = (event: string) => {
+  const handleChangeScoreTypeShort = (value: string) => {
     const maxLength = 2;
-    if (event.length > maxLength) {
+    let scoreTypeShort = value;
+    if (value.length > maxLength) {
       setIsScoreTypeShortError(true);
-      setScoreTypeShort(event.substring(0, maxLength));
+      scoreTypeShort = value.substring(0, maxLength);
     } else {
       setIsScoreTypeShortError(false);
-      setScoreTypeShort(event);
     }
+    appState?.setSettings({
+      ...appState?.settings,
+      scoreTypeShort: scoreTypeShort.toUpperCase(),
+    });
   };
 
-  const handleChangeScoreType = (event: string) => {
+  const handleChangeScoreType = (value: string) => {
     const maxLength = 15;
-    if (event.length > maxLength) {
+    let scoreType = value;
+    if (value.length > maxLength) {
       setIsScoreTypeError(true);
-      setScoreType(event.substring(0, maxLength));
+      scoreType = value.substring(0, maxLength);
     } else {
       setIsScoreTypeError(false);
-      setScoreType(event);
     }
+    appState?.setSettings({ ...appState?.settings, scoreType });
+  };
+
+  const handleRoundTimeChange = (value: number) => {
+    appState?.setSettings({
+      ...appState?.settings,
+      roundTime: value < 0 ? 0 : value,
+    });
   };
 
   return (
     <>
       <Container className="setting section" component="section">
         <TitleAdd1 className="setting-issues text-center">Game settings:</TitleAdd1>
-        <Box className="buttons-game mt-20 mb-20">
-          <Button
-            className="p-10"
-            variant="contained"
-            color="primary"
-            disabled={!isSettingChanged}
-            onClick={handleSaveSettings}>
-            Save Settings
-          </Button>
-        </Box>
         <Grid className="setting-grid" container spacing={3}>
           <Grid item xs={8}>
             <TitleAdd2>Scram master as player:</TitleAdd2>
           </Grid>
           <Grid item xs={1}>
             <Switch
-              checked={isMasterAsPlayer}
+              checked={appState?.settings.isMasterAsPlayer}
               color="primary"
               name="masterAsPlayer"
               onChange={() => {
-                setIsMasterAsPlayer(!isMasterAsPlayer);
-                setSettingsChanged(true);
+                appState?.setSettings({
+                  ...appState?.settings,
+                  isMasterAsPlayer: !appState?.settings.isMasterAsPlayer,
+                });
               }}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
@@ -152,24 +136,15 @@ const Settings: FC = () => {
                 defaultValue={SETTING_CARD_DECK_NUM_DEF}
                 onChange={(e) => {
                   const cardDeckNumber = e.target.value as number;
-                  setCardDeckNumber(cardDeckNumber);
-                  // May be is not optimal solution
                   appState?.setSettings({
-                    isGameStarted: false,
-                    isMasterAsPlayer,
+                    ...appState?.settings,
                     cardDeckNumber,
-                    isCardRound,
-                    isTimerNeed,
-                    scoreType,
-                    scoreTypeShort,
-                    roundTime,
                   });
                   appState?.setCardsDeck(
                     cardDeckNumber > 0
                       ? CARD_DECKS[cardDeckNumber].concat(CARD_DECKS[0])
                       : CARD_DECKS[cardDeckNumber],
                   );
-                  setSettingsChanged(true);
                 }}>
                 <MenuItem value={0}>Custom</MenuItem>
                 <MenuItem value={1}>Fibonacci</MenuItem>
@@ -183,12 +158,14 @@ const Settings: FC = () => {
           </Grid>
           <Grid item xs={1}>
             <Switch
-              checked={isCardRound}
+              checked={appState?.settings.isCardRound}
               color="primary"
               name="cardRound"
               onChange={() => {
-                setIsCardRound(!isCardRound);
-                setSettingsChanged(true);
+                appState?.setSettings({
+                  ...appState?.settings,
+                  isCardRound: !appState?.settings.isCardRound,
+                });
               }}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
@@ -198,12 +175,14 @@ const Settings: FC = () => {
           </Grid>
           <Grid item xs={1}>
             <Switch
-              checked={isTimerNeed}
+              checked={appState?.settings.isTimerNeed}
               color="primary"
               name="timerNeed"
               onChange={() => {
-                setIsTimerNeed(!isTimerNeed);
-                setSettingsChanged(true);
+                appState?.setSettings({
+                  ...appState?.settings,
+                  isTimerNeed: !appState?.settings.isTimerNeed,
+                });
               }}
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
@@ -216,10 +195,9 @@ const Settings: FC = () => {
               error={isScoreTypeError}
               id="setting-scrore-type"
               variant="outlined"
-              defaultValue={scoreType}
+              value={appState?.settings.scoreType}
               onChange={(e) => {
                 handleChangeScoreType(e.target.value);
-                setSettingsChanged(true);
               }}
             />
           </Grid>
@@ -231,15 +209,14 @@ const Settings: FC = () => {
               error={isScoreTypeShortError}
               id="setting-scrore-type"
               variant="outlined"
-              defaultValue={scoreTypeShort}
+              value={appState?.settings.scoreTypeShort}
               onChange={(e) => {
                 handleChangeScoreTypeShort(e.target.value);
-                setSettingsChanged(true);
               }}
             />
           </Grid>
         </Grid>
-        <Collapse in={isTimerNeed} timeout={500}>
+        <Collapse in={appState?.settings.isTimerNeed} timeout={500}>
           <Grid className="setting-grid mt-10" container spacing={3}>
             <Grid item xs={10}>
               <TitleAdd2>Round time (sec):</TitleAdd2>
@@ -247,11 +224,10 @@ const Settings: FC = () => {
             <Grid item xs={2}>
               <TextField
                 id="time"
-                defaultValue={roundTime}
+                value={appState?.settings.roundTime}
                 variant="outlined"
                 onChange={(e) => {
-                  setRoundTime(+e.target.value);
-                  setSettingsChanged(true);
+                  handleRoundTimeChange(+e.target.value);
                 }}
                 type="number"
               />
@@ -264,12 +240,12 @@ const Settings: FC = () => {
       <Container className="add-cards section" component="section">
         <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
         <Box className="cards-wrapper justify-content-start mb-20">
-          <AddCard />
+          {isMaster && <AddCard />}
           {appState?.cardsDeck.length
             ? appState?.cardsDeck.map((el, key) => (
                 <Card
                   propCardValue={el}
-                  shortScoreType={scoreTypeShort}
+                  shortScoreType={appState?.settings.scoreTypeShort}
                   allowEdit={true}
                   cardIndex={key}
                   key={key}

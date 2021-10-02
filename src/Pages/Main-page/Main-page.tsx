@@ -33,6 +33,7 @@ const MainPage: FC = () => {
         scoreType,
         scoreTypeShort,
         roundTime,
+        isRoundStarted,
         cardsDeck,
       } = settings;
       appState?.setSettings({
@@ -44,6 +45,7 @@ const MainPage: FC = () => {
         scoreType,
         scoreTypeShort,
         roundTime,
+        isRoundStarted,
       });
       appState?.setCardsDeck(cardsDeck);
     });

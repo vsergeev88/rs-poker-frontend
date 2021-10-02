@@ -9,6 +9,7 @@ import Issue from './issue';
 import IssueAdd from './issue-add';
 import KickDialog from './kick-player-dialog';
 import KickMessage from './kick-player-message';
+import LinkToLobby from './link-to-lobby';
 import PlayerCard from './player-card';
 import ScoreCard from './score-card';
 import Settings from './settings';
@@ -27,6 +28,7 @@ export {
   IssueAdd,
   KickDialog,
   KickMessage,
+  LinkToLobby,
   PlayerCard,
   ScoreCard,
   Settings,

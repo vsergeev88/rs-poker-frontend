@@ -2,11 +2,20 @@ import './Game-page.scss';
 
 import { Box, Button, Container } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import { FC, useCallback, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Issue, IssueAdd, PlayerCard, ScoreCard, Timer } from '../../Components';
+import {
+  // AddCard,
+  Card,
+  Issue,
+  IssueAdd,
+  LinkToLobby,
+  PlayerCard,
+  ScoreCard,
+  Timer,
+} from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
@@ -19,6 +28,8 @@ const GamePage: FC = () => {
   const socket = useContext(SocketContext);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+
+  const roomId = appState?.users[0].playerId || '';
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -39,9 +50,12 @@ const GamePage: FC = () => {
 
   const handleClickStopGame = () => {
     if (isMaster) {
-      const roomId = appState?.users[0].playerId;
-      const cardsDeck = appState?.cardsDeck;
-      const settings = { ...appState?.settings, isGameStarted: false, cardsDeck };
+      const settings = {
+        ...appState?.settings,
+        isGameStarted: false,
+        isRoundStarted: false,
+        cardsDeck: appState?.cardsDeck,
+      };
       socket?.emit('saveSettings', settings, roomId, (error: string) => {
         error
           ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
@@ -52,14 +66,21 @@ const GamePage: FC = () => {
     }
   };
 
-  const handleClickRunRound = useCallback(() => console.log('runRound'), []);
+  const handleClickRunRound = () => {
+    const settings = {
+      ...appState?.settings,
+      isRoundStarted: true,
+      cardsDeck: appState?.cardsDeck,
+    };
+    socket?.emit('saveSettings', settings, roomId, (error: string) => {
+      if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+    });
+  };
 
   return (
     <Box className="game-page">
       <Container className="game-page__wrapper">
-        <TitleMain className="title">
-          Spring 13 planning (issues 13, 533, 5623, 3252, 6623, ...)
-        </TitleMain>
+        <TitleMain issues={appState?.issues}>Issue for vote: </TitleMain>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -74,6 +95,7 @@ const GamePage: FC = () => {
               />
             )}
           </Box>
+          <LinkToLobby value={roomId} />
           <Box className="button-stop mb-20">
             <Button
               className="p-10"
@@ -94,34 +116,60 @@ const GamePage: FC = () => {
             <Box className="cards-wrapper_column mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (
-                  <Issue issue={el} isLobby={true} key={el.issueID} />
+                  <Issue
+                    issue={el}
+                    isLobby={false}
+                    key={el.issueID}
+                    isMaster={isMaster}
+                  />
                 ))}
-              <IssueAdd />
+              {isMaster && <IssueAdd />}
             </Box>
             <Box className="run__wrapper">
-              <Timer time={120} />
-              <Button
-                className="p-10"
-                variant="contained"
-                color="primary"
-                onClick={handleClickRunRound}>
-                Run Round
-              </Button>
+              <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
+              {isMaster && (
+                <Button
+                  className="p-10"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClickRunRound}
+                  disabled={
+                    !appState?.issues.length || appState?.settings.isRoundStarted
+                  }>
+                  Run Round
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
+
+        {/******************** Add Cards Section ********************/}
+        <Container className="add-cards section" component="section">
+          <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
+          <Box className="cards-wrapper justify-content-start mb-20">
+            {/* {isMaster && <AddCard />} */}
+            {appState?.cardsDeck.length
+              ? appState?.cardsDeck.map((el, key) => (
+                  <Card
+                    propCardValue={el}
+                    shortScoreType={appState?.settings.scoreTypeShort}
+                    allowEdit={false}
+                    cardIndex={key}
+                    key={key}
+                  />
+                ))
+              : ''}
+          </Box>
+        </Container>
       </Container>
       <Box className="aside section" component="section">
         <Box>
           <TitleAdd1 className="text-center">Score:</TitleAdd1>
           <Box className="cards__wrapper mb-20">
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={5} />
-            <ScoreCard score={null} />
-            <ScoreCard score={null} />
+            {appState?.users.length &&
+              appState?.users
+                // .filter((e) => !e.master) // alow master to participate depends of settings
+                .map((el) => <ScoreCard score={el.name} key={el.playerId} />)}
           </Box>
         </Box>
         <Box>

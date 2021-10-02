@@ -5,6 +5,7 @@ import { CheckCircle, Delete, DeleteOutline, Edit } from '@material-ui/icons';
 import React, { FC, useContext, useState } from 'react';
 
 import { ISSUE_CARD_NAME_LENGTH } from '../../config';
+import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { TIssue, TPriority } from '../../data/types';
 import { truncate } from '../../utils/formatters';
@@ -13,17 +14,20 @@ import CustomDialog from '../dialog';
 interface IProps {
   issue: TIssue;
   isLobby: boolean;
+  isMaster?: boolean;
 }
 
-const Issue: FC<IProps> = ({ issue, isLobby }) => {
-  const { issueID, name, current, priority, link, room } = issue;
+const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
+  const { issueID, name, current, priority, link } = issue;
   const [editMode, setEditMode] = useState(false);
   const [mouseOver, setMouseOver] = useState(false);
   const [openDelDialog, setDelDialog] = useState(false);
   const [checkedPriority, setPriority] = useState(priority);
   const [changedName, setName] = useState(name);
   const [changedLink, setLink] = useState(link);
+
   const socket = useContext(SocketContext);
+  const appState = useContext(AppContext);
 
   const handleOpen = () => {
     setEditMode(true);
@@ -33,12 +37,10 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
     socket?.emit(
       'editIssue',
       {
-        issueID,
+        ...issue,
         name: changedName,
-        current,
         priority: checkedPriority,
         link: changedLink,
-        room,
       },
       (issueID: string) => {
         console.log('issue changed: ' + issueID);
@@ -49,6 +51,24 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPriority(event.target.value as TPriority);
+  };
+
+  const handleIssueChoose = () => {
+    if (appState?.issues.length && !appState?.settings.isRoundStarted) {
+      if (isMaster) {
+        if (!current) {
+          appState?.issues.forEach((el) => {
+            socket?.emit(
+              'editIssue',
+              { ...el, current: el.issueID === issueID },
+              (issueID: string) => {
+                console.log('issue changed: ' + issueID);
+              },
+            );
+          });
+        }
+      }
+    }
   };
 
   const closeDelDialog = () => {
@@ -65,7 +85,12 @@ const Issue: FC<IProps> = ({ issue, isLobby }) => {
   };
 
   return (
-    <div role="none" className="issue_container">
+    <div
+      role="none"
+      className={`issue_container ${!isLobby && isMaster ? 'issue_active' : ''}${
+        appState?.settings.isRoundStarted ? ' issue_fade' : ''
+      }`}
+      onClick={handleIssueChoose}>
       {!isLobby && current && <div className="current-cover"></div>}
       <div className="issue-info_container">
         {!isLobby && current && <span className="current-issue_text">current</span>}
