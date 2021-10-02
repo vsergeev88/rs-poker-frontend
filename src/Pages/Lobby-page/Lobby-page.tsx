@@ -30,7 +30,12 @@ const LobbyPage: FC = () => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
-  const roomId = appState?.users[0].playerId || '';
+  const roomId = appState?.users.length ? appState?.users[0].playerId : '';
+
+  useEffect(() => {
+    console.log(appState?.settings);
+    // console.log(appState?.cardsDeck);
+  }, [appState?.settings, appState?.cardsDeck]);
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -63,7 +68,7 @@ const LobbyPage: FC = () => {
   }, []);
 
   const startGame = () => {
-    const roomId = appState?.users[0].playerId;
+    // const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;
     const settings = { ...appState?.settings, isGameStarted: true, cardsDeck };
     socket?.emit('saveSettings', settings, roomId, (error: string) => {
@@ -74,7 +79,7 @@ const LobbyPage: FC = () => {
   };
 
   const cancelGame = () => {
-    const roomId = appState?.users[0].playerId;
+    // const roomId = appState?.users[0].playerId;
     socket?.emit('cancelGame', roomId, 'Game was closed by master!');
   };
 

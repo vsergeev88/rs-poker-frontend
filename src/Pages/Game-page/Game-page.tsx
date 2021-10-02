@@ -50,8 +50,12 @@ const GamePage: FC = () => {
 
   const handleClickStopGame = () => {
     if (isMaster) {
-      const cardsDeck = appState?.cardsDeck;
-      const settings = { ...appState?.settings, isGameStarted: false, cardsDeck };
+      const settings = {
+        ...appState?.settings,
+        isGameStarted: false,
+        isRoundStarted: false,
+        cardsDeck: appState?.cardsDeck,
+      };
       socket?.emit('saveSettings', settings, roomId, (error: string) => {
         error
           ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
@@ -162,13 +166,10 @@ const GamePage: FC = () => {
         <Box>
           <TitleAdd1 className="text-center">Score:</TitleAdd1>
           <Box className="cards__wrapper mb-20">
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={10} />
-            <ScoreCard score={null} />
-            <ScoreCard score={5} />
-            <ScoreCard score={null} />
-            <ScoreCard score={null} />
+            {appState?.users.length &&
+              appState?.users
+                // .filter((e) => !e.master) // alow master to participate depends of settings
+                .map((el) => <ScoreCard score={el.name} key={el.playerId} />)}
           </Box>
         </Box>
         <Box>

@@ -40,7 +40,7 @@ const AddCard: FC = () => {
       {showComponent && (
         <div
           role="none"
-          className="card_container primary-bg-color primary-color"
+          className="add-card_container primary-bg-color primary-color"
           onClick={handleAddCard}>
           <ControlPointIcon className="control-icon" />
         </div>
