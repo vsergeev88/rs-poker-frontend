@@ -40,9 +40,19 @@ export default function Timer({ time, isMaster }: IProps) {
             isRoundStarted: false,
             cardsDeck: appState?.cardsDeck,
           };
+          const currentIssue = appState?.issues.find((el) => el.current === true);
+
           socket?.emit('saveSettings', settings, roomId, (error: string) => {
             if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
           });
+          socket?.emit(
+            'setIssueVotingDone',
+            currentIssue?.issueID,
+            true,
+            (error: string) => {
+              if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+            },
+          );
         }
       }
       if (!inProgress) {

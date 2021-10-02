@@ -7,7 +7,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
-  // AddCard,
   Card,
   Issue,
   IssueAdd,
@@ -19,17 +18,22 @@ import {
 import { TitleAdd1, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/types';
+import { TIssue, TPlayer } from '../../data/types';
 
 const GamePage: FC = () => {
   const [isMaster, setMaster] = useState(false);
+  const [currentIssue, setCurrentIssue] = useState<TIssue | undefined>(undefined);
 
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
-  const roomId = appState?.users[0].playerId || '';
+  const roomId = appState?.users.length ? appState?.users[0].playerId : '';
+
+  useEffect(() => {
+    setCurrentIssue(appState?.issues.find((el) => el.current === true));
+  }, [appState?.issues]);
 
   useEffect(() => {
     if (appState?.users.length) {
@@ -147,7 +151,6 @@ const GamePage: FC = () => {
         <Container className="add-cards section" component="section">
           <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
           <Box className="cards-wrapper justify-content-start mb-20">
-            {/* {isMaster && <AddCard />} */}
             {appState?.cardsDeck.length
               ? appState?.cardsDeck.map((el, key) => (
                   <Card
@@ -169,7 +172,14 @@ const GamePage: FC = () => {
             {appState?.users.length &&
               appState?.users
                 // .filter((e) => !e.master) // alow master to participate depends of settings
-                .map((el) => <ScoreCard score={el.name} key={el.playerId} />)}
+                .map((el) => (
+                  <ScoreCard
+                    poolResults={currentIssue?.poolResults}
+                    userID={el.playerId}
+                    key={el.playerId}
+                    isRoundStarted={appState?.settings.isRoundStarted}
+                  />
+                ))}
           </Box>
         </Box>
         <Box>

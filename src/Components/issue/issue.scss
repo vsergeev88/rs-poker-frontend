@@ -74,6 +74,17 @@
     cursor: pointer;
   }
 
+  .check-icon {
+    width: 1.5em;
+    height: 1.5em;
+    color: green;
+  }
+
+  .not-check-icon {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
   .edit-issue_wrapper {
     padding: 0 10px;
     margin-left: -10px;
