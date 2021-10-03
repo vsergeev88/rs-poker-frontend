@@ -37,3 +37,9 @@ export const TitleAdd2: FC<ITitle> = (props) => (
     {props.children}
   </Typography>
 );
+
+export const TitleAdd3: FC<ITitle> = (props) => (
+  <Typography className={props.className} variant="h4" component="h1" gutterBottom>
+    {props.children}
+  </Typography>
+);

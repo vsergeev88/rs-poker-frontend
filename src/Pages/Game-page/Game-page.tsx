@@ -10,9 +10,10 @@ import {
   Card,
   Issue,
   IssueAdd,
-  LinkToLobby,
+  // LinkToLobby,
   PlayerCard,
   ScoreCard,
+  Statistics,
   Timer,
 } from '../../Components';
 import { TitleAdd1, TitleMain } from '../../Components/titles';
@@ -88,7 +89,7 @@ const GamePage: FC = () => {
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
-          <TitleAdd1 className="text-center">Scram master:</TitleAdd1>
+          <TitleAdd1 className="text-left">Scram master:</TitleAdd1>
           <Box className="card-master">
             {appState?.users.length && (
               <PlayerCard
@@ -98,23 +99,24 @@ const GamePage: FC = () => {
                 isMaster={isMaster}
               />
             )}
+            <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
+            <Box className="button-stop mb-20">
+              <Button
+                className="p-10"
+                variant="outlined"
+                color="primary"
+                onClick={handleClickStopGame}>
+                {isMaster ? 'Stop game' : 'Exit'}
+              </Button>
+            </Box>
           </Box>
-          <LinkToLobby value={roomId} />
-          <Box className="button-stop mb-20">
-            <Button
-              className="p-10"
-              variant="outlined"
-              color="primary"
-              onClick={handleClickStopGame}>
-              {isMaster ? 'Stop game' : 'Exit'}
-            </Button>
-          </Box>
+          {/* <LinkToLobby value={roomId} /> */}
         </Box>
 
         {/******************** Issues Section ********************/}
         <Box className="issues section" component="section">
           <div className="issues__title">
-            <TitleAdd1 className="text-center">Issues:</TitleAdd1>
+            <TitleAdd1 className="text-left">Issues:</TitleAdd1>
           </div>
           <Box className="issues__wrapper">
             <Box className="cards-wrapper_column mb-20">
@@ -130,7 +132,6 @@ const GamePage: FC = () => {
               {isMaster && <IssueAdd />}
             </Box>
             <Box className="run__wrapper">
-              <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
               {isMaster && (
                 <Button
                   className="p-10"
@@ -140,30 +141,37 @@ const GamePage: FC = () => {
                   disabled={
                     !appState?.issues.length || appState?.settings.isRoundStarted
                   }>
-                  Run Round
+                  {currentIssue?.poolResults?.isVotingPassed
+                    ? 'Restart Round'
+                    : 'Run Round'}
                 </Button>
               )}
             </Box>
+            {currentIssue?.poolResults?.isVotingPassed && (
+              <Statistics data={currentIssue?.poolResults?.votes} />
+            )}
           </Box>
         </Box>
 
         {/******************** Add Cards Section ********************/}
-        <Container className="add-cards section" component="section">
-          <TitleAdd1 className="label-add-cards text-center">Add card values:</TitleAdd1>
-          <Box className="cards-wrapper justify-content-start mb-20">
-            {appState?.cardsDeck.length
-              ? appState?.cardsDeck.map((el, key) => (
-                  <Card
-                    propCardValue={el}
-                    shortScoreType={appState?.settings.scoreTypeShort}
-                    allowEdit={false}
-                    cardIndex={key}
-                    key={key}
-                  />
-                ))
-              : ''}
-          </Box>
-        </Container>
+        {((appState?.settings.isMasterAsPlayer && isMaster) || !isMaster) && (
+          <Container className="add-cards section" component="section">
+            <TitleAdd1 className="label-add-cards text-left">Cards available:</TitleAdd1>
+            <Box className="cards-wrapper justify-content-start mb-20">
+              {appState?.cardsDeck.length
+                ? appState?.cardsDeck.map((el, key) => (
+                    <Card
+                      propCardValue={el}
+                      shortScoreType={appState?.settings.scoreTypeShort}
+                      allowEdit={false}
+                      cardIndex={key}
+                      key={key}
+                    />
+                  ))
+                : ''}
+            </Box>
+          </Container>
+        )}
       </Container>
       <Box className="aside section" component="section">
         <Box>
@@ -171,7 +179,10 @@ const GamePage: FC = () => {
           <Box className="cards__wrapper mb-20">
             {appState?.users.length &&
               appState?.users
-                // .filter((e) => !e.master) // alow master to participate depends of settings
+                .filter(
+                  (el) =>
+                    !el.master || (el.master && appState?.settings.isMasterAsPlayer),
+                )
                 .map((el) => (
                   <ScoreCard
                     poolResults={currentIssue?.poolResults}
@@ -187,7 +198,10 @@ const GamePage: FC = () => {
           <Box className="cards__wrapper mb-20">
             {appState?.users.length &&
               appState?.users
-                // .filter((e) => !e.master) // alow master to participate depends of settings
+                .filter(
+                  (el) =>
+                    !el.master || (el.master && appState?.settings.isMasterAsPlayer),
+                )
                 .map((el) => (
                   <PlayerCard
                     player={el}
