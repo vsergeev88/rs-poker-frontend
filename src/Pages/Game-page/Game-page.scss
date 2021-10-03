@@ -15,6 +15,15 @@
     .title {
       margin-top: 50px;
     }
+
+    .card-master {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .add-cards {
+      padding-left: 0;
+    }    
   }
 }
 
@@ -32,6 +41,7 @@
   display: flex;
   gap: 60px;
 }
+
 .issues__wrapper .issue_container{
   margin-bottom: 20px;
 }

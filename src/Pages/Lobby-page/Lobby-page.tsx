@@ -15,7 +15,7 @@ import {
   PlayerCard,
   Settings,
 } from '../../Components';
-import { TitleAdd1, TitleMain } from '../../Components/titles';
+import { TitleAdd1, TitleAdd3, TitleMain } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { TKickOptions, TPlayer } from '../../data/types';
@@ -63,7 +63,6 @@ const LobbyPage: FC = () => {
   }, []);
 
   const startGame = () => {
-    // const roomId = appState?.users[0].playerId;
     const cardsDeck = appState?.cardsDeck;
     const settings = { ...appState?.settings, isGameStarted: true, cardsDeck };
     socket?.emit('saveSettings', settings, roomId, (error: string) => {
@@ -74,7 +73,6 @@ const LobbyPage: FC = () => {
   };
 
   const cancelGame = () => {
-    // const roomId = appState?.users[0].playerId;
     socket?.emit('cancelGame', roomId, 'Game was closed by master!');
   };
 
@@ -90,7 +88,11 @@ const LobbyPage: FC = () => {
   return (
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
-        <TitleMain issues={appState?.issues}>Issue for vote: </TitleMain>
+        {isMaster ? (
+          <TitleMain issues={appState?.issues}>Issues for vote: </TitleMain>
+        ) : (
+          <TitleAdd3>Lobby section. Waiting for game starts.</TitleAdd3>
+        )}
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">

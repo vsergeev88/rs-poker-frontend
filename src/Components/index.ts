@@ -13,6 +13,7 @@ import LinkToLobby from './link-to-lobby';
 import PlayerCard from './player-card';
 import ScoreCard from './score-card';
 import Settings from './settings';
+import Statistics from './statistics';
 import Timer from './timer';
 import Transition from './transition';
 
@@ -32,6 +33,7 @@ export {
   PlayerCard,
   ScoreCard,
   Settings,
+  Statistics,
   Timer,
   Transition,
 };
