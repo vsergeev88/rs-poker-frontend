@@ -4,6 +4,7 @@ import Chat from './chat';
 import ConnectDialog from './connect-dialog';
 import CustomDialog from './dialog';
 import Footer from './footer';
+import GameButton from './game-button';
 import Header from './header';
 import Issue from './issue';
 import IssueAdd from './issue-add';
@@ -24,6 +25,7 @@ export {
   ConnectDialog,
   CustomDialog,
   Footer,
+  GameButton,
   Header,
   Issue,
   IssueAdd,

@@ -1,14 +1,16 @@
 import './titles.scss';
 
 import { Typography } from '@material-ui/core';
-import type { FC } from 'react';
+import { FC, useContext } from 'react';
 import React from 'react';
 
+import { AppContext } from '../../content/app-state';
 import { TIssue } from '../../data/types';
 
 interface ITitle {
   className?: string;
   issues?: TIssue[] | undefined;
+  currentIssue?: TIssue;
 }
 
 const showIssueTitleList = (issues: TIssue[] | undefined) => {
@@ -43,3 +45,33 @@ export const TitleAdd3: FC<ITitle> = (props) => (
     {props.children}
   </Typography>
 );
+
+export const TitleGame: FC<ITitle> = ({ currentIssue }) => {
+  const appState = useContext(AppContext);
+
+  return (
+    <Typography variant="h4" component="h1" gutterBottom>
+      {appState?.issues.length ? (
+        <>
+          <span>Voting for: </span>
+          <span className="title_current-issue">{currentIssue?.name}</span>
+          {appState?.settings.isRoundStarted ? (
+            <span>
+              {' - '}
+              <span className="title-message_choose">choose card!</span>
+            </span>
+          ) : currentIssue?.poolResults?.isVotingPassed ? (
+            <span>
+              {' - '}
+              <span className="title-message_finished">voting finished!</span>
+            </span>
+          ) : (
+            <span className="title-message_waiting"> - waiting for round starts...</span>
+          )}
+        </>
+      ) : (
+        <div>No issues added yet</div>
+      )}
+    </Typography>
+  );
+};

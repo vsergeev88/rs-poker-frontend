@@ -17,7 +17,7 @@ import {
 } from '../../Components';
 import IssueCopy from '../../Components/issue-copy';
 import IssueImport from '../../Components/issue-import';
-import { TitleAdd1, TitleAdd3, TitleMain } from '../../Components/titles';
+import { TitleAdd1, TitleAdd3 } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { TKickOptions, TPlayer } from '../../data/types';
@@ -91,9 +91,9 @@ const LobbyPage: FC = () => {
     <Box className="lobby-page">
       <Container className="lobby-page-wrapper">
         {isMaster ? (
-          <TitleMain issues={appState?.issues}>Issues for vote: </TitleMain>
+          <TitleAdd3>Setup your game and push start button</TitleAdd3>
         ) : (
-          <TitleAdd3>Lobby section. Waiting for game starts.</TitleAdd3>
+          <TitleAdd3>Waiting for game starts...</TitleAdd3>
         )}
 
         {/******************** Start Game Section ********************/}

@@ -1,1 +1,13 @@
 @import 'src/assets/stylesheets/variables';
+
+.title_current-issue {
+  color: $primary-bg-color;
+}
+
+.title-message_choose {
+  color: $additional-color2;
+}
+
+.title-message_finished {
+  color: green;
+}

@@ -17,6 +17,7 @@ export default function Timer({ time, isMaster }: IProps) {
   const appState = useContext(AppContext);
   const socket = useContext(SocketContext);
   const { enqueueSnackbar } = useSnackbar();
+  const currentIssue = appState?.issues.find((el) => el.current === true);
 
   const padTime = useCallback((time) => {
     return String(time).length === 1 ? `0${time}` : `${time}`;
@@ -32,6 +33,14 @@ export default function Timer({ time, isMaster }: IProps) {
     if (appState?.settings.isRoundStarted) {
       if (roundTime > 0) {
         setTimeout(() => setRoundTime(roundTime - 1), 1000);
+        if (appState?.settings.isCardRound) {
+          let playersCount = appState?.users.length;
+          if (!appState?.settings.isMasterAsPlayer) --playersCount;
+          const votesCount = Object.keys(
+            currentIssue?.poolResults?.votes as Record<string, string>,
+          ).length;
+          if (playersCount === votesCount) setRoundTime(0);
+        }
       } else {
         if (isMaster) {
           const roomId = appState?.users[0].playerId;
@@ -40,8 +49,6 @@ export default function Timer({ time, isMaster }: IProps) {
             isRoundStarted: false,
             cardsDeck: appState?.cardsDeck,
           };
-          const currentIssue = appState?.issues.find((el) => el.current === true);
-
           socket?.emit('saveSettings', settings, roomId, (error: string) => {
             if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
           });
@@ -56,13 +63,11 @@ export default function Timer({ time, isMaster }: IProps) {
         }
       }
       if (!inProgress) {
-        enqueueSnackbar('Round started!', { variant: 'info' });
         setInProgress(true);
       }
     } else {
       setInProgress(false);
       setRoundTime(time);
-      enqueueSnackbar('Round ended!', { variant: 'info' });
     }
   }, [roundTime, appState?.settings]);
 

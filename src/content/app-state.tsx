@@ -17,10 +17,10 @@ type TAppState = {
 const InitialSettings: TSettings = {
   isGameStarted: false,
   isCardRound: true,
-  isMasterAsPlayer: false,
+  isMasterAsPlayer: true,
   cardDeckNumber: 0,
   isTimerNeed: true,
-  roundTime: 90,
+  roundTime: 60,
   scoreType: 'Story point',
   scoreTypeShort: 'SP',
 };
