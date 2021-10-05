@@ -154,7 +154,7 @@ const Settings: FC = () => {
             </FormControl>
           </Grid>
           <Grid item xs={8}>
-            <TitleAdd2>Changing card in round end:</TitleAdd2>
+            <TitleAdd2>Rotate cards when all voted:</TitleAdd2>
           </Grid>
           <Grid item xs={1}>
             <Switch
