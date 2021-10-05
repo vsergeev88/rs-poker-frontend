@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 
 import {
   Card,
+  GameButton,
   Issue,
   IssueAdd,
   // LinkToLobby,
@@ -16,7 +17,7 @@ import {
   Statistics,
   Timer,
 } from '../../Components';
-import { TitleAdd1, TitleMain } from '../../Components/titles';
+import { TitleAdd1, TitleGame } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
 import { TIssue, TPlayer } from '../../data/types';
@@ -53,6 +54,15 @@ const GamePage: FC = () => {
     }
   }, [appState?.settings.isGameStarted]);
 
+  useEffect(() => {
+    if (appState?.settings.isRoundStarted) {
+      enqueueSnackbar('Round started!', { variant: 'info' });
+    } else {
+      if (currentIssue?.poolResults?.isVotingPassed)
+        enqueueSnackbar('Round ended!', { variant: 'info' });
+    }
+  }, [appState?.settings.isRoundStarted, currentIssue?.poolResults?.isVotingPassed]);
+
   const handleClickStopGame = () => {
     if (isMaster) {
       const settings = {
@@ -71,21 +81,10 @@ const GamePage: FC = () => {
     }
   };
 
-  const handleClickRunRound = () => {
-    const settings = {
-      ...appState?.settings,
-      isRoundStarted: true,
-      cardsDeck: appState?.cardsDeck,
-    };
-    socket?.emit('saveSettings', settings, roomId, (error: string) => {
-      if (error) enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
-    });
-  };
-
   return (
     <Box className="game-page">
       <Container className="game-page__wrapper">
-        <TitleMain issues={appState?.issues}>Issue for vote: </TitleMain>
+        <TitleGame currentIssue={currentIssue} />
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -99,7 +98,9 @@ const GamePage: FC = () => {
                 isMaster={isMaster}
               />
             )}
-            <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
+            {appState?.settings.isTimerNeed && (
+              <Timer time={appState?.settings.roundTime as number} isMaster={isMaster} />
+            )}
             <Box className="button-stop mb-20">
               <Button
                 className="p-10"
@@ -132,20 +133,7 @@ const GamePage: FC = () => {
               {isMaster && <IssueAdd />}
             </Box>
             <Box className="run__wrapper">
-              {isMaster && (
-                <Button
-                  className="p-10"
-                  variant="contained"
-                  color="primary"
-                  onClick={handleClickRunRound}
-                  disabled={
-                    !appState?.issues.length || appState?.settings.isRoundStarted
-                  }>
-                  {currentIssue?.poolResults?.isVotingPassed
-                    ? 'Restart Round'
-                    : 'Run Round'}
-                </Button>
-              )}
+              {isMaster && <GameButton currentIssue={currentIssue} roomId={roomId} />}
             </Box>
             {currentIssue?.poolResults?.isVotingPassed && (
               <Statistics data={currentIssue?.poolResults?.votes} />
