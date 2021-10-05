@@ -42,3 +42,10 @@ export type TSettings = {
   roundTime: number;
   isRoundStarted?: boolean;
 };
+
+export type TImportFile = {
+  name: string;
+  type: string;
+  size: string;
+  lastModifiedDate: Date;
+};
