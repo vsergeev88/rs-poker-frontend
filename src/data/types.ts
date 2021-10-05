@@ -48,4 +48,5 @@ export type TImportFile = {
   type: string;
   size: string;
   lastModifiedDate: Date;
+  result: string;
 };

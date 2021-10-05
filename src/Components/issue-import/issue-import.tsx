@@ -4,7 +4,8 @@ import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useState } from 'react';
 
 import { AppContext } from '../../content/app-state';
-import { TImportFile } from '../../data/types';
+import { SocketContext } from '../../content/socket';
+import { TIssue } from '../../data/types';
 
 /* type TMessage = {
   user: TPlayer;
@@ -12,39 +13,55 @@ import { TImportFile } from '../../data/types';
 }; */
 
 const IssueImport: FC = () => {
+  const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [selectedFile, setSelectedFile] = useState<TImportFile>();
+  const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer | null>();
   const [isSelected, setIsSelected] = useState(false);
 
+  const roomId = appState?.users.length ? appState?.users[0].playerId : '';
+
   const handleChange = (event: any) => {
-    setSelectedFile(event.target.files[0]);
-    setIsSelected(true);
-    const issues = appState?.issues;
-    console.log('file was detected');
-    console.log(event.target.files[0]);
-    enqueueSnackbar('Issues was copied to clipboard. Save it to file', {
-      variant: 'success',
-    });
-    console.log(issues);
+    var file = event.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (event) {
+      console.log(event.target?.result);
+      if (typeof event.target?.result === 'string') setSelectedFile(event.target?.result);
+      setIsSelected(true);
+      enqueueSnackbar('Issues was copied to clipboard. Save it to file', {
+        variant: 'success',
+      });
+    };
+
+    reader.readAsText(file);
   };
 
-  const handleSubmission = () => {};
+  const handleSubmission = () => {
+    socket?.emit('deleteAllIssues', roomId, 'Issues was cleared!');
+    const issues: TIssue[] = JSON.parse(selectedFile?.toString() || '');
+    issues.forEach(function (issueItem) {
+      socket?.emit('addIssue', { ...issueItem }, roomId, (error: string) => {
+        enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+      });
+    });
+  };
+  const handleClear = () => {
+    socket?.emit('deleteAllIssues', roomId, 'Issues was cleared!');
+  };
 
   return (
     <>
       <input type="file" name="file" onChange={handleChange} />
       {isSelected ? (
         <div>
-          <p>Filename: {selectedFile ? selectedFile?.name : ''}</p>
-          <p>Filetype: {selectedFile?.type}</p>
-          <p>Size in bytes: {selectedFile?.size}</p>
-          <p>lastModifiedDate: {selectedFile?.lastModifiedDate.toLocaleDateString()}</p>
+          <p>File was reading. Does it send?</p>
         </div>
       ) : (
-        <p>Select a file to show details</p>
+        <p>Select a file</p>
       )}
       <button onClick={handleSubmission}>Submit</button>
+      <button onClick={handleClear}>Clear</button>
     </>
   );
 };
