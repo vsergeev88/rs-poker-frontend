@@ -166,9 +166,11 @@ const LobbyPage: FC = () => {
         {isMaster && (
           <Box className="issues section" component="section">
             <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
-            <IssueAdd />
-            <IssueCopy />
-            <IssueImport />
+            <Box className="issues-add">
+              <IssueAdd />
+              <IssueImport />
+            </Box>
+            {appState?.issues.length !== 0 && <IssueCopy />}
             <Box className="cards-wrapper mt-20 mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (

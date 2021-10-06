@@ -17,6 +17,18 @@
   display: flex;
   justify-content: space-between;
 }
+.issues {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.issues-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
 .chat-container {
   width: 500px;
