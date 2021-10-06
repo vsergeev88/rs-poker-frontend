@@ -9,6 +9,7 @@ import {
   DeleteOutline,
   Edit,
 } from '@material-ui/icons';
+import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useState } from 'react';
 
 import { ISSUE_CARD_NAME_LENGTH } from '../../config';
@@ -35,6 +36,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
 
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOpen = () => {
     setEditMode(true);
@@ -50,7 +52,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
         link: changedLink,
       },
       (issueID: string) => {
-        console.log('issue changed: ' + issueID);
+        if (issueID) enqueueSnackbar('Issue changed!', { variant: 'success' });
       },
     );
     setEditMode(false);
@@ -69,7 +71,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
               'editIssue',
               { ...el, current: el.issueID === issueID },
               (issueID: string) => {
-                console.log('issue changed: ' + issueID);
+                if (issueID) enqueueSnackbar('Issue changed!', { variant: 'success' });
               },
             );
           });
@@ -86,7 +88,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
 
   const deleteIssue = () => {
     socket?.emit('deleteIssue', issueID, (issueID: string) => {
-      console.log('issue deleted: ' + issueID);
+      if (issueID) enqueueSnackbar('Issue deleted!', { variant: 'success' });
     });
     closeDelDialog();
   };

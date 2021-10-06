@@ -1,9 +1,9 @@
 import './export-to-excel.scss';
 
 import { Button } from '@material-ui/core';
-import * as FileSaver from 'file-saver';
+import { saveAs as fileSaverSaveAs } from 'file-saver';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import * as XLSX from 'xlsx';
+import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
 
 import { AppContext } from '../../content/app-state';
 
@@ -48,13 +48,13 @@ const ExportToExcel: FC = () => {
   }, []);
 
   const exportToCSV = () => {
-    const ws = XLSX.utils.json_to_sheet(results, {
+    const ws = XLSXUtils.json_to_sheet(results, {
       header: ['name', 'link', 'priority', 'voted'],
     });
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const excelBuffer = XLSXWrite(wb, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, fileName + fileExtension);
+    fileSaverSaveAs(data, fileName + fileExtension);
   };
 
   return (

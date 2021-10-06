@@ -127,7 +127,7 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
         currentIssue?.issueID,
         !checked ? propCardValue : 'NONE',
         (error: string) => {
-          if (error) console.error('Error: ' + error);
+          if (error) enqueueSnackbar(`Error! ${error}`, { variant: 'error' });
         },
       );
     }
