@@ -9,12 +9,13 @@ import {
   DeleteOutline,
   Edit,
 } from '@material-ui/icons';
+import { useSnackbar } from 'notistack';
 import React, { FC, useContext, useState } from 'react';
 
 import { ISSUE_CARD_NAME_LENGTH } from '../../config';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssue, TPriority } from '../../data/types';
+import { TIssue, TPriority } from '../../types/types';
 import { truncate } from '../../utils/formatters';
 import CustomDialog from '../dialog';
 
@@ -35,6 +36,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
 
   const socket = useContext(SocketContext);
   const appState = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOpen = () => {
     setEditMode(true);
@@ -50,7 +52,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
         link: changedLink,
       },
       (issueID: string) => {
-        console.log('issue changed: ' + issueID);
+        if (issueID) enqueueSnackbar('Issue changed!', { variant: 'success' });
       },
     );
     setEditMode(false);
@@ -69,7 +71,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
               'editIssue',
               { ...el, current: el.issueID === issueID },
               (issueID: string) => {
-                console.log('issue changed: ' + issueID);
+                if (issueID) enqueueSnackbar('Issue changed!', { variant: 'success' });
               },
             );
           });
@@ -86,7 +88,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
 
   const deleteIssue = () => {
     socket?.emit('deleteIssue', issueID, (issueID: string) => {
-      console.log('issue deleted: ' + issueID);
+      if (issueID) enqueueSnackbar('Issue deleted!', { variant: 'success' });
     });
     closeDelDialog();
   };
@@ -98,9 +100,13 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
         appState?.settings.isRoundStarted ? ' issue_fade' : ''
       }`}
       onClick={handleIssueChoose}>
-      {!isLobby && current && <div className="current-cover"></div>}
+      {!isLobby && current && !appState?.settings.showResults && (
+        <div className="current-cover"></div>
+      )}
       <div className="issue-info_container">
-        {!isLobby && current && <span className="current-issue_text">current</span>}
+        {!isLobby && current && !appState?.settings.showResults && (
+          <span className="current-issue_text">current</span>
+        )}
         {!link && (
           <span className="issue-name_text" title={name}>
             {truncate(name, ISSUE_CARD_NAME_LENGTH)}
@@ -119,6 +125,7 @@ const Issue: FC<IProps> = ({ issue, isLobby, isMaster }) => {
         <span className="issue-priority_text">{priority} priority</span>
       </div>
       {!isLobby &&
+        !appState?.settings.showResults &&
         (poolResults?.isVotingPassed ? (
           <CheckBox className="check-icon" />
         ) : (

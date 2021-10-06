@@ -20,7 +20,7 @@ import IssueImport from '../../Components/issue-import';
 import { TitleAdd1, TitleAdd3 } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TKickOptions, TPlayer } from '../../data/types';
+import { TKickOptions, TPlayer } from '../../types/types';
 
 const LobbyPage: FC = () => {
   const [isMaster, setMaster] = useState(false);

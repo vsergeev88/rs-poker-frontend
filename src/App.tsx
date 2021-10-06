@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Footer, Header } from './Components';
 import { AppProvider } from './content/app-state';
 import { SocketProvider } from './content/socket';
-import { GamePage, GameResult, LobbyPage, MainPage, TestPage } from './Pages';
+import { GamePage, GameResult, LobbyPage, MainPage } from './Pages';
 
 function App() {
   return (
@@ -37,9 +37,6 @@ function App() {
               </Route>
               <Route path="/game-result">
                 <GameResult />
-              </Route>
-              <Route path="/test">
-                <TestPage />
               </Route>
             </Switch>
           </AppProvider>

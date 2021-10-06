@@ -3,6 +3,7 @@ import Card from './card';
 import Chat from './chat';
 import ConnectDialog from './connect-dialog';
 import CustomDialog from './dialog';
+import ExportToExcel from './export-to-excel';
 import Footer from './footer';
 import GameButton from './game-button';
 import Header from './header';
@@ -24,6 +25,7 @@ export {
   Chat,
   ConnectDialog,
   CustomDialog,
+  ExportToExcel,
   Footer,
   GameButton,
   Header,

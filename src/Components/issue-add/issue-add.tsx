@@ -7,7 +7,7 @@ import React, { FC, useContext, useState } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TPriority } from '../../data/types';
+import { TPriority } from '../../types/types';
 import CustomDialog from '../dialog';
 
 const IssueAdd: FC = () => {

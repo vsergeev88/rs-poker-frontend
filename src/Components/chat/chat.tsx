@@ -4,7 +4,7 @@ import { Button, Input } from '@material-ui/core';
 import React, { FC, useContext, useEffect, useState } from 'react';
 
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/types';
+import { TPlayer } from '../../types/types';
 import PlayerCard from '../player-card';
 
 type TMessage = {

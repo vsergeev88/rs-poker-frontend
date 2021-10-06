@@ -47,6 +47,7 @@ export type TSettings = {
   scoreTypeShort: string;
   roundTime: number;
   isRoundStarted?: boolean;
+  showResults?: boolean;
 };
 
 export type TImportFile = {
