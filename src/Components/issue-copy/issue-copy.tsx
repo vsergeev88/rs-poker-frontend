@@ -7,7 +7,7 @@ import React, { FC, useContext } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssueToFile } from '../../data/types';
+import { TIssueToFile } from '../../types/types';
 
 const IssueCopy: FC = () => {
   const socket = useContext(SocketContext);
