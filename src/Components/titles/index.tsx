@@ -5,7 +5,7 @@ import { FC, useContext } from 'react';
 import React from 'react';
 
 import { AppContext } from '../../content/app-state';
-import { TIssue } from '../../data/types';
+import { TIssue } from '../../types/types';
 
 interface ITitle {
   className?: string;

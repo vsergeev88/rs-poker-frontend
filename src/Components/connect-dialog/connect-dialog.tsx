@@ -78,7 +78,6 @@ const ConnectDialog: FC<IProps> = ({ roomId, createMode }) => {
       setOpen(true);
     } else {
       socket?.emit('checkRoom', roomId, (isMatched: boolean) => {
-        console.log(isMatched);
         isMatched
           ? setOpen(true)
           : enqueueSnackbar(`Error: Wrong room ID!`, { variant: 'error' });

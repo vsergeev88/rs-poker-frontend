@@ -35,6 +35,7 @@ const MainPage: FC = () => {
         roundTime,
         isRoundStarted,
         cardsDeck,
+        showResults,
       } = settings;
       appState?.setSettings({
         isGameStarted,
@@ -46,6 +47,7 @@ const MainPage: FC = () => {
         scoreTypeShort,
         roundTime,
         isRoundStarted,
+        showResults,
       });
       appState?.setCardsDeck(cardsDeck);
     });

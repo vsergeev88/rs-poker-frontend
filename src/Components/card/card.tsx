@@ -2,6 +2,7 @@ import './card.scss';
 
 import { MenuItem, Select, TextField } from '@material-ui/core';
 import {
+  AllInclusive,
   CheckCircle,
   DeleteOutlined,
   EditOutlined,
@@ -21,7 +22,7 @@ interface IProps {
   propCardValue: string;
   shortScoreType: string;
   allowEdit: boolean;
-  cardIndex: number;
+  cardIndex?: number;
 }
 
 const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex }) => {
@@ -112,7 +113,7 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
   const deleteCard = () => {
     if (appState?.cardsDeck) {
       let tempArr = [...appState?.cardsDeck];
-      tempArr.splice(cardIndex, 1);
+      tempArr.splice(cardIndex as number, 1);
       appState?.setCardsDeck(tempArr);
     }
   };
@@ -126,7 +127,7 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
         currentIssue?.issueID,
         !checked ? propCardValue : 'NONE',
         (error: string) => {
-          if (error) console.error('Error: ' + error);
+          if (error) enqueueSnackbar(`Error! ${error}`, { variant: 'error' });
         },
       );
     }
@@ -196,10 +197,10 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
           </div>
         )}
       </div>
-      {propCardValue === 'Coffee' ? (
+      {propCardValue === 'Unknown' ? (
         <LocalCafe className="score-type_text" />
       ) : propCardValue === 'Inf' ? (
-        <span className="score-type_text">Inf</span>
+        <AllInclusive className="score-type_text" />
       ) : propCardValue === '?' ? (
         <span className="score-type_text">?</span>
       ) : (
@@ -209,7 +210,7 @@ const Card: FC<IProps> = ({ propCardValue, shortScoreType, allowEdit, cardIndex 
       <span className={`card-value_text rotate ${isCardAction ? 'action-card' : ''}`}>
         {propCardValue}
       </span>
-      {!allowEdit && checked && (
+      {!allowEdit && checked && !appState?.settings.showResults && (
         <>
           <div className="checked-cover"></div>
           <div className="check-icon-wrapper">

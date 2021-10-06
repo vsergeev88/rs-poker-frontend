@@ -17,7 +17,7 @@ export const SETTING_SCORE_TYPE_SHORT_DEF = 'SP';
 export const SETTING_IS_SCORE_TYPE_SHORT_ERROR_DEF = false;
 export const SETTING_ROUND_TIME_DEF = 90;
 
-export const DECK_ACTION = ['?', 'Inf', 'Coffee'];
+export const DECK_ACTION = ['?', 'Inf', 'Unknown'];
 export const DECK_FIBONACCI = [
   '0',
   '1',

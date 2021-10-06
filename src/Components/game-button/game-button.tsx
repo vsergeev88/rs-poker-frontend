@@ -6,7 +6,7 @@ import React, { FC, useContext, useEffect } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssue } from '../../data/types';
+import { TIssue } from '../../types/types';
 
 interface IProps {
   currentIssue: TIssue | undefined;
