@@ -1,20 +1,22 @@
+import './Game-result.scss';
+
 import { Box, Container } from '@material-ui/core';
 import React, { FC, useContext } from 'react';
 
-import { Card, Issue } from '../../Components';
-import { TitleMain } from '../../Components/titles';
+import { Card, ExportToExcel, Issue } from '../../Components';
+import { TitleAdd3 } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 
 const GameResult: FC = () => {
   const appState = useContext(AppContext);
 
   return (
-    <Box className="game-page">
-      <Container className="game-page__wrapper">
-        <TitleMain className="title">
-          Spring 13 planning (
-          {appState?.issues && appState?.issues.map((issue) => issue.name).join(', ')})
-        </TitleMain>
+    <Box className="game-results">
+      <Container className="game-results__wrapper">
+        <TitleAdd3>Game is finished. See results below.</TitleAdd3>
+        <div className="export_btn">
+          <ExportToExcel />
+        </div>
         <Box className="issues__wrapper">
           <Box className="cards-wrapper_column mb-20">
             {appState?.issues &&
