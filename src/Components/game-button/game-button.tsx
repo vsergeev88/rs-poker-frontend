@@ -44,6 +44,7 @@ const GameButton: FC<IProps> = ({ currentIssue, roomId }) => {
   };
 
   useEffect(() => {
+    console.log(appState?.issues);
     if (currentIssue?.poolResults?.votes) {
       if (appState?.settings.isCardRound && !appState?.settings.isTimerNeed) {
         let playersCount = appState?.users.length;

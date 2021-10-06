@@ -18,6 +18,7 @@ const IssueCopy: FC = () => {
 
   const handleClick = () => {
     const issues = appState?.issues;
+    console.log(issues);
     const issuesToFile: TIssueToFile[] = [];
     issues?.forEach(function (issueItem) {
       const issueItemToFile: TIssueToFile = (({ name, priority, link }) => ({

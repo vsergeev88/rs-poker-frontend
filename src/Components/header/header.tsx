@@ -8,7 +8,9 @@ import pngUrl from '../../assets/png/logo.png';
 const Header: FC = () => {
   return (
     <div className="header-menu">
-      <img src={pngUrl} alt="logo"></img>
+      <a href="./">
+        <img src={pngUrl} alt="logo"></img>
+      </a>
       <div className="header-menu_bottom"></div>
     </div>
   );

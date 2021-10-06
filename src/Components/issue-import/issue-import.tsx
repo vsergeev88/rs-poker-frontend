@@ -35,12 +35,21 @@ const IssueImport: FC = () => {
   };
 
   const handleSubmission = () => {
-    // socket?.emit('deleteAllIssues', roomId, 'Issues was cleared!');
+    const current = false;
+    const poolResults = {
+      votes: new Map<string, string>(),
+      isVotingPassed: false,
+    };
     const issues: TIssue[] = JSON.parse(selectedFile?.toString() || '');
     issues.forEach(function (issueItem) {
-      socket?.emit('addIssue', { ...issueItem }, roomId, (error: string) => {
-        enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
-      });
+      socket?.emit(
+        'addIssue',
+        { ...issueItem, current, poolResults },
+        roomId,
+        (error: string) => {
+          enqueueSnackbar(`Error: ${error}`, { variant: 'error' });
+        },
+      );
     });
     enqueueSnackbar('File was imported', {
       variant: 'success',
