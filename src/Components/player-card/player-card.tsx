@@ -5,7 +5,7 @@ import React, { FC, useContext, useMemo } from 'react';
 
 import { PLAYER_CARD_NAME_LENGTH } from '../../config';
 import { SocketContext } from '../../content/socket';
-import { TPlayer } from '../../data/types';
+import { TPlayer } from '../../types/types';
 import { truncate } from '../../utils/formatters';
 import { getCapitalLetters, stringToColor } from '../../utils/formatters';
 import KickDialog from '../kick-player-dialog';

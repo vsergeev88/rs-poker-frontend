@@ -2,7 +2,7 @@ import './score-card.scss';
 
 import React from 'react';
 
-import { TPoolResults } from '../../data/types';
+import { TPoolResults } from '../../types/types';
 
 interface IProps {
   poolResults: TPoolResults | undefined;

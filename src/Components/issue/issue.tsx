@@ -14,7 +14,7 @@ import React, { FC, useContext, useState } from 'react';
 import { ISSUE_CARD_NAME_LENGTH } from '../../config';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssue, TPriority } from '../../data/types';
+import { TIssue, TPriority } from '../../types/types';
 import { truncate } from '../../utils/formatters';
 import CustomDialog from '../dialog';
 

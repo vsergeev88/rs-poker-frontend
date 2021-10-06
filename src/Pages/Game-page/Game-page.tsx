@@ -19,7 +19,7 @@ import {
 import { TitleAdd1, TitleGame } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TIssue, TPlayer } from '../../data/types';
+import { TIssue, TPlayer } from '../../types/types';
 
 const GamePage: FC = () => {
   const [isMaster, setMaster] = useState(false);

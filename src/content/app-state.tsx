@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import { INITAL_DECK } from '../config';
-import { TIssue, TPlayer, TSettings } from '../data/types';
+import { TIssue, TPlayer, TSettings } from '../types/types';
 
 type TAppState = {
   users: TPlayer[];

@@ -4,7 +4,7 @@ import React, { Dispatch, FC, SetStateAction, useContext } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
-import { TKickOptions } from '../../data/types';
+import { TKickOptions } from '../../types/types';
 import CustomDialog from '../dialog';
 
 interface IProps {
