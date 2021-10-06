@@ -22,7 +22,6 @@ const IssueImport: FC = () => {
     var reader = new FileReader();
 
     reader.onload = function (event) {
-      console.log(event.target?.result);
       if (typeof event.target?.result === 'string') {
         setSelectedFile(event.target?.result);
         setSelectedFileName(file.name);
@@ -36,7 +35,7 @@ const IssueImport: FC = () => {
   };
 
   const handleSubmission = () => {
-    socket?.emit('deleteAllIssues', roomId, 'Issues was cleared!');
+    // socket?.emit('deleteAllIssues', roomId, 'Issues was cleared!');
     const issues: TIssue[] = JSON.parse(selectedFile?.toString() || '');
     issues.forEach(function (issueItem) {
       socket?.emit('addIssue', { ...issueItem }, roomId, (error: string) => {

@@ -7,6 +7,7 @@ import React, { FC, useContext } from 'react';
 
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
+import { TIssueToFile } from '../../data/types';
 
 const IssueCopy: FC = () => {
   const socket = useContext(SocketContext);
@@ -17,8 +18,17 @@ const IssueCopy: FC = () => {
 
   const handleClick = () => {
     const issues = appState?.issues;
-    if (issues?.length) {
-      navigator.clipboard.writeText(JSON.stringify(issues));
+    const issuesToFile: TIssueToFile[] = [];
+    issues?.forEach(function (issueItem) {
+      const issueItemToFile: TIssueToFile = (({ name, priority, link }) => ({
+        name,
+        priority,
+        link,
+      }))(issueItem);
+      issuesToFile.push(issueItemToFile);
+    });
+    if (issuesToFile?.length) {
+      navigator.clipboard.writeText(JSON.stringify(issuesToFile));
       enqueueSnackbar('Issues was copied to clipboard. Save it to file', {
         variant: 'success',
       });

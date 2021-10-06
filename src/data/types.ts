@@ -26,6 +26,12 @@ export type TIssue = {
   poolResults?: TPoolResults;
 };
 
+export type TIssueToFile = {
+  name: string;
+  priority: TPriority;
+  link: string;
+};
+
 export type TKickOptions = {
   targetId: string;
   initiatorId: string;
