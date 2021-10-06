@@ -23,6 +23,7 @@ const InitialSettings: TSettings = {
   roundTime: 60,
   scoreType: 'Story point',
   scoreTypeShort: 'SP',
+  showResults: false,
 };
 
 const AppContext = React.createContext<TAppState | undefined>(undefined);

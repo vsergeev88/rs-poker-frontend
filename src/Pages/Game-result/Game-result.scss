@@ -14,9 +14,23 @@
     flex-direction: column;
   
     .export_btn {
-      align-self: flex-end;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
     }
 
+    .results-card__info {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      align-items: center;
+    }
+
+    .results-card__text {
+      font-size: 24px;
+      font-weight: 500;
+    }
   }
 }
 

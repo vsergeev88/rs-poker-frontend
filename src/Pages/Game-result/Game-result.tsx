@@ -9,7 +9,6 @@ import { AppContext } from '../../content/app-state';
 
 const GameResult: FC = () => {
   const appState = useContext(AppContext);
-
   return (
     <Box className="game-results">
       <Container className="game-results__wrapper">
@@ -20,21 +19,15 @@ const GameResult: FC = () => {
         <Box className="issues__wrapper">
           <Box className="cards-wrapper_column mb-20">
             {appState?.issues &&
-              appState?.issues.map((el) => (
-                <Box key={el.issueID}>
-                  <Issue issue={el} isLobby={false} />
+              appState?.issues.map((issue) => (
+                <Box key={issue.issueID}>
+                  <Issue issue={issue} isLobby={false} />
                   <Box className="cards-wrapper justify-content-start mb-20">
-                    {appState?.cardsDeck.length
-                      ? appState?.cardsDeck.map((el, key) => (
-                          <Card
-                            propCardValue={el}
-                            shortScoreType={'SP'}
-                            allowEdit={false}
-                            cardIndex={key}
-                            key={key}
-                          />
-                        ))
-                      : ''}
+                    {issue.poolResults?.isVotingPassed ? (
+                      <DisplayData data={issue.poolResults?.votes} />
+                    ) : (
+                      <span className="results-card__text">Not voted</span>
+                    )}
                   </Box>
                 </Box>
               ))}
@@ -46,3 +39,35 @@ const GameResult: FC = () => {
 };
 
 export default GameResult;
+
+interface IProps {
+  data: Record<string, string>;
+}
+
+const DisplayData: FC<IProps> = ({ data }) => {
+  const votesNumber = Object.keys(data).length;
+  console.log(votesNumber);
+  const votedStats: Record<string, number> = {};
+  for (let keys in data) {
+    votedStats[data[keys]] = votedStats[data[keys]] + 1 || 1;
+  }
+  const displayData = Object.entries(votedStats);
+  console.log(displayData);
+
+  return (
+    <>
+      {displayData.map((el) => {
+        let [card, number] = el;
+        if (Number.isInteger(+card)) card += ' SR';
+        return (
+          <div className="results-card__info" key={card}>
+            <Card propCardValue={card} shortScoreType={'SP'} allowEdit={false} />
+            <span className="results-card__text">
+              {((number / votesNumber) * 100).toFixed(1)}%
+            </span>
+          </div>
+        );
+      })}
+    </>
+  );
+};

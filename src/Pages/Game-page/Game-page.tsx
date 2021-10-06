@@ -11,7 +11,6 @@ import {
   GameButton,
   Issue,
   IssueAdd,
-  // LinkToLobby,
   PlayerCard,
   ScoreCard,
   Statistics,
@@ -51,8 +50,12 @@ const GamePage: FC = () => {
     if (!appState?.settings.isGameStarted) {
       history.push('/lobby');
       if (!isMaster) enqueueSnackbar('Game canceled!', { variant: 'warning' });
+    } else {
+      if (appState?.settings.showResults) {
+        history.push('/game-result');
+      }
     }
-  }, [appState?.settings.isGameStarted]);
+  }, [appState?.settings.isGameStarted, appState?.settings.showResults]);
 
   useEffect(() => {
     if (appState?.settings.isRoundStarted) {
@@ -81,10 +84,35 @@ const GamePage: FC = () => {
     }
   };
 
+  const handleClickFinishGame = () => {
+    const settings = {
+      ...appState?.settings,
+      isRoundStarted: false,
+      showResults: true,
+      cardsDeck: appState?.cardsDeck,
+    };
+    socket?.emit('saveSettings', settings, roomId, (error: string) => {
+      error
+        ? enqueueSnackbar(`Error: ${error}`, { variant: 'error' })
+        : enqueueSnackbar('Game finished!', { variant: 'info' });
+    });
+  };
+
   return (
     <Box className="game-page">
       <Container className="game-page__wrapper">
-        <TitleGame currentIssue={currentIssue} />
+        <Box className="card-master">
+          <TitleGame currentIssue={currentIssue} />
+          {isMaster && (
+            <Button
+              className="p-10"
+              variant="outlined"
+              color="primary"
+              onClick={handleClickFinishGame}>
+              Finish game
+            </Button>
+          )}
+        </Box>
 
         {/******************** Start Game Section ********************/}
         <Box className="start-game section" component="section">
@@ -105,13 +133,12 @@ const GamePage: FC = () => {
               <Button
                 className="p-10"
                 variant="outlined"
-                color="primary"
+                color="secondary"
                 onClick={handleClickStopGame}>
-                {isMaster ? 'Stop game' : 'Exit'}
+                {isMaster ? 'Back to lobby' : 'Exit'}
               </Button>
             </Box>
           </Box>
-          {/* <LinkToLobby value={roomId} /> */}
         </Box>
 
         {/******************** Issues Section ********************/}
