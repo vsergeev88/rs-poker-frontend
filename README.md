@@ -9,5 +9,5 @@ RS School Poker project
 5. Open url `http://localhost:3000/` in your browser.
 
 ### Notes
-- Link to the deploy: [Poiting Poker](https://poiting-poker.netlify.app/)
+- Link to the deploy: [Poiting Poker](https://p-poker.netlify.app/)
 - Back-end repo can be found here: [poker-server](https://github.com/micolka/poker-server)
