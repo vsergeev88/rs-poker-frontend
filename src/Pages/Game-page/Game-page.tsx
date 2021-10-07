@@ -159,12 +159,14 @@ const GamePage: FC = () => {
                 ))}
               {isMaster && <IssueAdd />}
             </Box>
-            <Box className="run__wrapper">
-              {isMaster && <GameButton currentIssue={currentIssue} roomId={roomId} />}
-            </Box>
-            {currentIssue?.poolResults?.isVotingPassed && (
-              <Statistics data={currentIssue?.poolResults?.votes} />
-            )}
+            <div className="issues-nav-stats__wrapper">
+              <Box className="run__wrapper">
+                {isMaster && <GameButton currentIssue={currentIssue} roomId={roomId} />}
+              </Box>
+              {currentIssue?.poolResults?.isVotingPassed && (
+                <Statistics data={currentIssue?.poolResults?.votes} />
+              )}
+            </div>
           </Box>
         </Box>
 
