@@ -35,13 +35,14 @@ const IssueImport: FC = () => {
   };
 
   const handleSubmission = () => {
-    const current = false;
+    let current = appState?.issues.length === 0;
     const poolResults = {
       votes: new Map<string, string>(),
       isVotingPassed: false,
     };
     const issues: TIssue[] = JSON.parse(selectedFile?.toString() || '');
-    issues.forEach(function (issueItem) {
+    issues.forEach(function (issueItem, idx) {
+      if (current === true && idx > 0) current = false;
       socket?.emit(
         'addIssue',
         { ...issueItem, current, poolResults },
