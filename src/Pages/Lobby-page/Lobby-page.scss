@@ -1,0 +1,49 @@
+.lobby-page {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: calc(100vh - 134px);
+  display: flex;
+  justify-content: space-between;
+}
+
+.lobby-page-wrapper {
+  width: 100%;
+  padding-top: 30px;
+  border-right: 2px solid gray;
+}
+
+.buttons-game {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-container {
+  width: 500px;
+  padding: 0 20px;
+
+  @media (max-width: 1110px) {
+    width: 400px;
+  }
+
+  @media (max-width: 900px) {
+    width: 340px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 680px;
+    width: 80%;
+    padding: 0 44px;
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lobby-page {
+    display: block;
+  }
+
+  .lobby-page-wrapper {
+    border-right: none;
+  }
+}

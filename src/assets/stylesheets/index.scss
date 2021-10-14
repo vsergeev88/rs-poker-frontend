@@ -1,0 +1,123 @@
+@import 'variables';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+.section {
+  padding: 10px 0px 30px;
+}
+.cards-wrapper{
+  width: 100%;
+  // height: 100%;
+  // margin: 50px auto;
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  &_column {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+}
+
+button,
+.btn {
+  cursor: pointer;
+}
+.hidden {
+  display: none !important;
+}
+.ml-auto,
+.mx-auto {
+  margin-left: auto !important;
+}
+.mr-auto,
+.mx-auto {
+  margin-right: auto !important;
+}
+.mt-5 {
+  margin-top: 5px !important;
+}
+.mt-10 {
+  margin-top: 10px !important;
+}
+.mt-20 {
+  margin-top: 20px !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+.ml-5 {
+  margin-left: 5px !important;
+}
+.p-10 {
+  padding: 10px !important;
+}
+.pt-10 {
+  padding-top: 10px !important;
+}
+.pb-10 {
+  padding-bottom: 10px !important;
+}
+.text-justify {
+  text-align: justify!important;
+}
+.text-left {
+  text-align: left !important;
+}
+.text-center {
+  text-align: center!important;
+}
+.text-right {
+  text-align: right!important;
+}
+.d-flex {
+  display: flex!important;
+}
+.justify-content-start {
+  -webkit-box-pack: start!important;
+  -ms-flex-pack: start!important;
+  justify-content: flex-start!important;
+}
+.justify-content-end {
+  -webkit-box-pack: end!important;
+  -ms-flex-pack: end!important;
+  justify-content: flex-end!important;
+}
+.justify-content-center {
+  -webkit-box-pack: center!important;
+  -ms-flex-pack: center!important;
+  justify-content: center!important;
+}
+.justify-content-between {
+  -webkit-box-pack: justify!important;
+  -ms-flex-pack: justify!important;
+  justify-content: space-between!important;
+}
+.justify-content-around {
+  -ms-flex-pack: distribute!important;
+  justify-content: space-around!important;
+}
+.primary-color{
+  color: $primary-color;
+}
+.primary-bg-color{
+  background-color: $primary-bg-color;
+}
+.primary-bg-color:hover{
+  background-color: $primary-hover-bg-color;
+}

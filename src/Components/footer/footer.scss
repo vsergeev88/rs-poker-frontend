@@ -1,0 +1,75 @@
+@import 'src/assets/stylesheets/variables';
+
+.footer {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  background: $app-main-color1;
+}
+
+.footer-container {
+  max-width: 1280px;
+  height: 64px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.link-footer {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  font-weight: 700;
+  color: #ffffff;
+  transition: all 0.2s ease-in;
+  font-size: 20px;
+  span {
+    display: block;
+    margin-left: 10px;
+
+    @media (max-width: 500px) {
+      display: none;
+    }
+  }
+
+  &:hover {
+    color: #ffdd40;
+  }
+
+  img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.school-link {
+  width: 100px;
+
+  img {
+    width: 100px;
+  }
+}
+
+@media (max-width: 880px) {
+  .footer-container {
+    height: 100%;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+  }
+  .footer-text_desktop {
+    display: none;
+  }
+  .footer-text_mobile {
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 880px) {
+  .footer-text_mobile {
+    display: none;
+  }
+}

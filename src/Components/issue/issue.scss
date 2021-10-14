@@ -1,0 +1,172 @@
+@import 'src/assets/stylesheets/variables';
+
+.issue_container {
+  position: relative;
+  padding: 0 10px;
+  width: 260px;
+  height: 75px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.15s ease-in;
+
+  .current-cover {
+    padding: 0 10px;
+    margin-left: -10px;
+    position: absolute;
+    width: 260px;
+    height: 75px;
+    border-radius: 5px;
+    background-color: $checked-card-color;
+    opacity: 0.5;
+  }
+
+  .issue-info_container {
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .current-issue_text {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .issue-name_text {
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .issue-name_link {
+      font-size: 22px;
+      font-weight: 500;
+      color: #000;
+    }
+    .issue-priority_text {
+      font-size: 12px;
+    }
+  }
+
+  .edit-icon {
+    color: gray;
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .edit-icon:hover {
+    cursor: pointer;
+    color: #3f51b5;
+    transition: all 0.15s ease-in;
+  }
+
+  .delete-icon {
+    color: red;
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .delete-icon:hover {
+    cursor: pointer;
+  }
+
+  .check-icon {
+    width: 1.5em;
+    height: 1.5em;
+    color: green;
+  }
+
+  .not-check-icon {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .edit-issue_wrapper {
+    padding: 0 10px;
+    margin-left: -10px;
+    position: absolute;
+    width: 290px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s ease-in;
+
+    .edit-captions_wrapper {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      justify-content: space-between;
+
+      .edit_caption {
+        min-width: 19px;
+        font-size: 14px;
+        font-weight: 600;
+        padding-right: 5px;
+      }
+    }
+
+    .radio-group_container {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .radio {
+        padding: 0;
+      }
+
+      .radio_label {
+        padding: 0 3px;
+        font-size: 14px;
+      }
+    }
+
+    .done-icon {
+      color: gray;
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    .done-icon:hover {
+      cursor: pointer;
+      color: green;
+      transition: all 0.15s ease-in;
+    }
+  }
+}
+
+.issue_container:hover,
+.edit-issue_wrapper:hover {
+  box-shadow: 0px 4px 4px 3px rgba(0, 0, 0, 0.25);
+  transition: all 0.15s ease-in;
+}
+
+.issue_active:hover {
+  cursor: pointer;
+}
+
+.issue_fade {
+  cursor: default;
+  box-shadow: none;
+  background-color: lightgrey;
+  transition: all 0.15s ease-in;
+}
+
+.issue_fade:hover {
+  cursor: default;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .issue_container {
+    width: 250px;
+  }
+}

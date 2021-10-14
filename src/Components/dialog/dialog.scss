@@ -1,0 +1,32 @@
+@import 'src/assets/stylesheets/variables';
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  
+  .large-text {
+    @include large-text;
+    align-self: center;
+    margin-bottom: 20px;
+  }
+
+  .message-text {
+    font-size: 24px;
+    font-weight: 500;
+
+    .colored-text {
+      color: $app-main-color2;
+    }
+  }
+}
+
+.kick-icon {
+  font-size: 28px;
+  transition: all 0.15s ease-in;
+}
+
+.kick-icon:hover {
+  cursor: pointer;
+  color: red;
+  transition: all 0.15s ease-in;
+}

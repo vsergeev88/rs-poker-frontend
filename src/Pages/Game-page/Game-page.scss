@@ -1,0 +1,106 @@
+.game-page {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  min-height: calc(100vh - 134px);
+
+  &__wrapper {
+    width: 100%;
+    height: 100%;
+    border-right: 2px solid rgb(0 0 0 / 20%);
+    padding-top: 30px;
+
+    .title {
+      margin-top: 50px;
+    }
+
+    .card-master {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .add-cards {
+      padding-left: 0;
+    }    
+  }
+}
+
+
+.button-stop {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.issues__title {
+  width: 310px;
+}
+
+.issues__wrapper {
+  display: flex;
+  gap: 60px;
+}
+
+.issues__wrapper .issue_container{
+  margin-bottom: 20px;
+}
+
+.run__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.aside {
+  display: flex;
+  gap: 15px;
+  padding: 50px 30px;
+
+  .cards__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1110px) {
+  .game-page {
+    grid-template-columns: 1fr 400px;
+  }
+
+  .aside {
+    gap: 10px;
+    padding: 50px 15px;
+  }
+}
+
+@media (max-width: 980px) {
+  .game-page {
+    display: block;
+
+    &__wrapper {
+      border: none;
+    }
+  }
+
+  .aside {
+    gap: 15px;
+    padding: 10px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .issues__wrapper {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .aside {
+    gap: 20px;
+    padding: 10px 20px;
+  }
+}
+
