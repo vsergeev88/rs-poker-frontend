@@ -26,6 +26,12 @@ export type TIssue = {
   poolResults?: TPoolResults;
 };
 
+export type TIssueToFile = {
+  name: string;
+  priority: TPriority;
+  link: string;
+};
+
 export type TKickOptions = {
   targetId: string;
   initiatorId: string;
@@ -42,4 +48,12 @@ export type TSettings = {
   roundTime: number;
   isRoundStarted?: boolean;
   showResults?: boolean;
+};
+
+export type TImportFile = {
+  name: string;
+  type: string;
+  size: string;
+  lastModifiedDate: Date;
+  result: string;
 };

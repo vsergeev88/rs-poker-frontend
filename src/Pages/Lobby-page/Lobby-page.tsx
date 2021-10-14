@@ -15,6 +15,8 @@ import {
   PlayerCard,
   Settings,
 } from '../../Components';
+import IssueCopy from '../../Components/issue-copy';
+import IssueImport from '../../Components/issue-import';
 import { TitleAdd1, TitleAdd3 } from '../../Components/titles';
 import { AppContext } from '../../content/app-state';
 import { SocketContext } from '../../content/socket';
@@ -164,8 +166,12 @@ const LobbyPage: FC = () => {
         {isMaster && (
           <Box className="issues section" component="section">
             <TitleAdd1 className="label-issues text-center">Issues:</TitleAdd1>
-            <IssueAdd />
-            <Box className="cards-wrapper mb-20">
+            <Box className="issues-add">
+              <IssueAdd />
+              <IssueImport />
+            </Box>
+            {appState?.issues.length !== 0 && <IssueCopy />}
+            <Box className="cards-wrapper mt-20 mb-20">
               {appState?.issues &&
                 appState?.issues.map((el) => (
                   <Issue issue={el} isLobby={true} key={el.issueID} />

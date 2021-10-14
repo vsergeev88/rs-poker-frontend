@@ -40,6 +40,7 @@
 .issues__wrapper {
   display: flex;
   gap: 60px;
+  width: 100%;
 }
 
 .issues__wrapper .issue_container{
@@ -52,6 +53,12 @@
   gap: 20px;
 }
 
+.issues-nav-stats__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .aside {
   display: flex;
@@ -64,7 +71,13 @@
     gap: 10px;
   }
 }
-
+@media (max-width: 1300px) {
+  .issues-nav-stats__wrapper {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
 @media (max-width: 1110px) {
   .game-page {
     grid-template-columns: 1fr 400px;
@@ -95,12 +108,17 @@
   .issues__wrapper {
     gap: 30px;
   }
+
 }
 
 @media (max-width: 600px) {
   .aside {
     gap: 20px;
     padding: 10px 20px;
+  }
+
+  .statistics__container {
+    width: auto;
   }
 }
 
